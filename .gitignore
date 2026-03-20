@@ -11,3 +11,6 @@ test.ps1
 Debug.md
 .claude
 .env
+.pnpm-store
+artifacts
+lab/data

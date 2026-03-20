@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-dfir-iris",
+	"node": "@zivego/n8n-nodes-dfir-iris",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Communication"],

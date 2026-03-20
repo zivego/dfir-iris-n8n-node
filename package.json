@@ -1,13 +1,14 @@
 {
-  "name": "n8n-nodes-dfir-iris",
-  "version": "2.0.1",
+  "name": "@zivego/n8n-nodes-dfir-iris",
+  "version": "2.0.2",
   "description": "n8n node for DFIR IRIS IRP",
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/zivego/iris-n8n-fork",
   "keywords": [
     "n8n-community-node-package",
     "dfir-iris",
-    "iris"
+    "iris",
+    "zivego"
   ],
   "author": {
     "name": "barn4k",
@@ -15,16 +16,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/barn4k/n8n-nodes-dfir-iris.git"
+    "url": "https://github.com/zivego/iris-n8n-fork.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zivego/iris-n8n-fork/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
-    "build": "n8n-node build",
+    "build": "node scripts/check-credential-password-fields.mjs && n8n-node build",
     "build:watch": "tsc --watch",
+    "check:credentials-schema": "node scripts/check-credential-password-fields.mjs",
     "dev": "n8n-node dev",
     "lint": "n8n-node lint",
     "lint:fix": "n8n-node lint --fix",
+    "pack:tarball": "pnpm run build && pnpm pack --pack-destination artifacts",
     "release": "n8n-node release",
-    "prepublishOnly": "n8n-node prerelease"
+    "prepublishOnly": "pnpm run build && n8n-node prerelease"
   },
   "files": [
     "dist"

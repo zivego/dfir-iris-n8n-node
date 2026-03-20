@@ -64,7 +64,6 @@ export class DfirIrisApi implements ICredentialType {
 					isHttp: [false],
 				},
 			},
-			typeOptions: { password: true },
 		},
 		{
 			displayName: 'Enable Debug',
