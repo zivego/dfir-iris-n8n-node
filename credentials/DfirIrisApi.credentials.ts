@@ -34,25 +34,6 @@ export class DfirIrisApi implements ICredentialType {
 			default: '',
 			description: 'The FQDN, not the URL',
 		},
-		{
-			displayName: 'API Version',
-			name: 'apiVersion',
-			default: '2.0.4',
-			type: 'options',
-			description: 'The API version to use',
-			options: [
-				// {
-				// 	name: 'v2.0.2',
-				// 	value: '2.0.2',
-				// 	description: 'API for DFIR IRIS v2.3.x',
-				// },
-				{
-					name: 'v2.0.4',
-					value: '2.0.4',
-					description: 'API for DFIR IRIS v2.4.x',
-				},
-			],
-		},
 		// eslint-disable-next-line @n8n/community-nodes/credential-password-field
 		{
 			displayName: 'Ignore SSL Issues',

@@ -5,9 +5,10 @@ import type {
 	INodeProperties,
 } from 'n8n-workflow';
 
-import { updateDisplayOptions } from 'n8n-workflow';
+import { NodeOperationError, updateDisplayOptions } from 'n8n-workflow';
 
 import { apiRequest } from '../../transport';
+import { utils } from '../../helpers';
 
 const properties: INodeProperties[] = [
 	{
@@ -60,13 +61,30 @@ export const description = updateDisplayOptions(displayOptions, properties);
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	const body: IDataObject = {};
+	const moduleData = this.getNodeParameter('moduleData', i) as string;
+	const [hookName, hookUiName, moduleName, ...unexpectedParts] = moduleData
+		.split(';')
+		.map((entry) => entry.trim());
 
-	[body.hook_name, body.module_name, body.hook_ui_name] = (
-		this.getNodeParameter('moduleData', i) as string
-	).split(';');
+	if (
+		unexpectedParts.length > 0 ||
+		!hookName ||
+		!hookUiName ||
+		!moduleName
+	) {
+		throw new NodeOperationError(
+			this.getNode(),
+			'Module Data must use the format "hook_name;manual_hook_ui_name;module_name"',
+			{ itemIndex: i },
+		);
+	}
+
+	body.hook_name = hookName;
+	body.hook_ui_name = hookUiName;
+	body.module_name = moduleName;
 
 	body.type = this.getNodeParameter('type', i) as string;
-	body.targets = (this.getNodeParameter('targetsString', i) as string).replace(/ /g, '').split(',');
+	body.targets = utils.parseCommaSeparatedStrings(this.getNodeParameter('targetsString', i));
 
 	const response = await apiRequest.call(this, 'POST', 'dim/hooks/call', body, query);
 

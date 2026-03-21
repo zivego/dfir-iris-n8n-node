@@ -47,7 +47,10 @@ exports[`typed action contracts > covers alert/batchUpdate 1`] = `
   "requests": [
     {
       "body": {
-        "alert_ids": "1,2",
+        "alert_ids": [
+          1,
+          2,
+        ],
         "updates": {},
       },
       "credentialType": "dfirIrisApi",
@@ -302,14 +305,10 @@ exports[`typed action contracts > covers alert/escalate 1`] = `
   "requests": [
     {
       "body": {
-        "assets_import_list": [
-          "",
-        ],
+        "assets_import_list": [],
         "case_tags": "",
         "case_title": "QA title",
-        "iocs_import_list": [
-          "",
-        ],
+        "iocs_import_list": [],
       },
       "credentialType": "dfirIrisApi",
       "headers": {
@@ -667,12 +666,8 @@ exports[`typed action contracts > covers alert/merge 1`] = `
   "requests": [
     {
       "body": {
-        "assets_import_list": [
-          "",
-        ],
-        "iocs_import_list": [
-          "",
-        ],
+        "assets_import_list": [],
+        "iocs_import_list": [],
         "target_case_id": 1,
       },
       "credentialType": "dfirIrisApi",
@@ -3594,9 +3589,9 @@ exports[`typed action contracts > covers module/callModule 1`] = `
   "requests": [
     {
       "body": {
-        "hook_name": "{}",
-        "hook_ui_name": undefined,
-        "module_name": undefined,
+        "hook_name": "qa_hook",
+        "hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
         "targets": [
           "1",
           "2",

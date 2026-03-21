@@ -5,18 +5,17 @@ This fork is published as `@zivego/n8n-nodes-dfir-iris` so production installs a
 ## Publish a release
 
 1. Update `package.json`, `Changelog.md`, and `docs/api-v2.0.4-coverage.json`.
-2. Build and validate the package:
+2. Run the full release contract:
 
 ```sh
 pnpm install
-pnpm run build
-pnpm run pack:tarball
+pnpm run release:check
 ```
 
 3. Publish the scoped package:
 
 ```sh
-pnpm publish --access public --no-git-checks
+pnpm run release
 ```
 
 If you need a containerized toolchain instead of a local Node.js installation:
@@ -26,7 +25,7 @@ docker run --rm -it \
   -v "$PWD:/workspace" \
   -w /workspace \
   node:20-bookworm \
-  bash -lc "corepack enable && pnpm install && pnpm run build && pnpm publish --access public --no-git-checks"
+  bash -lc "corepack enable && pnpm install && pnpm run release:check && pnpm run release"
 ```
 
 ## Production install

@@ -11,8 +11,8 @@
     "zivego"
   ],
   "author": {
-    "name": "barn4k",
-    "email": "gravedigger161@gmail.com"
+    "name": "zivego",
+    "email": "266826730+zivego@users.noreply.github.com"
   },
   "repository": {
     "type": "git",
@@ -34,11 +34,15 @@
     "lint": "eslint credentials nodes scripts --ext .ts,.js,.mjs",
     "lint:fix": "eslint credentials nodes scripts --ext .ts,.js,.mjs --fix",
     "pack:tarball": "pnpm run build && pnpm pack --pack-destination artifacts",
-    "release": "n8n-node release",
-    "prepublishOnly": "pnpm run build && n8n-node prerelease",
+    "prepublishOnly": "pnpm run build",
+    "release": "pnpm run release:publish",
+    "release:check": "pnpm run lint && pnpm test && pnpm run build && pnpm pack --pack-destination artifacts && pnpm publish --dry-run --access public --no-git-checks",
+    "release:publish": "pnpm run release:check && pnpm publish --access public --no-git-checks",
     "test": "vitest run tests/unit tests/contract tests/integration",
     "test:coverage": "vitest run tests/unit tests/contract tests/integration --coverage",
     "test:e2e": "vitest run tests/e2e",
+    "test:e2e:live": "vitest run tests/e2e/live-lab.test.ts",
+    "test:e2e:regression": "vitest run tests/e2e/n8n-regression.test.ts",
     "test:integration": "vitest run tests/contract tests/integration",
     "test:unit": "vitest run tests/unit"
   },

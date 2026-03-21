@@ -11,6 +11,15 @@ import { endpoint } from './Asset.resource';
 import { apiRequest } from '../../transport';
 import { types, utils } from '../../helpers';
 
+function extractAssets(data: unknown): IDataObject[] {
+	if (!data || typeof data !== 'object' || !('assets' in (data as IDataObject))) {
+		return [];
+	}
+
+	const assets = (data as IDataObject).assets;
+	return Array.isArray(assets) ? (assets as IDataObject[]) : [];
+}
+
 const properties: INodeProperties[] = [
 	{
 		displayName: 'Options',
@@ -35,7 +44,15 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	let response;
 
-	response = await apiRequest.call(this, 'GET', `${endpoint}/list`, {}, query);
+	try {
+		response = await apiRequest.call(this, 'GET', `${endpoint}/list`, {}, query);
+	} catch {
+		response = undefined;
+	}
+
+	if (!response || extractAssets(response.data).length === 0) {
+		response = await apiRequest.call(this, 'GET', `${endpoint}/filter`, {}, query);
+	}
 
 	const options = this.getNodeParameter('options', i, {});
 	const isRaw = (options.isRaw as boolean) || false;

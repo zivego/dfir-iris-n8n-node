@@ -38,7 +38,7 @@ function createOverrides(resourceName: string, operationName: string) {
 	}
 
 	if (resourceName === 'module' && operationName === 'callModule') {
-		overrides.moduleData = '{}';
+		overrides.moduleData = 'qa_hook;QA Hook;QA Module';
 		overrides.targetsString = '1,2';
 		overrides.type = 'case';
 	}
@@ -116,5 +116,99 @@ describe('typed action contracts', () => {
 		expect((calls[0].options.body as Record<string, Record<string, string>>).updates.alert_context).toEqual({
 			source: 'qa',
 		});
+	});
+
+	it('maps moduleData into hook_name, hook_ui_name, and module_name in the correct order', async () => {
+		const moduleResource = resourceModules['../../nodes/DfirIris/v1/actions/module/Module.resource.ts'];
+		const callModule = moduleResource.callModule as OperationExport;
+		const { calls, context } = createMockExecuteContext(
+			buildParametersFromDescription(callModule.description, {
+				moduleData: 'qa_hook;QA Hook;QA Module',
+				targetsString: '1, 2',
+				type: 'case',
+			}),
+		);
+
+		await callModule.execute.call(context as never, 0);
+
+		expect(calls[0].options.body).toEqual({
+			hook_name: 'qa_hook',
+			hook_ui_name: 'QA Hook',
+			module_name: 'QA Module',
+			targets: [ '1', '2' ],
+			type: 'case',
+		});
+	});
+
+	it('rejects malformed moduleData values before making a request', async () => {
+		const moduleResource = resourceModules['../../nodes/DfirIris/v1/actions/module/Module.resource.ts'];
+		const callModule = moduleResource.callModule as OperationExport;
+		const { calls, context } = createMockExecuteContext(
+			buildParametersFromDescription(callModule.description, {
+				moduleData: '{}',
+				targetsString: '',
+				type: 'case',
+			}),
+		);
+
+		await expect(callModule.execute.call(context as never, 0)).rejects.toThrow(
+			/module data must use the format/i,
+		);
+		expect(calls).toEqual([]);
+	});
+
+	it('falls back to case/assets/filter when asset/getAll receives an empty legacy list', async () => {
+		const assetResource = resourceModules['../../nodes/DfirIris/v1/actions/asset/Asset.resource.ts'];
+		const getAll = assetResource.getAll as OperationExport;
+		const { calls, context } = createMockExecuteContext(
+			buildParametersFromDescription(getAll.description),
+			{
+				responseFactory: async (request) => {
+					const path = summarizeRequest(request).path;
+
+					if (path === 'case/assets/list') {
+						return { data: { assets: [] } };
+					}
+
+					if (path === 'case/assets/filter') {
+						return {
+							data: {
+								assets: [
+									{
+										asset_id: 42,
+										asset_name: 'QA Filter Asset',
+										asset_type: {
+											asset_id: 1,
+											asset_name: 'Account',
+										},
+									},
+								],
+							},
+						};
+					}
+
+					throw new Error(`Unexpected path in test response factory: ${path}`);
+				},
+			},
+		);
+
+		const output = await getAll.execute.call(context as never, 0);
+
+		expect(output).toEqual([
+			{
+				json: {
+					asset_id: 42,
+					asset_name: 'QA Filter Asset',
+					asset_type: {
+						asset_id: 1,
+						asset_name: 'Account',
+					},
+				},
+			},
+		]);
+		expect(calls.map(summarizeRequest)).toEqual([
+			expect.objectContaining({ path: 'case/assets/list' }),
+			expect.objectContaining({ path: 'case/assets/filter' }),
+		]);
 	});
 });

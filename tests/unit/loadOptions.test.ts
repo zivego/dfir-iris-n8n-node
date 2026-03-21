@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
 import * as loadOptions from '../../nodes/DfirIris/v1/methods/loadOptions';
-import { createMockLoadOptionsContext, summarizeRequest } from '../support/mockN8n';
+import {
+	createMockLoadOptionsContext,
+	summarizeRequest,
+	type RecordedRequest,
+} from '../support/mockN8n';
 
 const loadOptionEntries = Object.entries(loadOptions).sort(([left], [right]) => left.localeCompare(right));
 
@@ -21,4 +25,53 @@ describe('load options contracts', () => {
 			}).toMatchSnapshot();
 		});
 	}
+
+	it('falls back to case/assets/filter when case/assets/list is empty', async () => {
+		const responseFactory = async (request: RecordedRequest) => {
+			const path = summarizeRequest(request).path;
+
+			if (path === 'case/assets/list') {
+				return { data: { assets: [] } };
+			}
+
+			if (path === 'case/assets/filter') {
+				return {
+					data: {
+						assets: [
+							{
+								asset_id: 7,
+								asset_name: 'QA Fallback Asset',
+								asset_type: {
+									asset_id: 1,
+									asset_name: 'Account',
+								},
+							},
+						],
+					},
+				};
+			}
+
+			throw new Error(`Unexpected path in test response factory: ${path}`);
+		};
+
+		const { calls, context } = createMockLoadOptionsContext(
+			{
+				cid: 1,
+			},
+			{ responseFactory },
+		);
+
+		const output = await loadOptions.getAssets.call(context as never);
+
+		expect(output).toEqual([
+			{
+				name: 'QA Fallback Asset | Account',
+				value: 7,
+			},
+		]);
+		expect(calls.map(summarizeRequest)).toEqual([
+			expect.objectContaining({ path: 'case/assets/list' }),
+			expect.objectContaining({ path: 'case/assets/filter' }),
+		]);
+	});
 });

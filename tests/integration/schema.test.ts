@@ -25,6 +25,12 @@ describe('schema and manifest contracts', () => {
 		}
 	});
 
+	it('does not expose decorative apiVersion credential fields that runtime does not use', () => {
+		const credential = new DfirIrisApi();
+
+		expect(credential.properties.some((property) => property.name === 'apiVersion')).toBe(false);
+	});
+
 	it('exposes all load options through the node type', () => {
 		const node = new DfirIrisV1({
 			icon: 'file:icons/iris.svg',

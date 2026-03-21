@@ -44,6 +44,8 @@ describe('API Request resource', () => {
 		await execute.call(context as never, 0);
 
 		expect(calls).toHaveLength(1);
+		const formEntries = summarizeRequest(calls[0]).body as Array<{ key: string }>;
+		expect(formEntries.some((entry) => entry.key === 'file_original_name')).toBe(true);
 		expect(summarizeRequest(calls[0])).toMatchSnapshot();
 	});
 

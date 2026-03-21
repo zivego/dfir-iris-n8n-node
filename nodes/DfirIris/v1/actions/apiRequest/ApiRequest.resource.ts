@@ -370,6 +370,10 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 			fileName,
 		);
 
+		if (!Object.prototype.hasOwnProperty.call(multipartFields, 'file_original_name')) {
+			form.append('file_original_name', fileName);
+		}
+
 		for (const [key, value] of Object.entries(multipartFields)) {
 			if (value === undefined || value === null) {
 				continue;

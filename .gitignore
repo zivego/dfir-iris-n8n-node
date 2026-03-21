@@ -18,3 +18,4 @@ lab/data
 lab/manual-stack.env
 lab/manual-stack.certs
 lab/manual-stack.n8n
+lab/manual-stack.n8n-*

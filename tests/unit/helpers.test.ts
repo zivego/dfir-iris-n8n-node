@@ -4,12 +4,15 @@ import { getTLPName } from '../../nodes/DfirIris/v1/helpers/types';
 import {
 	addAdditionalFields,
 	enableDebug,
+	formatIrisEventDate,
 	fieldsRemover,
 	getFlattenGroups,
 	getFlattenTree,
 	getFolderNested,
 	getNoteGroupsNested,
 	IrisLog,
+	parseCommaSeparatedIntegers,
+	parseCommaSeparatedStrings,
 } from '../../nodes/DfirIris/v1/helpers/utils';
 import { createMockExecuteContext } from '../support/mockN8n';
 
@@ -35,6 +38,36 @@ describe('helper utilities', () => {
 			{ id: 1, keep: 'yes' },
 			{ id: 2, keep: 'still' },
 		]);
+	});
+
+	it('treats empty or non-string fields filters as a no-op', () => {
+		const source = [{ id: 1, keep: 'yes', remove: 'no' }];
+
+		expect(fieldsRemover(structuredClone(source), { fields: '', inverseFields: false })).toEqual(source);
+		expect(fieldsRemover(structuredClone(source), { fields: undefined, inverseFields: false })).toEqual(source);
+		expect(fieldsRemover(structuredClone(source), { fields: 42, inverseFields: false })).toEqual(source);
+	});
+
+	it('normalizes comma-separated string and integer lists', () => {
+		expect(parseCommaSeparatedStrings(' alpha, beta ,, gamma ')).toEqual(['alpha', 'beta', 'gamma']);
+		expect(parseCommaSeparatedStrings('')).toEqual([]);
+		expect(parseCommaSeparatedStrings(undefined)).toEqual([]);
+
+		expect(parseCommaSeparatedIntegers('1, 2, 3', { name: 'node' } as never, 0, 'IDs')).toEqual([1, 2, 3]);
+		expect(parseCommaSeparatedIntegers('', { name: 'node' } as never, 0, 'IDs')).toEqual([]);
+		expect(() =>
+			parseCommaSeparatedIntegers('1, nope', { name: 'node' } as never, 0, 'IDs'),
+		).toThrow(/comma-separated list of integer/i);
+	});
+
+	it('formats timeline datetimes for IRIS and rejects invalid values', () => {
+		expect(formatIrisEventDate('2026-03-21T10:00:00.000Z', { name: 'node' } as never, 0)).toBe(
+			'2026-03-21T10:00:00.000',
+		);
+		expect(() => formatIrisEventDate('', { name: 'node' } as never, 0)).toThrow(/valid datetime/i);
+		expect(() => formatIrisEventDate('not-a-date', { name: 'node' } as never, 0)).toThrow(
+			/valid datetime/i,
+		);
 	});
 
 	it('adds additional fields and parses custom attributes JSON', () => {

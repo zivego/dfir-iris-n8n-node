@@ -116,8 +116,8 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	body.assets_import_list ??= '';
 	body.iocs_import_list ??= '';
 	
-	body.assets_import_list = (body.assets_import_list as string).split(',') || [];
-	body.iocs_import_list = (body.iocs_import_list as string).split(',') || [];
+	body.assets_import_list = utils.parseCommaSeparatedStrings(body.assets_import_list);
+	body.iocs_import_list = utils.parseCommaSeparatedStrings(body.iocs_import_list);
 
 	response = await apiRequest.call(
 		this,

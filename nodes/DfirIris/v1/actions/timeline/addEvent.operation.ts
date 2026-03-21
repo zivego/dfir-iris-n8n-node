@@ -80,7 +80,11 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const body: IDataObject = {};
 
 	body.event_title = this.getNodeParameter(local.eventTitle.name, i) as string;
-	body.event_date = (this.getNodeParameter(local.eventDate.name, i) as string).substring(0, 19) + '.000';
+	body.event_date = utils.formatIrisEventDate(
+		this.getNodeParameter(local.eventDate.name, i),
+		this.getNode(),
+		i,
+	);
 	body.event_tz = "+00:00"
 	body.event_category_id = this.getNodeParameter(local.eventCategory.name, i) as number;
 	body.event_assets = this.getNodeParameter(local.eventAssetsMV.name, i) as number[];

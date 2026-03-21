@@ -6,6 +6,32 @@ import { apiRequest } from '../transport/index';
 import { utils } from './../helpers';
 import { getTLPName, IFolder, INoteGroup, TLPValue } from '../helpers/types';
 
+function extractAssets(data: unknown): IDataObject[] {
+	if (!data || typeof data !== 'object' || !('assets' in (data as IDataObject))) {
+		return [];
+	}
+
+	const assets = (data as IDataObject).assets;
+	return Array.isArray(assets) ? (assets as IDataObject[]) : [];
+}
+
+function getAssetTypeName(asset: IDataObject): string {
+	const assetType = asset.asset_type;
+
+	if (typeof assetType === 'string' && assetType.trim().length > 0) {
+		return assetType;
+	}
+
+	if (assetType && typeof assetType === 'object' && 'asset_name' in (assetType as IDataObject)) {
+		const assetTypeName = (assetType as IDataObject).asset_name;
+		if (typeof assetTypeName === 'string' && assetTypeName.trim().length > 0) {
+			return assetTypeName;
+		}
+	}
+
+	return 'Unknown';
+}
+
 export async function getUsers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 	const endpoint = 'case/users/list';
 
@@ -42,21 +68,26 @@ export async function getUsers(this: ILoadOptionsFunctions): Promise<INodeProper
 export async function getAssets(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 	const query = { cid: this.getNodeParameter('cid') as number };
 
-	const response = await apiRequest.call(this, 'GET', 'case/assets/list', {}, query);
+	let response;
+
+	try {
+		response = await apiRequest.call(this, 'GET', 'case/assets/list', {}, query);
+	} catch {
+		response = undefined;
+	}
+
+	if (!response || extractAssets(response.data).length === 0) {
+		response = await apiRequest.call(this, 'GET', 'case/assets/filter', {}, query);
+	}
+
 	if (response === undefined) {
 		throw new NodeOperationError(this.getNode(), 'No data got returned');
 	}
 
-	let returnData: INodePropertyOptions[] = [];
-	if (response.data && typeof response.data === 'object' && 'assets' in response.data) {
-		const data = response.data as IDataObject;
-		returnData = (data.assets as IDataObject[]).map((asset: IDataObject) => {
-			return {
-				name: `${asset.asset_name} | ${asset.asset_type}`,
-				value: asset.asset_id as string | number,
-			};
-		});
-	}
+	const returnData: INodePropertyOptions[] = extractAssets(response.data).map((asset: IDataObject) => ({
+		name: `${asset.asset_name as string} | ${getAssetTypeName(asset)}`,
+		value: asset.asset_id as string | number,
+	}));
 
 	returnData.sort((a, b) => {
 		if (a.name < b.name) {

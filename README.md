@@ -48,7 +48,7 @@ cd ~/.n8n/nodes
 npm install @zivego/n8n-nodes-dfir-iris@3.0.0
 ```
 
-## Local build and publish
+## Local build and release
 
 This repository uses `pnpm`.
 
@@ -58,10 +58,16 @@ pnpm run build
 pnpm run pack:tarball
 ```
 
+Validate the release contract locally:
+
+```sh
+pnpm run release:check
+```
+
 Publish to npm:
 
 ```sh
-pnpm publish --access public --no-git-checks
+pnpm run release
 ```
 
 If you do not have Node.js locally, use a disposable container:
@@ -71,15 +77,15 @@ docker run --rm -it \
   -v "$PWD:/workspace" \
   -w /workspace \
   node:20-bookworm \
-  bash -lc "corepack enable && pnpm install && pnpm run build && pnpm run pack:tarball"
+  bash -lc "corepack enable && pnpm install && pnpm run release:check"
 ```
 
 ## Docker test lab
 
-This repository includes a two-instance n8n lab for reproducing the upstream bug and testing the fixed fork against:
+This repository includes two lab entrypoints:
 
-- `n8n 2.12.3`
-- `n8n 2.4.8`
+- `lab/compose.yaml`: dual-n8n regression lab for `n8n 2.12.3` and `n8n 2.4.8`
+- `lab/manual-stack.compose.yaml`: full `n8n + Postgres + DFIR-IRIS` acceptance lab
 
 See [docs/lab.md](docs/lab.md) for the full workflow and [docs/release-and-production.md](docs/release-and-production.md) for release and production rollout details.
 
@@ -92,8 +98,10 @@ Supported IRIS Versions:
 Coverage model:
 
 - Existing typed resources keep their current `resource` and `operation` identifiers for workflow compatibility.
+- The credential is pinned to the stable DFIR-IRIS API contract for `2.4.x`, so the UI no longer exposes a decorative API version selector.
 - A new typed resource `API Request` can call any stable `v2.0.4` endpoint directly, including endpoints that do not yet have a dedicated typed UI.
 - The release build validates [docs/api-v2.0.4-coverage.json](docs/api-v2.0.4-coverage.json) and fails if an endpoint is left as `unsupported`.
+- Live acceptance covers package loading in `n8n`, credentials type rendering, credential CRUD/test endpoints, and representative typed resource calls against a real DFIR-IRIS stack.
 
 Typed resource coverage:
 

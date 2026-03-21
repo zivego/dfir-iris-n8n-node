@@ -83,6 +83,11 @@ exports[`API Request resource > uploads binary data as multipart form-data 1`] =
       "type": "binary",
     },
     {
+      "key": "file_original_name",
+      "type": "string",
+      "value": "qa.txt",
+    },
+    {
       "key": "cid",
       "type": "string",
       "value": "1",

@@ -153,7 +153,7 @@ function inferValueFromName(name: string): unknown {
 	}
 
 	if (name === 'moduleData') {
-		return '{}';
+		return 'qa_hook;QA Hook;QA Module';
 	}
 
 	if (name === 'targetsString') {
@@ -438,6 +438,22 @@ export async function defaultResponseFactory(request: RecordedRequest): Promise<
 		return { data: { assets: [entity] } };
 	}
 
+	if (path === 'case/assets/filter') {
+		return {
+			data: {
+				assets: [
+					{
+						...entity,
+						asset_type: {
+							asset_id: 1,
+							asset_name: 'Server',
+						},
+					},
+				],
+			},
+		};
+	}
+
 	if (path === 'case/tasks/list' || path === 'case/tasks/filter' || path === 'tasks/list') {
 		return { data: { tasks: [entity] } };
 	}
@@ -597,7 +613,6 @@ export function createMockExecuteContext(
 		getCredentials: async () => ({
 			accessToken: 'token',
 			allowUnauthorizedCerts: true,
-			apiVersion: '2.0.4',
 			enableDebug: false,
 			host: 'iris.local',
 			isHttp: false,

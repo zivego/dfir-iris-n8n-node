@@ -9,7 +9,7 @@ import { updateDisplayOptions, NodeOperationError } from 'n8n-workflow';
 
 import { endpoint } from './Alert.resource';
 import { apiRequest } from '../../transport';
-import { types } from '../../helpers';
+import { types, utils } from '../../helpers';
 import * as local from './commonDescription';
 
 const properties: INodeProperties[] = [
@@ -37,13 +37,20 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 
 	const body: IDataObject = {};
-	let response
+	let response;
+
 	try {
-		body.alert_ids = (this.getNodeParameter('alert_ids', i) as string)
-			.replace(/\s/g, '')
-			.split(',')
-			.map((x) => parseInt(x));
-	} catch {
+		body.alert_ids = utils.parseCommaSeparatedIntegers(
+			this.getNodeParameter('alert_ids', i),
+			this.getNode(),
+			i,
+			'List of IDs',
+		);
+	} catch (error) {
+		if (error instanceof NodeOperationError) {
+			throw error;
+		}
+
 		throw new NodeOperationError(
 			this.getNode(),
 			'List of IDs is not valid. It should be a comma-separated list of Alert IDs',

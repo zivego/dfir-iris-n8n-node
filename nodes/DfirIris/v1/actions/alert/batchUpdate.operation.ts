@@ -122,7 +122,12 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	if (assets !== null) newBody.alert_assets = assets;
 
 	body = {
-		alert_ids: this.getNodeParameter('alert_ids', i) as string,
+		alert_ids: utils.parseCommaSeparatedIntegers(
+			this.getNodeParameter('alert_ids', i),
+			this.getNode(),
+			i,
+			'Alert IDs',
+		),
 		updates: newBody,
 	};
 

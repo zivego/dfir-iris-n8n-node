@@ -1,4 +1,10 @@
-import type { IDataObject, IExecuteFunctions, INodePropertyOptions, Logger } from 'n8n-workflow';
+import type {
+	IDataObject,
+	IExecuteFunctions,
+	INode,
+	INodePropertyOptions,
+	Logger,
+} from 'n8n-workflow';
 
 import { NodeOperationError } from 'n8n-workflow';
 import type { IFolder, IFolderSub, INoteGroup } from './../helpers/types';
@@ -37,8 +43,12 @@ export function enableDebug(state: boolean): void{
 }
 
 export function fieldsRemover(responseRoot: IDataObject | IDataObject[], options: IDataObject) {
-	const fields = (options.fields as string).replace(/\s+/g, '').split(',') || [];
+	const fields = parseCommaSeparatedStrings(options.fields);
 	const inverseFields = (options.inverseFields as boolean) || false;
+
+	if (fields.length === 0) {
+		return responseRoot;
+	}
 
 	if (fields.length > 0) {
 		if (Array.isArray(responseRoot)) {
@@ -75,6 +85,60 @@ export function fieldsRemover(responseRoot: IDataObject | IDataObject[], options
 	}
 
 	return responseRoot;
+}
+
+export function parseCommaSeparatedStrings(value: unknown): string[] {
+	if (typeof value !== 'string') {
+		return [];
+	}
+
+	return value
+		.split(',')
+		.map((entry) => entry.trim())
+		.filter((entry) => entry.length > 0);
+}
+
+export function parseCommaSeparatedIntegers(
+	value: unknown,
+	node: INode,
+	itemIndex: number,
+	label: string,
+): number[] {
+	const entries = parseCommaSeparatedStrings(value);
+
+	if (entries.length === 0) {
+		return [];
+	}
+
+	const numbers = entries.map((entry) => Number.parseInt(entry, 10));
+
+	if (numbers.some((entry) => Number.isNaN(entry))) {
+		throw new NodeOperationError(
+			node,
+			`${label} must be a comma-separated list of integer values`,
+			{ itemIndex },
+		);
+	}
+
+	return numbers;
+}
+
+export function formatIrisEventDate(value: unknown, node: INode, itemIndex: number): string {
+	if (typeof value !== 'string' || value.trim().length === 0) {
+		throw new NodeOperationError(node, 'Event Date must be a valid datetime string', {
+			itemIndex,
+		});
+	}
+
+	const parsedDate = new Date(value);
+
+	if (Number.isNaN(parsedDate.getTime())) {
+		throw new NodeOperationError(node, 'Event Date must be a valid datetime string', {
+			itemIndex,
+		});
+	}
+
+	return parsedDate.toISOString().slice(0, 23);
 }
 
 /**

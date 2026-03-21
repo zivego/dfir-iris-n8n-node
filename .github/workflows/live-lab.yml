@@ -1,0 +1,95 @@
+name: Live Lab Acceptance
+
+on:
+  workflow_dispatch:
+
+jobs:
+  live-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build release tarball
+        run: pnpm run pack:tarball
+
+      - name: Generate manual stack certificates
+        run: ./lab/generate-certs.sh
+
+      - name: Prepare regression lab env
+        run: |
+          cp lab/.env.example lab/.env
+
+      - name: Run dual-n8n regression lab
+        run: docker compose -f lab/compose.yaml --env-file lab/.env up -d --build
+
+      - name: Run regression checks
+        env:
+          N8N_BASELINE_BASE_URL: http://127.0.0.1:5679
+          N8N_BASIC_AUTH_PASSWORD: n8nlabpass
+          N8N_BASIC_AUTH_USER: admin
+          N8N_LATEST_BASE_URL: http://127.0.0.1:5678
+          RUN_N8N_REGRESSION_E2E: "1"
+        run: pnpm run test:e2e:regression
+
+      - name: Stop dual-n8n regression lab
+        if: always()
+        run: docker compose -f lab/compose.yaml --env-file lab/.env down -v
+
+      - name: Prepare full acceptance stack env
+        run: |
+          cp lab/manual-stack.env.example lab/manual-stack.env
+          python - <<'PY'
+          from pathlib import Path
+          env_path = Path("lab/manual-stack.env")
+          values = {
+              "N8N_ENCRYPTION_KEY": "live-lab-encryption-key",
+              "IRIS_SECRET_KEY": "live-lab-secret-key",
+              "IRIS_SECURITY_PASSWORD_SALT": "live-lab-password-salt",
+              "IRIS_ADM_PASSWORD": "IrisAdminPass!2026",
+              "IRIS_ADM_API_KEY": "73BDDBC245AA01F502DE31D9931225E3C55D6CF6BF8ABA878225B981CFBAA955",
+          }
+          lines = []
+          for raw_line in env_path.read_text().splitlines():
+              key, _, value = raw_line.partition("=")
+              lines.append(f"{key}={values.get(key, value)}")
+          env_path.write_text("\n".join(lines) + "\n")
+          PY
+
+      - name: Run full acceptance stack
+        run: docker compose --env-file lab/manual-stack.env -f lab/manual-stack.compose.yaml up -d --build
+
+      - name: Run live acceptance suite
+        env:
+          DFIR_IRIS_HOST: 127.0.0.1:8443
+          DFIR_IRIS_IS_HTTP: "0"
+          DFIR_IRIS_TOKEN: 73BDDBC245AA01F502DE31D9931225E3C55D6CF6BF8ABA878225B981CFBAA955
+          N8N_BASE_URL: http://127.0.0.1:5678
+          N8N_BASIC_AUTH_PASSWORD: n8nlabpass
+          N8N_BASIC_AUTH_USER: admin
+          N8N_DFIR_IRIS_HOST: host.docker.internal:8443
+          N8N_OWNER_EMAIL: owner@example.com
+          N8N_OWNER_FIRST_NAME: QA
+          N8N_OWNER_LAST_NAME: Owner
+          N8N_OWNER_PASSWORD: OwnerPass123!
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
+          RUN_LIVE_E2E: "1"
+        run: pnpm run test:e2e:live
+
+      - name: Stop full acceptance stack
+        if: always()
+        run: docker compose --env-file lab/manual-stack.env -f lab/manual-stack.compose.yaml down -v

@@ -36,16 +36,16 @@ services:
       N8N_COMMUNITY_PACKAGES_ENABLED: "true"
       N8N_DIAGNOSTICS_ENABLED: "false"
       N8N_EDITOR_BASE_URL: http://localhost:${N8N_PORT:-5678}/
-      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:-lab-encryption-key-please-change}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:-zivego-live-lab-key-2026}
       N8N_HOST: 0.0.0.0
       N8N_PORT: 5678
       N8N_PROTOCOL: http
-      PACKAGE_SPEC: ${N8N_PACKAGE_SPEC:-file:/packages/zivego-n8n-nodes-dfir-iris-2.0.2.tgz}
+      PACKAGE_SPEC: ${N8N_PACKAGE_SPEC:-file:/packages/zivego-n8n-nodes-dfir-iris-3.0.0.tgz}
       WEBHOOK_URL: http://localhost:${N8N_PORT:-5678}/
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - ./manual-stack.n8n:/home/node/.n8n
+      - ${N8N_DATA_DIR:-./manual-stack.n8n}:/home/node/.n8n
       - ../artifacts:/packages:ro
 
   iris-rabbitmq:
