@@ -1,6 +1,7 @@
 /* eslint-disable n8n-nodes-base/node-filename-against-convention */
 import { NodeConnectionTypes, type INodeTypeDescription } from 'n8n-workflow';
 
+import * as apiRequest from './apiRequest/ApiRequest.resource';
 import * as alert from './alert/Alert.resource';
 import * as asset from './asset/Asset.resource';
 import * as icase from './case/Case.resource';
@@ -46,6 +47,10 @@ export const versionDescription: INodeTypeDescription = {
 				{
 					name: 'Alert',
 					value: 'alert',
+				},
+				{
+					name: 'API Request',
+					value: 'apiRequest',
 				},
 				{
 					name: 'Asset',
@@ -103,6 +108,7 @@ export const versionDescription: INodeTypeDescription = {
 			default: 'datastoreFolder',
 		},
 		...cidDescription,
+		...apiRequest.resource,
 		...alert.resource,
 		...asset.resource,
 		...icase.resource,

@@ -69,11 +69,11 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const newBody: IDataObject = Object.fromEntries(_b);
 
 	const kvUI = this.getNodeParameter(
-		'___alertContextKV.parameters',
+		'__alertContextKV.parameters',
 		i,
 		null,
 	) as INodePropertyOptions[];
-	const jsUI = this.getNodeParameter('___alertContextJSON', i, null) as string;
+	const jsUI = this.getNodeParameter('__alertContextJSON', i, null) as string;
 
 	if (kvUI !== null && kvUI.length > 0) {
 		newBody.alert_context = Object.fromEntries(
@@ -122,7 +122,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	if (assets !== null) newBody.alert_assets = assets;
 
 	body = {
-		alert_ids: this.getNodeParameter('ids', i) as string,
+		alert_ids: this.getNodeParameter('alert_ids', i) as string,
 		updates: newBody,
 	};
 

@@ -13,4 +13,8 @@ Debug.md
 .env
 .pnpm-store
 artifacts
+coverage
 lab/data
+lab/manual-stack.env
+lab/manual-stack.certs
+lab/manual-stack.n8n

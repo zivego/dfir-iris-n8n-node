@@ -1,10 +1,12 @@
 import type { AllEntities } from 'n8n-workflow';
 
 type NodeMap = {
+	apiRequest: 'send';
 	alert:
 		| 'create'
 		| 'update'
 		| 'get'
+		| 'getRelations'
 		| 'countAlerts'
 		| 'deleteAlert'
 		| 'filterAlerts'

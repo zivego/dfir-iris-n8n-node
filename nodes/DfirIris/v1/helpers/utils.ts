@@ -200,6 +200,9 @@ export function getFlattenGroups(
 		}
 		root.forEach((e: INoteGroup) => {
 			irisLogger.info('checking ' + e.name);
+			if (!(e.id in data)) {
+				data[e.id] = { name: e.name, notes: e.notes };
+			}
 			if (parentId > 0) {
 				irisLogger.info('changing prefixed(1) entry ' + parentId + '/' + e.name);
 				const dataId = data[e.id] as IDataObject

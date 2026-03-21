@@ -1,0 +1,514 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`load options contracts > covers getAssetTypes 1`] = `
+{
+  "output": [
+    {
+      "name": "Server",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/asset-type/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getAssets 1`] = `
+{
+  "output": [
+    {
+      "name": "QA Asset | Server",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/assets/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getCaseClassifications 1`] = `
+{
+  "output": [
+    {
+      "name": "QA Classification",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/case-classifications/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getCaseState 1`] = `
+{
+  "output": [
+    {
+      "name": "Open",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/case-states/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getCaseTemplates 1`] = `
+{
+  "output": [
+    {
+      "name": "QA Template (prefix: QA )",
+      "value": "1",
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/case-templates/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getCustomers 1`] = `
+{
+  "output": [
+    {
+      "name": "QA Customer",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/customers/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getEvidenceTypes 1`] = `
+{
+  "output": [
+    {
+      "name": "Document",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/evidence-types/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getEvidences 1`] = `
+{
+  "output": [
+    {
+      "name": "qa.txt | Document",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/evidences/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getFolders 1`] = `
+{
+  "output": [
+    {
+      "name": "Root",
+      "value": "1",
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "datastore/list/tree",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getIOCTypes 1`] = `
+{
+  "output": [
+    {
+      "name": "Domain ( Domain )",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/ioc-types/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getIOCs 1`] = `
+{
+  "output": [
+    {
+      "name": "example.org | domain | Green",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/ioc/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getModules 1`] = `
+{
+  "output": [
+    {
+      "name": "QA Hook (QA Module)",
+      "value": "qa_hook;QA Hook;QA Module",
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "dim/hooks/options/case/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getNoteGroups 1`] = `
+{
+  "output": [
+    {
+      "name": "Root",
+      "value": 1,
+    },
+    {
+      "name": "-- Child",
+      "value": 2,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/notes/directories/filter",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getNotes 1`] = `
+{
+  "output": [
+    {
+      "name": "Nested Note (Root)",
+      "value": 10,
+    },
+    {
+      "name": "Child Note (Root/Child)",
+      "value": 11,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/notes/directories/filter",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getSeverity 1`] = `
+{
+  "output": [
+    {
+      "name": "High",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/severities/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getTasks 1`] = `
+{
+  "output": [
+    {
+      "name": "QA Task | Open",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/tasks/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getTimelineEvent 1`] = `
+{
+  "output": [
+    {
+      "name": "QA Event | General | iocs:0 | assets:0",
+      "value": "1",
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/timeline/advanced-filter",
+      "qs": {
+        "cid": 1,
+        "q": "{}",
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`load options contracts > covers getUsers 1`] = `
+{
+  "output": [
+    {
+      "name": "QA User ( qa@example.com )",
+      "value": 1,
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/users/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;

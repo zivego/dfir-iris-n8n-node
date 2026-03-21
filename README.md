@@ -6,7 +6,7 @@ This is the `zivego` fork of the DFIR IRIS community node for [n8n](https://n8n.
 
 ## Why this fork exists
 
-`barn4k/n8n-nodes-dfir-iris@2.0.1` marks the boolean credential field `allowUnauthorizedCerts` as a password field. In current n8n versions this makes `/types/credentials.json` crash with a `.startsWith()` error when the credentials drawer is opened for editing. This fork removes that invalid schema flag and ships the package under a unique npm name so it is easy to install and update in production.
+`barn4k/n8n-nodes-dfir-iris@2.0.1` marks the boolean credential field `allowUnauthorizedCerts` as a password field. In current n8n versions this makes `/types/credentials.json` crash with a `.startsWith()` error when the credentials drawer is opened for editing. This fork removes that invalid schema flag, ships the package under a unique npm name, and in `3.0.0` adds a new `API Request` resource plus a release-gated coverage matrix for the stable DFIR-IRIS API.
 
 ## Installation
 
@@ -14,7 +14,7 @@ Install the forked package on self-hosted n8n:
 
 ```sh
 cd ~/.n8n/nodes
-npm install @zivego/n8n-nodes-dfir-iris@2.0.2
+npm install @zivego/n8n-nodes-dfir-iris@3.0.0
 ```
 
 Restart `n8n` after installation.
@@ -27,7 +27,7 @@ Do not keep the upstream package and this fork installed at the same time becaus
 cd ~/.n8n/nodes
 npm uninstall n8n-nodes-dfir-iris
 rm -rf ~/.n8n/nodes/node_modules/n8n-nodes-dfir-iris
-npm install @zivego/n8n-nodes-dfir-iris@2.0.2
+npm install @zivego/n8n-nodes-dfir-iris@3.0.0
 ```
 
 Restart `n8n` after the replacement.
@@ -45,7 +45,7 @@ Install a specific version:
 
 ```sh
 cd ~/.n8n/nodes
-npm install @zivego/n8n-nodes-dfir-iris@2.0.2
+npm install @zivego/n8n-nodes-dfir-iris@3.0.0
 ```
 
 ## Local build and publish
@@ -89,25 +89,31 @@ Supported IRIS Versions:
 
 - Currently supports API [v2.0.4](https://docs.dfir-iris.org/latest/operations/api/#references) for IRIS v2.4.x
 
-Supported operations:
+Coverage model:
+
+- Existing typed resources keep their current `resource` and `operation` identifiers for workflow compatibility.
+- A new typed resource `API Request` can call any stable `v2.0.4` endpoint directly, including endpoints that do not yet have a dedicated typed UI.
+- The release build validates [docs/api-v2.0.4-coverage.json](docs/api-v2.0.4-coverage.json) and fails if an endpoint is left as `unsupported`.
+
+Typed resource coverage:
 
 | Endpoint | Status |
 | -- | -- |
-| Alerts | Fully supported |
-| Case Assets | Fully supported |
-| Case General | Fully supported since v2 |
-| Case Evidence | Fully supported since v2 |
-| Case IOCs | Fully supported |
-| Case Modules | Fully supported since v2 |
-| Case Notes | Fully supported |
-| Case Note Groups | Fully supported |
-| Case Tasks | Fully supported |
-| Case Timeline | Fully supported since v2 |
-| Comments | Fully supported |
-| Datastore File | Fully supported |
-| Datastore Folder | Fully supported |
-
-No additional endpoints are planned at the moment.
+| Alerts | Typed |
+| Case Assets | Typed |
+| Case General | Typed |
+| Case Evidences | Typed |
+| Case IOCs | Typed |
+| Case Modules | Typed |
+| Case Notes | Typed |
+| Case Note Directories | Typed |
+| Case Tasks | Typed |
+| Case Timeline | Typed |
+| Comments | Typed |
+| Datastore File | Typed |
+| Datastore Folder | Typed |
+| Manage Metadata Lists | Typed |
+| Remaining stable v2.0.4 endpoints | Raw via `API Request` |
 
 ## License
 

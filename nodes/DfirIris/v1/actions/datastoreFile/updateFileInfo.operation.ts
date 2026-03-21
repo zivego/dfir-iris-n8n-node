@@ -105,7 +105,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 
 	const form = new FormData();
 	if (Object.prototype.hasOwnProperty.call(body, 'binaryName')) {
-		const binaryProperty = (this.getNodeParameter('binaryName', i, 'data') as string).trim();
+		const binaryProperty = String(body.binaryName || 'data').trim();
 		const binaryData = this.helpers.assertBinaryData(i, binaryProperty);
 		const binaryDataBuffer  = await this.helpers.getBinaryDataBuffer(i, binaryProperty);
 
@@ -122,6 +122,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 		);
 
 		form.append('file_original_name', fileName);
+		delete body.binaryName;
 	}
 
 	const file_is_ioc = body.file_is_ioc ? 'y' : 'n';

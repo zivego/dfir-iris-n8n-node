@@ -53,6 +53,7 @@ export class DfirIrisApi implements ICredentialType {
 				},
 			],
 		},
+		// eslint-disable-next-line @n8n/community-nodes/credential-password-field
 		{
 			displayName: 'Ignore SSL Issues',
 			name: 'allowUnauthorizedCerts',

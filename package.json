@@ -1,6 +1,6 @@
 {
   "name": "@zivego/n8n-nodes-dfir-iris",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "n8n node for DFIR IRIS IRP",
   "license": "MIT",
   "homepage": "https://github.com/zivego/iris-n8n-fork",
@@ -25,15 +25,22 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node scripts/check-credential-password-fields.mjs && n8n-node build",
+    "build": "node scripts/clean-build-output.mjs && node scripts/check-credential-password-fields.mjs && node scripts/check-api-coverage.mjs && n8n-node build && node scripts/prune-package-dist.mjs",
     "build:watch": "tsc --watch",
+    "check:api-coverage": "node scripts/check-api-coverage.mjs",
     "check:credentials-schema": "node scripts/check-credential-password-fields.mjs",
+    "clean": "node scripts/clean-build-output.mjs",
     "dev": "n8n-node dev",
-    "lint": "n8n-node lint",
-    "lint:fix": "n8n-node lint --fix",
+    "lint": "eslint credentials nodes scripts --ext .ts,.js,.mjs",
+    "lint:fix": "eslint credentials nodes scripts --ext .ts,.js,.mjs --fix",
     "pack:tarball": "pnpm run build && pnpm pack --pack-destination artifacts",
     "release": "n8n-node release",
-    "prepublishOnly": "pnpm run build && n8n-node prerelease"
+    "prepublishOnly": "pnpm run build && n8n-node prerelease",
+    "test": "vitest run tests/unit tests/contract tests/integration",
+    "test:coverage": "vitest run tests/unit tests/contract tests/integration --coverage",
+    "test:e2e": "vitest run tests/e2e",
+    "test:integration": "vitest run tests/contract tests/integration",
+    "test:unit": "vitest run tests/unit"
   },
   "files": [
     "dist"
@@ -51,10 +58,13 @@
   "devDependencies": {
     "@n8n/node-cli": "0.18.0",
     "@types/node": "^20.19.30",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "9.32.0",
+    "n8n-workflow": "2.4.3",
     "prettier": "3.6.2",
     "release-it": "^19.0.4",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "n8n-workflow": "2.4.3"

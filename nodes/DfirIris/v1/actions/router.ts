@@ -3,6 +3,7 @@ import { NodeOperationError } from 'n8n-workflow';
 
 import type { DfirIrisType } from './node.type';
 
+import * as apiRequest from './apiRequest/ApiRequest.resource';
 import * as alert from './alert/Alert.resource';
 import * as asset from './asset/Asset.resource';
 import * as icase from './case/Case.resource';
@@ -36,6 +37,9 @@ export async function router(this: IExecuteFunctions): Promise<INodeExecutionDat
 	for (let i = 0; i < items.length; i++) {
 		try {
 			switch (dfirIris.resource) {
+				case 'apiRequest':
+					returnData.push(...(await apiRequest[dfirIris.operation].execute.call(this, i)));
+					break;
 				case 'datastoreFile':
 					returnData.push(...(await datastoreFile[dfirIris.operation].execute.call(this, i)));
 					break;
@@ -87,6 +91,7 @@ export async function router(this: IExecuteFunctions): Promise<INodeExecutionDat
 			if (this.continueOnFail()) {
 				if (resource === 'datastoreFile' && operation === 'downloadFile') {
 					items[i].json = { error: error.message };
+					returnData.push(items[i]);
 				} else {
 					returnData.push({ json: { error: error.message } });
 				}

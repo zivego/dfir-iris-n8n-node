@@ -1,0 +1,5073 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`typed action contracts > covers alert/batchDelete 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "alert_ids": [
+          1,
+          2,
+        ],
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "alerts/batch/delete",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/batchUpdate 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "alert_ids": "1,2",
+        "updates": {},
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "alerts/batch/update",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/countAlerts 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "total": 1,
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {},
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "alerts/filter",
+      "qs": {
+        "cid": 1,
+        "page": 1,
+        "per_page": 1,
+        "sort": "desc",
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": undefined,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/create 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "assets": [
+          {
+            "asset_description": "QA asset",
+            "asset_domain": "example.org",
+            "asset_enrichment": {},
+            "asset_ip": "127.0.0.1",
+            "asset_name": "Existing Asset",
+            "asset_tags": "qa",
+            "asset_type_id": 1,
+          },
+        ],
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "iocs": [
+          {
+            "ioc_description": "QA IOC",
+            "ioc_enrichment": {},
+            "ioc_tags": "qa",
+            "ioc_tlp_id": 3,
+            "ioc_type_id": 1,
+            "ioc_value": "example.org",
+          },
+        ],
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "alert_customer_id": 1,
+        "alert_severity_id": 2,
+        "alert_status_id": 1,
+        "alert_title": "QA title",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "alerts/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/deleteAlert 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "alerts/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/escalate 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "assets": [
+          {
+            "asset_description": "QA asset",
+            "asset_domain": "example.org",
+            "asset_enrichment": {},
+            "asset_ip": "127.0.0.1",
+            "asset_name": "Existing Asset",
+            "asset_tags": "qa",
+            "asset_type_id": 1,
+          },
+        ],
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "iocs": [
+          {
+            "ioc_description": "QA IOC",
+            "ioc_enrichment": {},
+            "ioc_tags": "qa",
+            "ioc_tlp_id": 3,
+            "ioc_type_id": 1,
+            "ioc_value": "example.org",
+          },
+        ],
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "assets_import_list": [
+          "",
+        ],
+        "case_tags": "",
+        "case_title": "QA title",
+        "iocs_import_list": [
+          "",
+        ],
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "alerts/escalate/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/filterAlerts 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {},
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "alerts/filter",
+      "qs": {
+        "order_by": "alert_id",
+        "page": 1,
+        "per_page": 50,
+        "sort_dir": "asc",
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": undefined,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/get 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "assets": [
+          {
+            "asset_description": "QA asset",
+            "asset_domain": "example.org",
+            "asset_enrichment": {},
+            "asset_ip": "127.0.0.1",
+            "asset_name": "Existing Asset",
+            "asset_tags": "qa",
+            "asset_type_id": 1,
+          },
+        ],
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "iocs": [
+          {
+            "ioc_description": "QA IOC",
+            "ioc_enrichment": {},
+            "ioc_tags": "qa",
+            "ioc_tlp_id": 3,
+            "ioc_type_id": 1,
+            "ioc_value": "example.org",
+          },
+        ],
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "alerts/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/getRelations 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "assets": [
+          {
+            "asset_description": "QA asset",
+            "asset_domain": "example.org",
+            "asset_enrichment": {},
+            "asset_ip": "127.0.0.1",
+            "asset_name": "Existing Asset",
+            "asset_tags": "qa",
+            "asset_type_id": 1,
+          },
+        ],
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "iocs": [
+          {
+            "ioc_description": "QA IOC",
+            "ioc_enrichment": {},
+            "ioc_tags": "qa",
+            "ioc_tlp_id": 3,
+            "ioc_type_id": 1,
+            "ioc_value": "example.org",
+          },
+        ],
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "alerts/similarities/1",
+      "qs": {
+        "cid": 1,
+        "closed-alerts": true,
+        "closed-cases": true,
+        "days-back": 60,
+        "number-of-nodes": 100,
+        "open-alerts": true,
+        "open-cases": true,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/merge 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "assets": [
+          {
+            "asset_description": "QA asset",
+            "asset_domain": "example.org",
+            "asset_enrichment": {},
+            "asset_ip": "127.0.0.1",
+            "asset_name": "Existing Asset",
+            "asset_tags": "qa",
+            "asset_type_id": 1,
+          },
+        ],
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "iocs": [
+          {
+            "ioc_description": "QA IOC",
+            "ioc_enrichment": {},
+            "ioc_tags": "qa",
+            "ioc_tlp_id": 3,
+            "ioc_type_id": 1,
+            "ioc_value": "example.org",
+          },
+        ],
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "assets_import_list": [
+          "",
+        ],
+        "iocs_import_list": [
+          "",
+        ],
+        "target_case_id": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "alerts/merge/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/unmerge 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "assets": [
+          {
+            "asset_description": "QA asset",
+            "asset_domain": "example.org",
+            "asset_enrichment": {},
+            "asset_ip": "127.0.0.1",
+            "asset_name": "Existing Asset",
+            "asset_tags": "qa",
+            "asset_type_id": 1,
+          },
+        ],
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "iocs": [
+          {
+            "ioc_description": "QA IOC",
+            "ioc_enrichment": {},
+            "ioc_tags": "qa",
+            "ioc_tlp_id": 3,
+            "ioc_type_id": 1,
+            "ioc_value": "example.org",
+          },
+        ],
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "target_case_id": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "alerts/unmerge/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers alert/update 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "assets": [
+          {
+            "asset_description": "QA asset",
+            "asset_domain": "example.org",
+            "asset_enrichment": {},
+            "asset_ip": "127.0.0.1",
+            "asset_name": "Existing Asset",
+            "asset_tags": "qa",
+            "asset_type_id": 1,
+          },
+        ],
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "iocs": [
+          {
+            "ioc_description": "QA IOC",
+            "ioc_enrichment": {},
+            "ioc_tags": "qa",
+            "ioc_tlp_id": 3,
+            "ioc_type_id": 1,
+            "ioc_value": "example.org",
+          },
+        ],
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "alerts/update/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers apiRequest/send 1`] = `
+{
+  "output": [
+    {
+      "json": "pong",
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "api/ping",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers asset/create 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "asset_name": "asset_name-value",
+        "asset_type_id": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/assets/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers asset/deleteAsset 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/assets/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers asset/get 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/assets/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers asset/getAll 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/assets/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers asset/update 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "asset_name": "asset_name-value",
+        "asset_type_id": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/assets/update/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers case/addTaskLog 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "log_content": "QA description",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/tasklog/add",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers case/countCases 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "total": 1,
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {},
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/cases/filter",
+      "qs": {
+        "cid": 1,
+        "page": 1,
+        "per_page": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": undefined,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers case/create 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "case_customer": 1,
+        "case_description": "QA description",
+        "case_name": "case_name-value",
+        "case_soc_id": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "manage/cases/add",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers case/deleteCase 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "manage/cases/delete/1",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers case/exportCase 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "data": {
+          "exported": true,
+          "format": "json",
+        },
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/export",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers case/filterCases 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {},
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/cases/filter",
+      "qs": {
+        "order_by": "case_id",
+        "page": 1,
+        "per_page": 50,
+        "sort_dir": "asc",
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": undefined,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers case/getSummary 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/summary/fetch",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers case/update 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "manage/cases/update/1",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers case/updateSummary 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "case_description": "QA description",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/summary/update",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers comment/create 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "comment_text": "comment_text-value",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/case/1/comments/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers comment/deleteComment 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/case/1/comments/1/delete",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers comment/getAll 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/case/1/comments/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers comment/update 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "comment_text": "comment_text-value",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/case/1/comments/1/edit",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFile/deleteFile 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "datastore/file/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFile/downloadFile 1`] = `
+{
+  "output": [
+    {
+      "binary": {
+        "data": {
+          "data": "ZGZpci1pcmlzLXRlc3QtYmluYXJ5",
+          "fileName": ""qa.bin"",
+          "fileSize": "21",
+          "mimeType": "application/octet-stream",
+        },
+      },
+      "json": {
+        "seed": "item",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": "[binary-response]",
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": false,
+      "method": "GET",
+      "path": "datastore/file/view/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": true,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFile/getFileInfo 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "datastore/file/info/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFile/moveFile 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "destination-node": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "datastore/file/move/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFile/updateFileInfo 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": [],
+      "credentialType": "dfirIrisApi",
+      "headers": {},
+      "json": false,
+      "method": "POST",
+      "path": "datastore/file/update/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFile/uploadFile 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": [
+        {
+          "fileName": "qa.txt",
+          "key": "file_content",
+          "size": 21,
+          "type": "binary",
+        },
+        {
+          "key": "file_original_name",
+          "type": "string",
+          "value": "qa.txt",
+        },
+      ],
+      "credentialType": "dfirIrisApi",
+      "headers": {},
+      "json": false,
+      "method": "POST",
+      "path": "datastore/file/add/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFolder/addFolder 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "folder_name": "QA Folder",
+        "parent_node": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "datastore/folder/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFolder/deleteFolder 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "datastore/folder/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFolder/getTree 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "d-1": {
+          "children": {
+            "f-1": {
+              "added_by_user_id": 1,
+              "file_case_id": 1,
+              "file_date_added": "2026-03-21T10:00:00.000Z",
+              "file_description": "QA file",
+              "file_id": 1,
+              "file_is_evidence": "n",
+              "file_is_ioc": "n",
+              "file_original_name": "qa.txt",
+              "file_parent_id": 1,
+              "file_password": "",
+              "file_sha256": "deadbeef",
+              "file_size": 42,
+              "file_tags": "qa",
+              "file_uuid": "uuid-file",
+              "modification_history": {},
+              "type": "file",
+            },
+          },
+          "is_root": true,
+          "name": "Root",
+          "type": "directory",
+        },
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "datastore/list/tree",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFolder/moveFolder 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "destination-node": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "datastore/folder/move/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers datastoreFolder/renameFolder 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "data": [
+          {
+            "alert_id": 1,
+            "alert_title": "QA Alert",
+            "asset_id": 1,
+            "asset_name": "QA Asset",
+            "asset_type": "Server",
+            "case_id": 1,
+            "case_name": "QA Case",
+            "comment_id": 1,
+            "comment_text": "QA comment",
+            "customer_id": 1,
+            "directory_id": 1,
+            "directory_name": "QA Directory",
+            "event_id": 1,
+            "event_title": "QA Event",
+            "file_id": 1,
+            "file_uuid": "file-uuid",
+            "filename": "qa.txt",
+            "hook_name": "qa_hook",
+            "id": 1,
+            "ioc_id": 1,
+            "ioc_tlp_id": 3,
+            "ioc_type": "domain",
+            "ioc_type_id": 1,
+            "ioc_value": "example.org",
+            "manual_hook_ui_name": "QA Hook",
+            "module_name": "QA Module",
+            "name": "QA Name",
+            "note_id": 1,
+            "owner": {
+              "name": "QA Owner",
+            },
+            "status_name": "Open",
+            "task_id": 1,
+            "task_title": "QA Task",
+            "total": 1,
+            "type": {
+              "name": "Document",
+            },
+            "user_active": true,
+            "user_email": "qa@example.com",
+            "user_id": 1,
+            "user_name": "QA User",
+          },
+        ],
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "folder_name": "QA Folder",
+        "parent_node": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "datastore/folder/rename/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers evidence/createEvidence 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "file_hash": "0123456789abcdef",
+        "filename": "filename-value",
+        "type_id": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/evidences/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers evidence/deleteEvidence 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/evidences/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers evidence/getEvidence 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/evidences/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers evidence/listEvidences 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/evidences/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers evidence/updateEvidence 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "file_hash": "0123456789abcdef",
+        "filename": "filename-value",
+        "type_id": 1,
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/evidences/update/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers ioc/create 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "ioc_description": "QA description",
+        "ioc_tags": "qa,automation",
+        "ioc_tlp_id": 1,
+        "ioc_type_id": 1,
+        "ioc_value": "ioc_value-value",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/ioc/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers ioc/deleteIOC 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/ioc/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers ioc/get 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/ioc/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers ioc/getAll 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/ioc/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers ioc/update 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/ioc/update/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getAssetTypes 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "asset_id": 1,
+        "asset_name": "Server",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/asset-type/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getCaseClassifications 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "id": 1,
+        "name_expanded": "QA Classification",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/case-classifications/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getCaseCustomers 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "customer_id": 1,
+        "customer_name": "QA Customer",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/customers/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getCaseStates 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "state_id": 1,
+        "state_name": "Open",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/case-states/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getCaseTemplates 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "display_name": "QA Template",
+        "id": 1,
+        "title_prefix": "QA",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/case-templates/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getEvidenceTypes 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "id": 1,
+        "name": "Document",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/evidence-types/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getIOCTypes 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "type_description": "Domain",
+        "type_id": 1,
+        "type_name": "Domain",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/ioc-types/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getSeverities 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "severity_id": 1,
+        "severity_name": "High",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/severities/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getTaskStatuses 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status_id": 1,
+        "status_name": "Open",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/task-status/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers manage/getUsers 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "manage/users/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers module/callModule 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "data": {
+          "status": "queued",
+        },
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "hook_name": "{}",
+        "hook_ui_name": undefined,
+        "module_name": undefined,
+        "targets": [
+          "1",
+          "2",
+        ],
+        "type": "case",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "dim/hooks/call",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers module/listHooks 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "dim/hooks/options/case/list",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers module/listTasks 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "dim/tasks/list/20",
+      "qs": {},
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers note/create 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "directory_id": 1,
+        "note_content": "QA description",
+        "note_title": "QA title",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/notes/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers note/deleteNote 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/notes/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers note/get 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/notes/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers note/search 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/notes/search",
+      "qs": {
+        "cid": 1,
+        "search_input": "QA search",
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers note/update 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "note_content": "QA description",
+        "note_title": "QA title",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/notes/update/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers noteDirectory/create 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "name": "QA Folder",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/notes/directories/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers noteDirectory/deleteNoteDirectory 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/notes/directories/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers noteDirectory/getAll 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "id": 1,
+        "name": "Root",
+        "note_count": 1,
+        "notes": [
+          {
+            "id": 10,
+            "title": "Nested Note",
+          },
+        ],
+        "subdirectories": [
+          {
+            "id": 2,
+            "name": "Child",
+            "note_count": 1,
+            "notes": [
+              {
+                "id": 11,
+                "title": "Child Note",
+              },
+            ],
+            "subdirectories": [],
+          },
+        ],
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/notes/directories/filter",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers noteDirectory/update 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/notes/directories/update/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers task/create 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "task_assignees_id": [
+          1,
+        ],
+        "task_description": "QA description",
+        "task_status_id": 1,
+        "task_title": "QA title",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/tasks/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers task/deleteTask 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "status": "success",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/tasks/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers task/get 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/tasks/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers task/getAll 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/tasks/list",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers task/update 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "task_assignees_id": [
+          1,
+        ],
+        "task_status_id": 1,
+        "task_title": "QA title",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/tasks/update/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers timeline/addEvent 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "event_assets": [],
+        "event_category_id": 1,
+        "event_date": "2026-03-21T10:00:00.000",
+        "event_iocs": [],
+        "event_title": "QA title",
+        "event_tz": "+00:00",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/timeline/events/add",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers timeline/deleteEvent 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "data": [
+          {
+            "alert_id": 1,
+            "alert_title": "QA Alert",
+            "asset_id": 1,
+            "asset_name": "QA Asset",
+            "asset_type": "Server",
+            "case_id": 1,
+            "case_name": "QA Case",
+            "comment_id": 1,
+            "comment_text": "QA comment",
+            "customer_id": 1,
+            "directory_id": 1,
+            "directory_name": "QA Directory",
+            "event_id": 1,
+            "event_title": "QA Event",
+            "file_id": 1,
+            "file_uuid": "file-uuid",
+            "filename": "qa.txt",
+            "hook_name": "qa_hook",
+            "id": 1,
+            "ioc_id": 1,
+            "ioc_tlp_id": 3,
+            "ioc_type": "domain",
+            "ioc_type_id": 1,
+            "ioc_value": "example.org",
+            "manual_hook_ui_name": "QA Hook",
+            "module_name": "QA Module",
+            "name": "QA Name",
+            "note_id": 1,
+            "owner": {
+              "name": "QA Owner",
+            },
+            "status_name": "Open",
+            "task_id": 1,
+            "task_title": "QA Task",
+            "total": 1,
+            "type": {
+              "name": "Document",
+            },
+            "user_active": true,
+            "user_email": "qa@example.com",
+            "user_id": 1,
+            "user_name": "QA User",
+          },
+        ],
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/timeline/events/delete/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers timeline/fetchEvent 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/timeline/events/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers timeline/flagEvent 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/timeline/events/flag/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers timeline/getTimelineState 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/timeline/state",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers timeline/queryTimeline 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "assets": [],
+        "category_name": "General",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "iocs": [],
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": undefined,
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "GET",
+      "path": "case/timeline/advanced-filter",
+      "qs": {
+        "cid": 1,
+        "q": "{}",
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;
+
+exports[`typed action contracts > covers timeline/updateEvent 1`] = `
+{
+  "output": [
+    {
+      "json": {
+        "alert_id": 1,
+        "alert_title": "QA Alert",
+        "asset_id": 1,
+        "asset_name": "QA Asset",
+        "asset_type": "Server",
+        "case_id": 1,
+        "case_name": "QA Case",
+        "comment_id": 1,
+        "comment_text": "QA comment",
+        "customer_id": 1,
+        "directory_id": 1,
+        "directory_name": "QA Directory",
+        "event_id": 1,
+        "event_title": "QA Event",
+        "file_id": 1,
+        "file_uuid": "file-uuid",
+        "filename": "qa.txt",
+        "hook_name": "qa_hook",
+        "id": 1,
+        "ioc_id": 1,
+        "ioc_tlp_id": 3,
+        "ioc_type": "domain",
+        "ioc_type_id": 1,
+        "ioc_value": "example.org",
+        "manual_hook_ui_name": "QA Hook",
+        "module_name": "QA Module",
+        "name": "QA Name",
+        "note_id": 1,
+        "owner": {
+          "name": "QA Owner",
+        },
+        "status_name": "Open",
+        "task_id": 1,
+        "task_title": "QA Task",
+        "total": 1,
+        "type": {
+          "name": "Document",
+        },
+        "user_active": true,
+        "user_email": "qa@example.com",
+        "user_id": 1,
+        "user_name": "QA User",
+      },
+    },
+  ],
+  "requests": [
+    {
+      "body": {
+        "event_assets": [],
+        "event_category_id": 1,
+        "event_date": "2026-03-21T10:00:00.000",
+        "event_iocs": [],
+        "event_title": "QA title",
+        "event_tz": "+00:00",
+      },
+      "credentialType": "dfirIrisApi",
+      "headers": {
+        "content-type": "application/json",
+      },
+      "json": true,
+      "method": "POST",
+      "path": "case/timeline/events/update/1",
+      "qs": {
+        "cid": 1,
+      },
+      "rejectUnauthorized": false,
+      "returnFullResponse": false,
+      "skipSslCertificateValidation": true,
+    },
+  ],
+}
+`;

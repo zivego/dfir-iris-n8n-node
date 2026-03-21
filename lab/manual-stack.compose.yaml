@@ -1,0 +1,160 @@
+services:
+  n8n-postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${N8N_POSTGRES_DB:-n8n}
+      POSTGRES_USER: ${N8N_POSTGRES_USER:-n8n}
+      POSTGRES_PASSWORD: ${N8N_POSTGRES_PASSWORD:-n8npass}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${N8N_POSTGRES_USER:-n8n} -d ${N8N_POSTGRES_DB:-n8n}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - n8n_postgres_data:/var/lib/postgresql/data
+
+  n8n:
+    build:
+      context: ..
+      dockerfile: lab/Dockerfile.latest
+    depends_on:
+      n8n-postgres:
+        condition: service_healthy
+    ports:
+      - "${N8N_PORT:-5678}:5678"
+    environment:
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: n8n-postgres
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: ${N8N_POSTGRES_DB:-n8n}
+      DB_POSTGRESDB_USER: ${N8N_POSTGRES_USER:-n8n}
+      DB_POSTGRESDB_PASSWORD: ${N8N_POSTGRES_PASSWORD:-n8npass}
+      GENERIC_TIMEZONE: ${GENERIC_TIMEZONE:-UTC}
+      N8N_BASIC_AUTH_ACTIVE: "true"
+      N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER:-admin}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD:-n8nlabpass}
+      N8N_COMMUNITY_PACKAGES_ENABLED: "true"
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_EDITOR_BASE_URL: http://localhost:${N8N_PORT:-5678}/
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:-lab-encryption-key-please-change}
+      N8N_HOST: 0.0.0.0
+      N8N_PORT: 5678
+      N8N_PROTOCOL: http
+      PACKAGE_SPEC: ${N8N_PACKAGE_SPEC:-file:/packages/zivego-n8n-nodes-dfir-iris-2.0.2.tgz}
+      WEBHOOK_URL: http://localhost:${N8N_PORT:-5678}/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./manual-stack.n8n:/home/node/.n8n
+      - ../artifacts:/packages:ro
+
+  iris-rabbitmq:
+    image: rabbitmq:3-management-alpine
+    restart: unless-stopped
+
+  iris-db:
+    image: ghcr.io/dfir-iris/iriswebapp_db:${IRIS_IMAGE_TAG:-v2.4.20}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${IRIS_POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${IRIS_POSTGRES_PASSWORD:-postgres}
+      POSTGRES_ADMIN_USER: ${IRIS_POSTGRES_ADMIN_USER:-raptor}
+      POSTGRES_ADMIN_PASSWORD: ${IRIS_POSTGRES_ADMIN_PASSWORD:-raptor}
+      POSTGRES_DB: ${IRIS_POSTGRES_DB:-iris_db}
+    volumes:
+      - iris_db_data:/var/lib/postgresql/data
+
+  iris-app:
+    image: ghcr.io/dfir-iris/iriswebapp_app:${IRIS_IMAGE_TAG:-v2.4.20}
+    restart: unless-stopped
+    command: ["nohup", "./iris-entrypoint.sh", "iriswebapp"]
+    depends_on:
+      - iris-rabbitmq
+      - iris-db
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      POSTGRES_USER: ${IRIS_POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${IRIS_POSTGRES_PASSWORD:-postgres}
+      POSTGRES_ADMIN_USER: ${IRIS_POSTGRES_ADMIN_USER:-raptor}
+      POSTGRES_ADMIN_PASSWORD: ${IRIS_POSTGRES_ADMIN_PASSWORD:-raptor}
+      POSTGRES_DB: ${IRIS_POSTGRES_DB:-iris_db}
+      POSTGRES_SERVER: iris-db
+      POSTGRES_PORT: 5432
+      IRIS_SECRET_KEY: ${IRIS_SECRET_KEY}
+      IRIS_SECURITY_PASSWORD_SALT: ${IRIS_SECURITY_PASSWORD_SALT}
+      IRIS_AUTHENTICATION_TYPE: local
+      IRIS_ADM_USERNAME: ${IRIS_ADM_USERNAME:-administrator}
+      IRIS_ADM_EMAIL: ${IRIS_ADM_EMAIL:-admin@localhost}
+      IRIS_ADM_PASSWORD: ${IRIS_ADM_PASSWORD}
+      IRIS_ADM_API_KEY: ${IRIS_ADM_API_KEY}
+      DOCKERIZED: "1"
+      CELERY_BROKER: amqp://iris-rabbitmq
+    volumes:
+      - ./manual-stack.certs/rootCA/irisRootCACert.pem:/etc/irisRootCACert.pem:ro
+      - ./manual-stack.certs:/home/iris/certificates:ro
+      - ./manual-stack.certs/ldap:/iriswebapp/certificates/ldap:ro
+      - iris_downloads:/home/iris/downloads
+      - iris_user_templates:/home/iris/user_templates
+      - iris_server_data:/home/iris/server_data
+
+  iris-worker:
+    image: ghcr.io/dfir-iris/iriswebapp_app:${IRIS_IMAGE_TAG:-v2.4.20}
+    restart: unless-stopped
+    command: ["./wait-for-iriswebapp.sh", "iris-app:8000", "./iris-entrypoint.sh", "iris-worker"]
+    depends_on:
+      - iris-rabbitmq
+      - iris-db
+      - iris-app
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      POSTGRES_USER: ${IRIS_POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${IRIS_POSTGRES_PASSWORD:-postgres}
+      POSTGRES_ADMIN_USER: ${IRIS_POSTGRES_ADMIN_USER:-raptor}
+      POSTGRES_ADMIN_PASSWORD: ${IRIS_POSTGRES_ADMIN_PASSWORD:-raptor}
+      POSTGRES_DB: ${IRIS_POSTGRES_DB:-iris_db}
+      POSTGRES_SERVER: iris-db
+      POSTGRES_PORT: 5432
+      IRIS_SECRET_KEY: ${IRIS_SECRET_KEY}
+      IRIS_SECURITY_PASSWORD_SALT: ${IRIS_SECURITY_PASSWORD_SALT}
+      IRIS_AUTHENTICATION_TYPE: local
+      IRIS_ADM_USERNAME: ${IRIS_ADM_USERNAME:-administrator}
+      IRIS_ADM_EMAIL: ${IRIS_ADM_EMAIL:-admin@localhost}
+      IRIS_ADM_PASSWORD: ${IRIS_ADM_PASSWORD}
+      IRIS_ADM_API_KEY: ${IRIS_ADM_API_KEY}
+      DOCKERIZED: "1"
+      CELERY_BROKER: amqp://iris-rabbitmq
+      IRIS_WORKER: "1"
+    volumes:
+      - ./manual-stack.certs/rootCA/irisRootCACert.pem:/etc/irisRootCACert.pem:ro
+      - ./manual-stack.certs:/home/iris/certificates:ro
+      - ./manual-stack.certs/ldap:/iriswebapp/certificates/ldap:ro
+      - iris_downloads:/home/iris/downloads
+      - iris_user_templates:/home/iris/user_templates
+      - iris_server_data:/home/iris/server_data
+
+  iris-nginx:
+    image: ghcr.io/dfir-iris/iriswebapp_nginx:${IRIS_IMAGE_TAG:-v2.4.20}
+    restart: unless-stopped
+    depends_on:
+      - iris-app
+    ports:
+      - "${IRIS_PORT:-8443}:${IRIS_PORT:-8443}"
+    environment:
+      IRIS_UPSTREAM_SERVER: iris-app
+      IRIS_UPSTREAM_PORT: 8000
+      IRIS_FRONTEND_SERVER: frontend
+      IRIS_FRONTEND_PORT: 5173
+      INTERFACE_HTTPS_PORT: ${IRIS_PORT:-8443}
+      SERVER_NAME: ${IRIS_SERVER_NAME:-localhost}
+      CERT_FILENAME: ${IRIS_CERT_FILENAME:-iris.pem}
+      KEY_FILENAME: ${IRIS_KEY_FILENAME:-iris-key.pem}
+      IRIS_AUTHENTICATION_TYPE: local
+    volumes:
+      - ./manual-stack.certs/web_certificates:/www/certs:ro
+
+volumes:
+  n8n_postgres_data:
+  iris_db_data:
+  iris_downloads:
+  iris_user_templates:
+  iris_server_data:

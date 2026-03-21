@@ -104,6 +104,8 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	body.target_case_id = this.getNodeParameter('case_id', i) as number;
 
 	utils.addAdditionalFields.call(this, body, i);
+	body.assets_import_list ??= '';
+	body.iocs_import_list ??= '';
 
 	body.assets_import_list = (body.assets_import_list as string).split(',') || [];
 	body.iocs_import_list = (body.iocs_import_list as string).split(',') || [];

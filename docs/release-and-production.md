@@ -4,7 +4,7 @@ This fork is published as `@zivego/n8n-nodes-dfir-iris` so production installs a
 
 ## Publish a release
 
-1. Update `package.json` and `Changelog.md`.
+1. Update `package.json`, `Changelog.md`, and `docs/api-v2.0.4-coverage.json`.
 2. Build and validate the package:
 
 ```sh
@@ -35,7 +35,7 @@ For a fresh self-hosted `n8n` installation:
 
 ```sh
 cd ~/.n8n/nodes
-npm install @zivego/n8n-nodes-dfir-iris@2.0.2
+npm install @zivego/n8n-nodes-dfir-iris@3.0.0
 ```
 
 Restart `n8n`.
@@ -48,7 +48,7 @@ Do not run the upstream package and this fork in the same instance because both 
 cd ~/.n8n/nodes
 npm uninstall n8n-nodes-dfir-iris
 rm -rf ~/.n8n/nodes/node_modules/n8n-nodes-dfir-iris
-npm install @zivego/n8n-nodes-dfir-iris@2.0.2
+npm install @zivego/n8n-nodes-dfir-iris@3.0.0
 ```
 
 Restart `n8n` after the replacement.
@@ -66,5 +66,5 @@ Pin to a specific version:
 
 ```sh
 cd ~/.n8n/nodes
-npm install @zivego/n8n-nodes-dfir-iris@2.0.2
+npm install @zivego/n8n-nodes-dfir-iris@3.0.0
 ```
