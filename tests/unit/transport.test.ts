@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { apiRequest, apiRequestAll } from '../../nodes/DfirIris/v1/transport';
+import {
+	apiRequest,
+	apiRequestAll,
+	apiRequestAllNext,
+	getCredentialApiMode,
+} from '../../nodes/DfirIris/v1/transport';
 import { createMockExecuteContext, summarizeRequest } from '../support/mockN8n';
 
 describe('transport layer', () => {
@@ -113,5 +118,56 @@ describe('transport layer', () => {
 		);
 
 		await expect(apiRequest.call(context as never, 'GET', 'api/ping', {})).rejects.toThrow(/Boom/);
+	});
+
+	it('resolves api mode from credentials', async () => {
+		const { context } = createMockExecuteContext(
+			{},
+			{
+				credentials: { apiMode: 'next' },
+			},
+		);
+
+		await expect(getCredentialApiMode.call(context as never)).resolves.toBe('next');
+	});
+
+	it('paginates apiRequestAllNext responses and unwraps response_api_paginated data', async () => {
+		const { calls, context } = createMockExecuteContext(
+			{},
+			{
+				responseFactory: async (request) => {
+					const page = Number(((request.options.qs || {}) as Record<string, number>).page || 1);
+
+					return {
+						data: {
+							current_page: page,
+							data: [
+								{ id: page * 10 + 1 },
+								{ id: page * 10 + 2 },
+							],
+							last_page: 2,
+							total: 4,
+						},
+					};
+				},
+			},
+		);
+
+		const response = await apiRequestAllNext.call(
+			context as never,
+			'GET',
+			'api/v2/cases/1/assets',
+			{},
+			{},
+			3,
+			1,
+		);
+
+		expect(calls).toHaveLength(2);
+		expect((response.data as Record<string, unknown[]>).data).toEqual([
+			{ id: 11 },
+			{ id: 12 },
+			{ id: 21 },
+		]);
 	});
 });

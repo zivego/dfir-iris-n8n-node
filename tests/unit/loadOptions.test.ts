@@ -14,6 +14,7 @@ describe('load options contracts', () => {
 		it(`covers ${name}`, async () => {
 			const { calls, context } = createMockLoadOptionsContext({
 				cid: 1,
+				resource: 'case',
 				type: 'case',
 			});
 
@@ -72,6 +73,38 @@ describe('load options contracts', () => {
 		expect(calls.map(summarizeRequest)).toEqual([
 			expect.objectContaining({ path: 'case/assets/list' }),
 			expect.objectContaining({ path: 'case/assets/filter' }),
+		]);
+	});
+
+	it('returns stable resource options by default', async () => {
+		const { context } = createMockLoadOptionsContext({});
+
+		const output = await loadOptions.getAvailableResources.call(context as never);
+
+		expect(output.some((entry) => entry.value === 'alert')).toBe(true);
+		expect(output.some((entry) => entry.value === 'task')).toBe(true);
+	});
+
+	it('filters operation options by next api mode', async () => {
+		const { context } = createMockLoadOptionsContext(
+			{
+				resource: 'case',
+			},
+			{
+				credentials: { apiMode: 'next' },
+			},
+		);
+
+		const output = await loadOptions.getAvailableOperations.call(context as never);
+
+		expect(output.map((entry) => entry.value)).toEqual([
+			'create',
+			'countCases',
+			'deleteCase',
+			'filterCases',
+			'getSummary',
+			'update',
+			'updateSummary',
 		]);
 	});
 });

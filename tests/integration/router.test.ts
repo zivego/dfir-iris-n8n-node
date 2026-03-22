@@ -53,4 +53,18 @@ describe('router integration', () => {
 
 		expect(result).toEqual([[{ json: { error: 'download failed' } }]]);
 	});
+
+	it('rejects stable-only operations when next api mode is selected', async () => {
+		const { context } = createMockExecuteContext(
+			{
+				operation: 'filterAlerts',
+				resource: 'alert',
+			},
+			{
+				credentials: { apiMode: 'next' },
+			},
+		);
+
+		await expect(router.call(context as never)).rejects.toThrow(/not available for api mode "next"/i);
+	});
 });

@@ -5,12 +5,32 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
+import { getNextDocsUrl, getStableDocsUrl } from '../nodes/DfirIris/v1/compatibility';
+
 export class DfirIrisApi implements ICredentialType {
 	name = 'dfirIrisApi';
 	displayName = 'DFIR IRIS API';
 	documentationUrl = 'https://docs.dfir-iris.org/latest/_static/iris_api_reference_v2.0.4.html';
 	icon = { light: "file:icons/iris.svg", dark: "file:icons/iris.svg"} as const;
 	properties: INodeProperties[] = [
+		{
+			displayName: 'API Mode',
+			name: 'apiMode',
+			type: 'options',
+			default: 'stable',
+			description:
+				`Stable uses ${getStableDocsUrl()} and Next uses ${getNextDocsUrl()}.`,
+			options: [
+				{
+					name: 'Stable / Legacy (API v2.0.4)',
+					value: 'stable',
+				},
+				{
+					name: 'Next / Dev (API v2.1.x)',
+					value: 'next',
+				},
+			],
+		},
 		{
 			displayName: 'Token',
 			name: 'accessToken',

@@ -8,7 +8,11 @@ import type {
 import { updateDisplayOptions } from 'n8n-workflow';
 
 import { endpoint } from './Task.resource';
-import { apiRequest } from '../../transport';
+import {
+	buildNextCaseScopedEndpoint,
+	normalizeNextPaginatedItems,
+} from '../../compatibility';
+import { apiRequest, apiRequestAllNext, getCredentialApiMode } from '../../transport';
 import { types, utils } from '../../helpers';
 
 const fields = [
@@ -51,26 +55,30 @@ const displayOptions = {
 export const description = updateDisplayOptions(displayOptions, properties);
 
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
-	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
+	const cid = this.getNodeParameter('cid', i, 0) as number;
+	const query: IDataObject = { cid };
 	let response;
+	const apiMode = await getCredentialApiMode.call(this);
 
-	response = await apiRequest.call(this, 'GET', `${endpoint}/list`, {}, query);
+	response =
+		apiMode === 'next'
+			? await apiRequestAllNext.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'tasks'), {}, {}, 100, 1)
+			: await apiRequest.call(this, 'GET', `${endpoint}/list`, {}, query);
 
 	const options = this.getNodeParameter('options', i, {});
 	const isRaw = (options.isRaw as boolean) || false;
 	
 	// field remover
-	if (
-		Object.prototype.hasOwnProperty.call(options, 'fields') 
-		&& response.data 
-		&& typeof response.data === 'object' 
-		&& 'tasks' in response.data
-	) {
+	if (Object.prototype.hasOwnProperty.call(options, 'fields') && response.data && typeof response.data === 'object') {
 		const data = response.data as IDataObject;
-		data.tasks = utils.fieldsRemover((data.tasks as IDataObject[]), options);
+		if (apiMode === 'next') {
+			data.data = utils.fieldsRemover(normalizeNextPaginatedItems(response.data), options);
+		} else if ('tasks' in data) {
+			data.tasks = utils.fieldsRemover((data.tasks as IDataObject[]), options);
+		}
 	}
 	
-	if (!isRaw) response = (response.data as IDataObject).tasks;
+	if (!isRaw) response = apiMode === 'next' ? normalizeNextPaginatedItems(response.data) : (response.data as IDataObject).tasks;
 
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(response as IDataObject[]),

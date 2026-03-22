@@ -1,0 +1,37 @@
+{
+  "apiVersion": "2.1.x",
+  "source": "DFIR-IRIS next/dev REST API v2.1.x",
+  "notes": [
+    "This matrix tracks the opt-in next/dev compatibility layer implemented in feat/dual-api-compat-v2.0.4-v2.1.x.",
+    "Statuses are limited to typed and raw-only for release builds.",
+    "Shared endpoints can list multiple typed operations when one next route backs more than one existing node action."
+  ],
+  "endpoints": [
+    { "method": "GET", "path": "api/ping", "status": "raw-only" },
+    { "method": "GET", "path": "api/versions", "status": "raw-only" },
+
+    { "method": "POST", "path": "api/v2/cases", "status": "typed", "resource": "case", "operation": "create" },
+    { "method": "GET", "path": "api/v2/cases", "status": "typed", "resource": "case", "operations": ["countCases", "filterCases"] },
+    { "method": "GET", "path": "api/v2/cases/{case_id}", "status": "typed", "resource": "case", "operation": "getSummary" },
+    { "method": "PUT", "path": "api/v2/cases/{case_id}", "status": "typed", "resource": "case", "operations": ["update", "updateSummary"] },
+    { "method": "DELETE", "path": "api/v2/cases/{case_id}", "status": "typed", "resource": "case", "operation": "deleteCase" },
+
+    { "method": "GET", "path": "api/v2/cases/{case_id}/assets", "status": "typed", "resource": "asset", "operation": "getAll" },
+    { "method": "POST", "path": "api/v2/cases/{case_id}/assets", "status": "typed", "resource": "asset", "operation": "create" },
+    { "method": "GET", "path": "api/v2/cases/{case_id}/assets/{asset_id}", "status": "typed", "resource": "asset", "operation": "get" },
+    { "method": "PUT", "path": "api/v2/cases/{case_id}/assets/{asset_id}", "status": "typed", "resource": "asset", "operation": "update" },
+    { "method": "DELETE", "path": "api/v2/cases/{case_id}/assets/{asset_id}", "status": "typed", "resource": "asset", "operation": "deleteAsset" },
+
+    { "method": "GET", "path": "api/v2/cases/{case_id}/iocs", "status": "typed", "resource": "ioc", "operation": "getAll" },
+    { "method": "POST", "path": "api/v2/cases/{case_id}/iocs", "status": "typed", "resource": "ioc", "operation": "create" },
+    { "method": "GET", "path": "api/v2/cases/{case_id}/iocs/{ioc_id}", "status": "typed", "resource": "ioc", "operation": "get" },
+    { "method": "PUT", "path": "api/v2/cases/{case_id}/iocs/{ioc_id}", "status": "typed", "resource": "ioc", "operation": "update" },
+    { "method": "DELETE", "path": "api/v2/cases/{case_id}/iocs/{ioc_id}", "status": "typed", "resource": "ioc", "operation": "deleteIOC" },
+
+    { "method": "GET", "path": "api/v2/cases/{case_id}/tasks", "status": "typed", "resource": "task", "operation": "getAll" },
+    { "method": "POST", "path": "api/v2/cases/{case_id}/tasks", "status": "typed", "resource": "task", "operation": "create" },
+    { "method": "GET", "path": "api/v2/cases/{case_id}/tasks/{task_id}", "status": "typed", "resource": "task", "operation": "get" },
+    { "method": "PUT", "path": "api/v2/cases/{case_id}/tasks/{task_id}", "status": "typed", "resource": "task", "operation": "update" },
+    { "method": "DELETE", "path": "api/v2/cases/{case_id}/tasks/{task_id}", "status": "typed", "resource": "task", "operation": "deleteTask" }
+  ]
+}

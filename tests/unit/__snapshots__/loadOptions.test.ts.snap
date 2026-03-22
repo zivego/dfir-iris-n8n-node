@@ -56,6 +56,118 @@ exports[`load options contracts > covers getAssets 1`] = `
 }
 `;
 
+exports[`load options contracts > covers getAvailableOperations 1`] = `
+{
+  "output": [
+    {
+      "name": "Add",
+      "value": "create",
+    },
+    {
+      "name": "Add Activity Log",
+      "value": "addTaskLog",
+    },
+    {
+      "name": "Count Cases",
+      "value": "countCases",
+    },
+    {
+      "name": "Delete",
+      "value": "deleteCase",
+    },
+    {
+      "name": "Export",
+      "value": "exportCase",
+    },
+    {
+      "name": "Filter Cases",
+      "value": "filterCases",
+    },
+    {
+      "name": "Get Case Summary",
+      "value": "getSummary",
+    },
+    {
+      "name": "Update",
+      "value": "update",
+    },
+    {
+      "name": "Update Case Summary",
+      "value": "updateSummary",
+    },
+  ],
+  "requests": [],
+}
+`;
+
+exports[`load options contracts > covers getAvailableResources 1`] = `
+{
+  "output": [
+    {
+      "name": "Alert",
+      "value": "alert",
+    },
+    {
+      "name": "API Request",
+      "value": "apiRequest",
+    },
+    {
+      "name": "Asset",
+      "value": "asset",
+    },
+    {
+      "name": "Case",
+      "value": "case",
+    },
+    {
+      "name": "Comment",
+      "value": "comment",
+    },
+    {
+      "name": "Datastore File",
+      "value": "datastoreFile",
+    },
+    {
+      "name": "Datastore Folder",
+      "value": "datastoreFolder",
+    },
+    {
+      "name": "Evidence",
+      "value": "evidence",
+    },
+    {
+      "name": "IOC",
+      "value": "ioc",
+    },
+    {
+      "name": "Manage Metadata",
+      "value": "manage",
+    },
+    {
+      "name": "Module",
+      "value": "module",
+    },
+    {
+      "name": "Note",
+      "value": "note",
+    },
+    {
+      "name": "Note Group",
+      "value": "noteDirectory",
+    },
+    {
+      "name": "Task",
+      "value": "task",
+    },
+    {
+      "name": "Timeline",
+      "value": "timeline",
+    },
+  ],
+  "requests": [],
+}
+`;
+
 exports[`load options contracts > covers getCaseClassifications 1`] = `
 {
   "output": [

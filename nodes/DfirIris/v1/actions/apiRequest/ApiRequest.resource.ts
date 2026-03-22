@@ -9,6 +9,7 @@ import type {
 
 import { NodeOperationError, updateDisplayOptions } from 'n8n-workflow';
 
+import { buildOperationProperty } from '../../compatibility';
 import { apiRequest } from '../../transport';
 import { types } from '../../helpers';
 
@@ -68,26 +69,7 @@ function getResponseFileName(headers: IDataObject, path: string): string {
 }
 
 const properties: INodeProperties[] = [
-	{
-		displayName: 'Operation',
-		name: 'operation',
-		type: 'options',
-		noDataExpression: true,
-		displayOptions: {
-			show: {
-				resource: ['apiRequest'],
-			},
-		},
-		options: [
-			{
-				name: 'Send',
-				value: 'send',
-				description: 'Call any stable DFIR-IRIS API endpoint directly',
-				action: 'Send an API request',
-			},
-		],
-		default: 'send',
-	},
+	buildOperationProperty('apiRequest', 'send'),
 	{
 		displayName: 'Method',
 		name: 'requestMethod',
@@ -120,7 +102,8 @@ const properties: INodeProperties[] = [
 		},
 		default: 'api/ping',
 		placeholder: 'case/export',
-		description: 'API path without the host, for example `case/export` or `manage/users/list`',
+		description:
+			'API path without the host. Stable examples: `case/export`, `manage/users/list`. Next examples: `api/v2/cases`, `api/v2/cases/1/assets`',
 	},
 	{
 		displayName: 'Query',
@@ -263,26 +246,7 @@ const properties: INodeProperties[] = [
 ];
 
 export const resource: INodeProperties[] = [
-	{
-		displayName: 'Operation',
-		name: 'operation',
-		type: 'options',
-		noDataExpression: true,
-		displayOptions: {
-			show: {
-				resource: ['apiRequest'],
-			},
-		},
-		options: [
-			{
-				name: 'Send',
-				value: 'send',
-				description: 'Call any stable DFIR-IRIS API endpoint directly',
-				action: 'Send an API request',
-			},
-		],
-		default: 'send',
-	},
+	buildOperationProperty('apiRequest', 'send'),
 	...updateDisplayOptions(
 		{
 			show: {

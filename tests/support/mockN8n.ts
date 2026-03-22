@@ -410,6 +410,97 @@ export async function defaultResponseFactory(request: RecordedRequest): Promise<
 		return { data: 'pong' };
 	}
 
+	if (path === 'api/v2/cases') {
+		if (request.options.method === 'GET') {
+			return {
+				data: {
+					current_page: 1,
+					data: [{ ...entity, case_id: 1, case_name: 'QA Case V2', id: 1 }],
+					last_page: 1,
+					total: 1,
+				},
+			};
+		}
+
+		return {
+			data: {
+				...entity,
+				case_id: 1,
+				case_name: 'QA Case V2',
+				id: 1,
+			},
+		};
+	}
+
+	if (path === 'api/v2/cases/1') {
+		return {
+			data: {
+				...entity,
+				case_description: 'QA Case Description',
+				case_id: 1,
+				case_name: 'QA Case V2',
+				id: 1,
+			},
+		};
+	}
+
+	if (path === 'api/v2/cases/1/assets') {
+		if (request.options.method === 'GET') {
+			return {
+				data: {
+					current_page: 1,
+					data: [{ ...entity, asset_id: 1, asset_name: 'QA Asset V2', id: 1 }],
+					last_page: 1,
+					total: 1,
+				},
+			};
+		}
+
+		return { data: { ...entity, asset_id: 1, asset_name: 'QA Asset V2', id: 1 } };
+	}
+
+	if (path === 'api/v2/cases/1/assets/1') {
+		return { data: { ...entity, asset_id: 1, asset_name: 'QA Asset V2', id: 1 } };
+	}
+
+	if (path === 'api/v2/cases/1/iocs') {
+		if (request.options.method === 'GET') {
+			return {
+				data: {
+					current_page: 1,
+					data: [{ ...entity, ioc_id: 1, ioc_value: 'example.org', id: 1 }],
+					last_page: 1,
+					total: 1,
+				},
+			};
+		}
+
+		return { data: { ...entity, ioc_id: 1, ioc_value: 'example.org', id: 1 } };
+	}
+
+	if (path === 'api/v2/cases/1/iocs/1') {
+		return { data: { ...entity, ioc_id: 1, ioc_value: 'example.org', id: 1 } };
+	}
+
+	if (path === 'api/v2/cases/1/tasks') {
+		if (request.options.method === 'GET') {
+			return {
+				data: {
+					current_page: 1,
+					data: [{ ...entity, id: 1, task_id: 1, task_title: 'QA Task V2' }],
+					last_page: 1,
+					total: 1,
+				},
+			};
+		}
+
+		return { data: { ...entity, id: 1, task_id: 1, task_title: 'QA Task V2' } };
+	}
+
+	if (path === 'api/v2/cases/1/tasks/1') {
+		return { data: { ...entity, id: 1, task_id: 1, task_title: 'QA Task V2' } };
+	}
+
 	if (request.options.returnFullResponse) {
 		return {
 			body: DEFAULT_BINARY_BUFFER,
@@ -600,6 +691,7 @@ export function createMockExecuteContext(
 	parameters: IDataObject,
 	options: {
 		continueOnFail?: boolean;
+		credentials?: IDataObject;
 		inputItems?: INodeExecutionData[];
 		responseFactory?: ResponseFactory;
 	} = {},
@@ -612,10 +704,12 @@ export function createMockExecuteContext(
 		continueOnFail: () => options.continueOnFail ?? false,
 		getCredentials: async () => ({
 			accessToken: 'token',
+			apiMode: 'stable',
 			allowUnauthorizedCerts: true,
 			enableDebug: false,
 			host: 'iris.local',
 			isHttp: false,
+			...(options.credentials || {}),
 		}),
 		getInputData: () => inputItems,
 		getNode: () => ({ name: 'DFIR IRIS', type: 'dfirIris', typeVersion: 2 }),
@@ -664,9 +758,10 @@ export function createMockExecuteContext(
 
 export function createMockLoadOptionsContext(
 	parameters: IDataObject,
-	options: { responseFactory?: ResponseFactory } = {},
+	options: { credentials?: IDataObject; responseFactory?: ResponseFactory } = {},
 ) {
 	const { calls, context } = createMockExecuteContext(parameters, {
+		credentials: options.credentials,
 		responseFactory: options.responseFactory,
 	});
 

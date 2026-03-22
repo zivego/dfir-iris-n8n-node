@@ -8,7 +8,8 @@ import type {
 import { updateDisplayOptions } from 'n8n-workflow';
 
 import { endpoint } from './Case.resource';
-import { apiRequest } from '../../transport';
+import { extractNextResponseData } from '../../compatibility';
+import { apiRequest, getCredentialApiMode } from '../../transport';
 import { types, utils } from '../../helpers';
 import * as icase from './commonDescription';
 
@@ -71,6 +72,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const query: IDataObject = {};
 	let response;
 	const body: IDataObject = {};
+	const apiMode = await getCredentialApiMode.call(this);
 
 	body.case_soc_id = this.getNodeParameter('case_soc_id', i) as string;
 	body.case_customer = this.getNodeParameter('case_customer', i) as number;
@@ -79,15 +81,20 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 
 	utils.addAdditionalFields.call(this, body, i);
 
-	response = await apiRequest.call(this, 'POST', `${endpoint}/add`, body, query);
+	response =
+		apiMode === 'next'
+			? await apiRequest.call(this, 'POST', 'api/v2/cases', body, query)
+			: await apiRequest.call(this, 'POST', `${endpoint}/add`, body, query);
 
 	const options = this.getNodeParameter('options', i, {});
 	const isRaw = (options.isRaw as boolean) || false;
 	
 	// field remover
-	if (Object.prototype.hasOwnProperty.call(options, 'fields'))
-		response.data = utils.fieldsRemover((response.data as IDataObject[]), options);
-	if (!isRaw) response = response.data;
+	if (Object.prototype.hasOwnProperty.call(options, 'fields')) {
+		const responseData = apiMode === 'next' ? extractNextResponseData(response) : (response.data as IDataObject);
+		response.data = utils.fieldsRemover(responseData, options);
+	}
+	if (!isRaw) response = apiMode === 'next' ? extractNextResponseData(response) : response.data;
 
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(response as IDataObject[]),

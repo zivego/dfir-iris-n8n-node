@@ -8,7 +8,7 @@ import type {
 import { updateDisplayOptions } from 'n8n-workflow';
 
 import { endpoint } from './Case.resource';
-import { apiRequest } from '../../transport';
+import { apiRequest, getCredentialApiMode } from '../../transport';
 import { types } from '../../helpers';
 import * as icase from './commonDescription';
 
@@ -35,14 +35,20 @@ export const description = updateDisplayOptions(displayOptions, properties);
 
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
 	let response;
+	const apiMode = await getCredentialApiMode.call(this);
+	const caseId = this.getNodeParameter('case_id', i) as number;
 
-	response = await apiRequest.call(
-		this,
-		'POST',
-		(`${endpoint}/delete/` + this.getNodeParameter('case_id', i)) as string,
-		{},
-		{},
-	);
+	response =
+		apiMode === 'next'
+			? await apiRequest.call(
+					this,
+					'DELETE',
+					`api/v2/cases/${caseId}`,
+					{},
+					{},
+					{ json: false, returnFullResponse: true },
+				)
+			: await apiRequest.call(this, 'POST', `${endpoint}/delete/${caseId}`, {}, {});
 
 	const options = this.getNodeParameter('options', i, {});
 	const isRaw = (options.isRaw as boolean) || false;

@@ -1,5 +1,6 @@
 import type { INodeProperties } from 'n8n-workflow';
 
+import { buildOperationProperty } from '../../compatibility';
 import * as create from './create.operation';
 import * as deleteNote from './deleteNote.operation';
 import * as search from './search.operation';
@@ -10,53 +11,8 @@ export { create, deleteNote, get, search, update };
 
 export const endpoint = 'case/notes';
 
-const thisRes = 'note';
-
 export const resource: INodeProperties[] = [
-	{
-		displayName: 'Operation',
-		name: 'operation',
-		type: 'options',
-		noDataExpression: true,
-		displayOptions: {
-			show: {
-				resource: [thisRes],
-			},
-		},
-		options: [
-			{
-				name: 'Add',
-				value: 'create',
-				description: 'Add new note',
-				action: 'Add new note',
-			},
-			{
-				name: 'Delete',
-				value: 'deleteNote',
-				description: 'Delete a note',
-				action: 'Delete a note',
-			},
-			{
-				name: 'Get',
-				value: 'get',
-				description: 'Get a note',
-				action: 'Get a note',
-			},
-			{
-				name: 'Search in Notes',
-				value: 'search',
-				description: 'Search across notes',
-				action: 'Search across notes',
-			},
-			{
-				name: 'Update',
-				value: 'update',
-				description: 'Update a note',
-				action: 'Update a note',
-			},
-		],
-		default: 'get',
-	},
+	buildOperationProperty('note', 'get'),
 	...create.description,
 	...deleteNote.description,
 	...get.description,

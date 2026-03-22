@@ -122,9 +122,11 @@ The acceptance suite expects this stack and validates:
 
 - `n8n` health and package loading
 - `/types/credentials.json` and `/types/nodes.json`
-- credential create/read/update/test through `n8n` REST endpoints
+- credential create/read/update/test through `n8n` REST endpoints in `Stable / Legacy` mode
 - representative typed resource calls against a live DFIR-IRIS backend
 - `API Request` JSON, raw, binary upload, and binary download paths
+
+If you want to exercise the opt-in `Next / Dev` mode, create a second credential in `n8n` and switch `API Mode` from `Stable / Legacy` to `Next / Dev`. Only the resources marked as dual-mode in the compatibility manifest will remain visible.
 
 When you create credentials through the live `n8n` REST API, use a host value that is reachable
 from inside the `n8n` container, for example `host.docker.internal:8443` or `iris-nginx:8443`.

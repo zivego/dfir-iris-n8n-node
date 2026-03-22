@@ -8,7 +8,7 @@ import type {
 import { updateDisplayOptions } from 'n8n-workflow';
 
 import { endpoint } from './Case.resource';
-import { apiRequestAll } from '../../transport';
+import { apiRequestAll, apiRequestAllNext, getCredentialApiMode } from '../../transport';
 import { types, utils } from '../../helpers';
 import * as icase from './commonDescription';
 
@@ -98,19 +98,29 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	let response;
 	const body: IDataObject = {};
 	const irisLogger = new utils.IrisLog(this.logger);
+	const apiMode = await getCredentialApiMode.call(this);
 
 	utils.addAdditionalFields.call(this, body, i);
 	irisLogger.info('updated body', {body});
 
 	Object.assign(query, body);
 
-	response = await apiRequestAll.call(this, 'GET', `${endpoint}/filter`, {}, query, 1, 1, 'cases');
+	response =
+		apiMode === 'next'
+			? await apiRequestAllNext.call(this, 'GET', 'api/v2/cases', {}, body, 1, 1)
+			: await apiRequestAll.call(this, 'GET', `${endpoint}/filter`, {}, query, 1, 1, 'cases');
 
 	const options = this.getNodeParameter('options', i, {});
 	const isRaw = (options.isRaw as boolean) || false;
 
 	// field remover
-	if (Object.prototype.hasOwnProperty.call(options, 'fields') && response.data && typeof response.data === 'object' && 'cases' in response.data) {
+	if (
+		Object.prototype.hasOwnProperty.call(options, 'fields') &&
+		response.data &&
+		typeof response.data === 'object' &&
+		apiMode === 'stable' &&
+		'cases' in response.data
+	) {
 		const data = response.data as IDataObject;
 		data.cases = utils.fieldsRemover((data.cases as IDataObject[]), options);
 	}

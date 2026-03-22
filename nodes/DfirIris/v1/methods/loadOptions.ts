@@ -2,7 +2,14 @@ import type { IDataObject, ILoadOptionsFunctions, INodePropertyOptions } from 'n
 
 import { NodeOperationError } from 'n8n-workflow';
 
-import { apiRequest } from '../transport/index';
+import {
+	buildNextCaseScopedEndpoint,
+	getApiMode,
+	getAvailableOperations as getCompatibleOperations,
+	getAvailableResources as getCompatibleResources,
+	normalizeNextPaginatedItems,
+} from '../compatibility';
+import { apiRequest, apiRequestAllNext } from '../transport/index';
 import { utils } from './../helpers';
 import { getTLPName, IFolder, INoteGroup, TLPValue } from '../helpers/types';
 
@@ -30,6 +37,19 @@ function getAssetTypeName(asset: IDataObject): string {
 	}
 
 	return 'Unknown';
+}
+
+export async function getAvailableResources(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
+	const apiMode = await getApiMode.call(this);
+	return getCompatibleResources(apiMode);
+}
+
+export async function getAvailableOperations(
+	this: ILoadOptionsFunctions,
+): Promise<INodePropertyOptions[]> {
+	const apiMode = await getApiMode.call(this);
+	const resourceName = this.getNodeParameter('resource') as string;
+	return getCompatibleOperations(resourceName, apiMode);
 }
 
 export async function getUsers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
@@ -66,25 +86,40 @@ export async function getUsers(this: ILoadOptionsFunctions): Promise<INodeProper
 }
 
 export async function getAssets(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-	const query = { cid: this.getNodeParameter('cid') as number };
+	const apiMode = await getApiMode.call(this);
+	const cid = this.getNodeParameter('cid') as number;
+	const query = { cid };
 
 	let response;
 
-	try {
-		response = await apiRequest.call(this, 'GET', 'case/assets/list', {}, query);
-	} catch {
-		response = undefined;
-	}
+	if (apiMode === 'next') {
+		response = await apiRequestAllNext.call(
+			this,
+			'GET',
+			buildNextCaseScopedEndpoint(cid, 'assets'),
+			{},
+			{},
+			100,
+			1,
+		);
+	} else {
+		try {
+			response = await apiRequest.call(this, 'GET', 'case/assets/list', {}, query);
+		} catch {
+			response = undefined;
+		}
 
-	if (!response || extractAssets(response.data).length === 0) {
-		response = await apiRequest.call(this, 'GET', 'case/assets/filter', {}, query);
+		if (!response || extractAssets(response.data).length === 0) {
+			response = await apiRequest.call(this, 'GET', 'case/assets/filter', {}, query);
+		}
 	}
 
 	if (response === undefined) {
 		throw new NodeOperationError(this.getNode(), 'No data got returned');
 	}
 
-	const returnData: INodePropertyOptions[] = extractAssets(response.data).map((asset: IDataObject) => ({
+	const assetRows = apiMode === 'next' ? normalizeNextPaginatedItems(response.data) : extractAssets(response.data);
+	const returnData: INodePropertyOptions[] = assetRows.map((asset: IDataObject) => ({
 		name: `${asset.asset_name as string} | ${getAssetTypeName(asset)}`,
 		value: asset.asset_id as string | number,
 	}));
@@ -134,15 +169,25 @@ export async function getAssetTypes(this: ILoadOptionsFunctions): Promise<INodeP
 }
 
 export async function getTasks(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-	const query = { cid: this.getNodeParameter('cid') as number };
+	const apiMode = await getApiMode.call(this);
+	const cid = this.getNodeParameter('cid') as number;
+	const query = { cid };
 
-	const response = await apiRequest.call(this, 'GET', 'case/tasks/list', {}, query);
+	const response =
+		apiMode === 'next'
+			? await apiRequestAllNext.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'tasks'), {}, {}, 100, 1)
+			: await apiRequest.call(this, 'GET', 'case/tasks/list', {}, query);
 	if (response === undefined) {
 		throw new NodeOperationError(this.getNode(), 'No data got returned');
 	}
 
 	let returnData: INodePropertyOptions[] = [];
-	if (response.data && typeof response.data === 'object' && 'tasks' in response.data) {
+	if (apiMode === 'next') {
+		returnData = normalizeNextPaginatedItems(response.data).map((entity: IDataObject) => ({
+			name: `${entity.task_title} | ${entity.status_name || entity.task_status_id}`,
+			value: entity.id as string | number,
+		}));
+	} else if (response.data && typeof response.data === 'object' && 'tasks' in response.data) {
 		const data = response.data as IDataObject;
 		returnData = (data.tasks as IDataObject[]).map((entity: IDataObject) => {
 			return {
@@ -203,15 +248,28 @@ export async function getNotes(this: ILoadOptionsFunctions): Promise<INodeProper
 }
 
 export async function getIOCs(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-	const query = { cid: this.getNodeParameter('cid') as number };
+	const apiMode = await getApiMode.call(this);
+	const cid = this.getNodeParameter('cid') as number;
+	const query = { cid };
 
-	const response = await apiRequest.call(this, 'GET', 'case/ioc/list', {}, query);
+	const response =
+		apiMode === 'next'
+			? await apiRequestAllNext.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'iocs'), {}, {}, 100, 1)
+			: await apiRequest.call(this, 'GET', 'case/ioc/list', {}, query);
 	if (response === undefined) {
 		throw new NodeOperationError(this.getNode(), 'No data got returned');
 	}
 
 	const returnData: INodePropertyOptions[] = [];
-	if (response.data && typeof response.data === 'object' && 'ioc' in response.data ){
+	if (apiMode === 'next') {
+		const data = normalizeNextPaginatedItems(response.data);
+		data.forEach((row: IDataObject) => {
+			returnData.push({
+				name: `${row.ioc_value} | ${row.ioc_type} | ${getTLPName(row.ioc_tlp_id as TLPValue)}`,
+				value: (row.ioc_id || row.id) as string | number,
+			});
+		});
+	} else if (response.data && typeof response.data === 'object' && 'ioc' in response.data ){
 		const data = response.data.ioc as IDataObject[];
 		data.forEach((row: IDataObject) => {
 			returnData.push({

@@ -17,6 +17,7 @@ import * as task from './task/Task.resource';
 import * as manage from './manage/Manage.resource';
 import * as timeline from './timeline/Timeline.resource';
 
+import { buildResourceProperty } from '../compatibility';
 import { cidDescription } from '../helpers/types';
 
 export const versionDescription: INodeTypeDescription = {
@@ -38,75 +39,7 @@ export const versionDescription: INodeTypeDescription = {
 		},
 	],
 	properties: [
-		{
-			displayName: 'Resource',
-			name: 'resource',
-			type: 'options',
-			noDataExpression: true,
-			options: [
-				{
-					name: 'Alert',
-					value: 'alert',
-				},
-				{
-					name: 'API Request',
-					value: 'apiRequest',
-				},
-				{
-					name: 'Asset',
-					value: 'asset',
-				},
-				{
-					name: 'Case',
-					value: 'case',
-				},
-				{
-					name: 'Comment',
-					value: 'comment',
-				},
-				{
-					name: 'Datastore File',
-					value: 'datastoreFile',
-				},
-				{
-					name: 'Datastore Folder',
-					value: 'datastoreFolder',
-				},
-				{
-					name: 'Evidence',
-					value: 'evidence',
-				},
-				{
-					name: 'IOC',
-					value: 'ioc',
-				},
-				{
-					name: "Manage Metadata",
-					value: 'manage',
-				},
-				{
-					name: 'Module',
-					value: 'module',
-				},
-				{
-					name: 'Note',
-					value: 'note',
-				},
-				{
-					name: 'Note Group',
-					value: 'noteDirectory',
-				},
-				{
-					name: 'Task',
-					value: 'task',
-				},
-				{
-					name: 'Timeline',
-					value: 'timeline',
-				},
-			],
-			default: 'datastoreFolder',
-		},
+		buildResourceProperty(),
 		...cidDescription,
 		...apiRequest.resource,
 		...alert.resource,

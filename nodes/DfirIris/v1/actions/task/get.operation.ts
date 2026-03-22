@@ -8,7 +8,8 @@ import type {
 import { updateDisplayOptions } from 'n8n-workflow';
 
 import { endpoint } from './Task.resource';
-import { apiRequest } from '../../transport';
+import { buildNextCaseScopedEndpoint, extractNextResponseData } from '../../compatibility';
+import { apiRequest, getCredentialApiMode } from '../../transport';
 import { types, utils } from '../../helpers';
 
 const fields = [
@@ -64,24 +65,26 @@ const displayOptions = {
 export const description = updateDisplayOptions(displayOptions, properties);
 
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
-	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
+	const cid = this.getNodeParameter('cid', i, 0) as number;
+	const query: IDataObject = { cid };
 	let response;
+	const apiMode = await getCredentialApiMode.call(this);
+	const taskId = this.getNodeParameter('id', i) as number;
 
-	response = await apiRequest.call(
-		this,
-		'GET',
-		(`${endpoint}/` + this.getNodeParameter('id', i)) as string,
-		{},
-		query,
-	);
+	response =
+		apiMode === 'next'
+			? await apiRequest.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'tasks', taskId), {})
+			: await apiRequest.call(this, 'GET', `${endpoint}/${taskId}`, {}, query);
 
 	const options = this.getNodeParameter('options', i, {});
 	const isRaw = (options.isRaw as boolean) || false;
 	
 	// field remover
-	if (Object.prototype.hasOwnProperty.call(options, 'fields'))
-		response.data = utils.fieldsRemover((response.data as IDataObject[]), options);
-	if (!isRaw) response = response.data;
+	if (Object.prototype.hasOwnProperty.call(options, 'fields')) {
+		const responseData = apiMode === 'next' ? extractNextResponseData(response) : (response.data as IDataObject);
+		response.data = utils.fieldsRemover(responseData, options);
+	}
+	if (!isRaw) response = apiMode === 'next' ? extractNextResponseData(response) : response.data;
 
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(response as IDataObject[]),

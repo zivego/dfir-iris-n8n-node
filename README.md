@@ -6,7 +6,7 @@ This is the `zivego` fork of the DFIR IRIS community node for [n8n](https://n8n.
 
 ## Why this fork exists
 
-`barn4k/n8n-nodes-dfir-iris@2.0.1` marks the boolean credential field `allowUnauthorizedCerts` as a password field. In current n8n versions this makes `/types/credentials.json` crash with a `.startsWith()` error when the credentials drawer is opened for editing. This fork removes that invalid schema flag, ships the package under a unique npm name, and in `3.0.0` adds a new `API Request` resource plus a release-gated coverage matrix for the stable DFIR-IRIS API.
+`barn4k/n8n-nodes-dfir-iris@2.0.1` marks the boolean credential field `allowUnauthorizedCerts` as a password field. In current n8n versions this makes `/types/credentials.json` crash with a `.startsWith()` error when the credentials drawer is opened for editing. This fork removes that invalid schema flag, ships the package under a unique npm name, and in `3.0.0` adds a new `API Request` resource plus release-gated coverage matrices for both stable and next DFIR-IRIS API contracts.
 
 ## Installation
 
@@ -93,14 +93,16 @@ See [docs/lab.md](docs/lab.md) for the full workflow and [docs/release-and-produ
 
 Supported IRIS Versions:
 
-- Currently supports API [v2.0.4](https://docs.dfir-iris.org/latest/operations/api/#references) for IRIS v2.4.x
+- `Stable / Legacy` mode targets API [v2.0.4](https://docs.dfir-iris.org/latest/_static/iris_api_reference_v2.0.4.html) for IRIS `2.4.x`
+- `Next / Dev` mode targets API [v2.1.x](https://docs.dfir-iris.org/latest/_static/iris_api_reference_v2.1.0.html) when the connected runtime exposes those routes
 
 Coverage model:
 
 - Existing typed resources keep their current `resource` and `operation` identifiers for workflow compatibility.
-- The credential is pinned to the stable DFIR-IRIS API contract for `2.4.x`, so the UI no longer exposes a decorative API version selector.
-- A new typed resource `API Request` can call any stable `v2.0.4` endpoint directly, including endpoints that do not yet have a dedicated typed UI.
-- The release build validates [docs/api-v2.0.4-coverage.json](docs/api-v2.0.4-coverage.json) and fails if an endpoint is left as `unsupported`.
+- Credentials expose an `API Mode` selector with `Stable / Legacy` as the safe default and `Next / Dev` as an opt-in mode.
+- A centralized compatibility manifest drives router dispatch and UI visibility, so unsupported operations are hidden for the selected API mode.
+- A typed resource `API Request` can call any stable or next endpoint directly as an escape hatch.
+- The release build validates both [docs/api-v2.0.4-coverage.json](docs/api-v2.0.4-coverage.json) and [docs/api-v2.1.x-coverage.json](docs/api-v2.1.x-coverage.json).
 - Live acceptance covers package loading in `n8n`, credentials type rendering, credential CRUD/test endpoints, and representative typed resource calls against a real DFIR-IRIS stack.
 
 Typed resource coverage:
@@ -122,6 +124,16 @@ Typed resource coverage:
 | Datastore Folder | Typed |
 | Manage Metadata Lists | Typed |
 | Remaining stable v2.0.4 endpoints | Raw via `API Request` |
+
+Next/dev typed coverage in this branch:
+
+- `Case`
+- `Asset`
+- `IOC`
+- `Task`
+- `API Request`
+
+All other resources remain `stable-only` until the corresponding next/dev runtime routes are confirmed.
 
 ## License
 

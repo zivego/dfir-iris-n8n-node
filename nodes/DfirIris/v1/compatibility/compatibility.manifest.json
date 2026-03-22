@@ -1,0 +1,198 @@
+{
+  "defaultApiMode": "stable",
+  "stableDocsUrl": "https://docs.dfir-iris.org/latest/_static/iris_api_reference_v2.0.4.html",
+  "nextDocsUrl": "https://docs.dfir-iris.org/latest/_static/iris_api_reference_v2.1.0.html",
+  "resources": [
+    {
+      "name": "alert",
+      "displayName": "Alert",
+      "defaultOperation": "filterAlerts",
+      "operations": [
+        { "name": "create", "displayName": "Add", "compatibility": "stable-only" },
+        { "name": "update", "displayName": "Update", "compatibility": "stable-only" },
+        { "name": "get", "displayName": "Get", "compatibility": "stable-only" },
+        { "name": "getRelations", "displayName": "Get Relations", "compatibility": "stable-only" },
+        { "name": "countAlerts", "displayName": "Count Alerts", "compatibility": "stable-only" },
+        { "name": "deleteAlert", "displayName": "Delete", "compatibility": "stable-only" },
+        { "name": "filterAlerts", "displayName": "Filter Alerts", "compatibility": "stable-only" },
+        { "name": "batchUpdate", "displayName": "Batch Update", "compatibility": "stable-only" },
+        { "name": "batchDelete", "displayName": "Batch Delete", "compatibility": "stable-only" },
+        { "name": "escalate", "displayName": "Escalate", "compatibility": "stable-only" },
+        { "name": "merge", "displayName": "Merge", "compatibility": "stable-only" },
+        { "name": "unmerge", "displayName": "Unmerge", "compatibility": "stable-only" }
+      ]
+    },
+    {
+      "name": "apiRequest",
+      "displayName": "API Request",
+      "defaultOperation": "send",
+      "operations": [
+        { "name": "send", "displayName": "Send", "compatibility": "both" }
+      ]
+    },
+    {
+      "name": "asset",
+      "displayName": "Asset",
+      "defaultOperation": "getAll",
+      "operations": [
+        { "name": "create", "displayName": "Add", "compatibility": "both-with-adapter" },
+        { "name": "deleteAsset", "displayName": "Delete", "compatibility": "both-with-adapter" },
+        { "name": "get", "displayName": "Get", "compatibility": "both-with-adapter" },
+        { "name": "getAll", "displayName": "Get Many", "compatibility": "both-with-adapter" },
+        { "name": "update", "displayName": "Update", "compatibility": "both-with-adapter" }
+      ]
+    },
+    {
+      "name": "case",
+      "displayName": "Case",
+      "defaultOperation": "countCases",
+      "operations": [
+        { "name": "create", "displayName": "Add", "compatibility": "both-with-adapter" },
+        { "name": "addTaskLog", "displayName": "Add Activity Log", "compatibility": "stable-only" },
+        { "name": "countCases", "displayName": "Count Cases", "compatibility": "both-with-adapter" },
+        { "name": "deleteCase", "displayName": "Delete", "compatibility": "both-with-adapter" },
+        { "name": "exportCase", "displayName": "Export", "compatibility": "stable-only" },
+        { "name": "filterCases", "displayName": "Filter Cases", "compatibility": "both-with-adapter" },
+        { "name": "getSummary", "displayName": "Get Case Summary", "compatibility": "both-with-adapter" },
+        { "name": "update", "displayName": "Update", "compatibility": "both-with-adapter" },
+        { "name": "updateSummary", "displayName": "Update Case Summary", "compatibility": "both-with-adapter" }
+      ]
+    },
+    {
+      "name": "comment",
+      "displayName": "Comment",
+      "defaultOperation": "getAll",
+      "operations": [
+        { "name": "create", "displayName": "Add", "compatibility": "stable-only" },
+        { "name": "deleteComment", "displayName": "Delete", "compatibility": "stable-only" },
+        { "name": "getAll", "displayName": "Get Many", "compatibility": "stable-only" },
+        { "name": "update", "displayName": "Update", "compatibility": "stable-only" }
+      ]
+    },
+    {
+      "name": "datastoreFile",
+      "displayName": "Datastore File",
+      "defaultOperation": "getFileInfo",
+      "operations": [
+        { "name": "uploadFile", "displayName": "Upload", "compatibility": "stable-only" },
+        { "name": "getFileInfo", "displayName": "Get", "compatibility": "stable-only" },
+        { "name": "updateFileInfo", "displayName": "Update", "compatibility": "stable-only" },
+        { "name": "downloadFile", "displayName": "Download", "compatibility": "stable-only" },
+        { "name": "moveFile", "displayName": "Move", "compatibility": "stable-only" },
+        { "name": "deleteFile", "displayName": "Delete", "compatibility": "stable-only" }
+      ]
+    },
+    {
+      "name": "datastoreFolder",
+      "displayName": "Datastore Folder",
+      "defaultOperation": "getTree",
+      "operations": [
+        { "name": "getTree", "displayName": "Get Tree", "compatibility": "stable-only" },
+        { "name": "addFolder", "displayName": "Add", "compatibility": "stable-only" },
+        { "name": "moveFolder", "displayName": "Move", "compatibility": "stable-only" },
+        { "name": "renameFolder", "displayName": "Rename", "compatibility": "stable-only" },
+        { "name": "deleteFolder", "displayName": "Delete", "compatibility": "stable-only" }
+      ]
+    },
+    {
+      "name": "evidence",
+      "displayName": "Evidence",
+      "defaultOperation": "listEvidences",
+      "operations": [
+        { "name": "createEvidence", "displayName": "Add", "compatibility": "stable-only" },
+        { "name": "deleteEvidence", "displayName": "Delete", "compatibility": "stable-only" },
+        { "name": "getEvidence", "displayName": "Get", "compatibility": "stable-only" },
+        { "name": "listEvidences", "displayName": "Get Many", "compatibility": "stable-only" },
+        { "name": "updateEvidence", "displayName": "Update", "compatibility": "stable-only" }
+      ]
+    },
+    {
+      "name": "ioc",
+      "displayName": "IOC",
+      "defaultOperation": "getAll",
+      "operations": [
+        { "name": "create", "displayName": "Add", "compatibility": "both-with-adapter" },
+        { "name": "update", "displayName": "Update", "compatibility": "both-with-adapter" },
+        { "name": "get", "displayName": "Get", "compatibility": "both-with-adapter" },
+        { "name": "getAll", "displayName": "Get Many", "compatibility": "both-with-adapter" },
+        { "name": "deleteIOC", "displayName": "Delete", "compatibility": "both-with-adapter" }
+      ]
+    },
+    {
+      "name": "manage",
+      "displayName": "Manage Metadata",
+      "defaultOperation": "getUsers",
+      "operations": [
+        { "name": "getAssetTypes", "displayName": "Get Asset Types", "compatibility": "stable-only" },
+        { "name": "getCaseClassifications", "displayName": "Get Case Classifications", "compatibility": "stable-only" },
+        { "name": "getCaseCustomers", "displayName": "Get Case Customers", "compatibility": "stable-only" },
+        { "name": "getCaseStates", "displayName": "Get Case States", "compatibility": "stable-only" },
+        { "name": "getCaseTemplates", "displayName": "Get Case Templates", "compatibility": "stable-only" },
+        { "name": "getEvidenceTypes", "displayName": "Get Evidence Types", "compatibility": "stable-only" },
+        { "name": "getIOCTypes", "displayName": "Get IOC Types", "compatibility": "stable-only" },
+        { "name": "getSeverities", "displayName": "Get Severities", "compatibility": "stable-only" },
+        { "name": "getUsers", "displayName": "Get Users", "compatibility": "stable-only" },
+        { "name": "getTaskStatuses", "displayName": "Get Task Statuses", "compatibility": "stable-only" }
+      ]
+    },
+    {
+      "name": "module",
+      "displayName": "Module",
+      "defaultOperation": "listHooks",
+      "operations": [
+        { "name": "callModule", "displayName": "Call Module", "compatibility": "stable-only" },
+        { "name": "listHooks", "displayName": "List Hooks", "compatibility": "stable-only" },
+        { "name": "listTasks", "displayName": "List Tasks", "compatibility": "stable-only" }
+      ]
+    },
+    {
+      "name": "note",
+      "displayName": "Note",
+      "defaultOperation": "search",
+      "operations": [
+        { "name": "create", "displayName": "Add", "compatibility": "stable-only" },
+        { "name": "deleteNote", "displayName": "Delete", "compatibility": "stable-only" },
+        { "name": "get", "displayName": "Get", "compatibility": "stable-only" },
+        { "name": "search", "displayName": "Search", "compatibility": "stable-only" },
+        { "name": "update", "displayName": "Update", "compatibility": "stable-only" }
+      ]
+    },
+    {
+      "name": "noteDirectory",
+      "displayName": "Note Group",
+      "defaultOperation": "getAll",
+      "operations": [
+        { "name": "create", "displayName": "Add", "compatibility": "stable-only" },
+        { "name": "deleteNoteDirectory", "displayName": "Delete", "compatibility": "stable-only" },
+        { "name": "getAll", "displayName": "Get Many", "compatibility": "stable-only" },
+        { "name": "update", "displayName": "Update", "compatibility": "stable-only" }
+      ]
+    },
+    {
+      "name": "task",
+      "displayName": "Task",
+      "defaultOperation": "getAll",
+      "operations": [
+        { "name": "create", "displayName": "Add", "compatibility": "both-with-adapter" },
+        { "name": "update", "displayName": "Update", "compatibility": "both-with-adapter" },
+        { "name": "get", "displayName": "Get", "compatibility": "both-with-adapter" },
+        { "name": "getAll", "displayName": "Get Many", "compatibility": "both-with-adapter" },
+        { "name": "deleteTask", "displayName": "Delete", "compatibility": "both-with-adapter" }
+      ]
+    },
+    {
+      "name": "timeline",
+      "displayName": "Timeline",
+      "defaultOperation": "queryTimeline",
+      "operations": [
+        { "name": "addEvent", "displayName": "Add Event", "compatibility": "stable-only" },
+        { "name": "queryTimeline", "displayName": "Query Timeline", "compatibility": "stable-only" },
+        { "name": "deleteEvent", "displayName": "Delete Event", "compatibility": "stable-only" },
+        { "name": "fetchEvent", "displayName": "Get Event", "compatibility": "stable-only" },
+        { "name": "flagEvent", "displayName": "Flag Event", "compatibility": "stable-only" },
+        { "name": "updateEvent", "displayName": "Update Event", "compatibility": "stable-only" },
+        { "name": "getTimelineState", "displayName": "Get Timeline State", "compatibility": "stable-only" }
+      ]
+    }
+  ]
+}

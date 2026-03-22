@@ -19,6 +19,7 @@ import * as task from './task/Task.resource';
 import * as timeline from './timeline/Timeline.resource';
 import * as manage from './manage/Manage.resource';
 
+import { getApiMode, isOperationSupported } from '../compatibility';
 import { IrisLog } from '../helpers/utils';
 
 export async function router(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
@@ -28,11 +29,19 @@ export async function router(this: IExecuteFunctions): Promise<INodeExecutionDat
 
 	const resource = this.getNodeParameter<DfirIrisType>('resource', 0);
 	const operation = this.getNodeParameter('operation', 0);
+	const apiMode = await getApiMode.call(this);
 
 	const dfirIris = {
 		resource,
 		operation,
 	} as DfirIrisType;
+
+	if (!isOperationSupported(resource, operation, apiMode)) {
+		throw new NodeOperationError(
+			this.getNode(),
+			`Operation "${resource}.${operation}" is not available for API Mode "${apiMode}"`,
+		);
+	}
 
 	for (let i = 0; i < items.length; i++) {
 		try {

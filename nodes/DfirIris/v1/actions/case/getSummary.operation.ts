@@ -7,7 +7,8 @@ import type {
 
 import { updateDisplayOptions } from 'n8n-workflow';
 
-import { apiRequest } from '../../transport';
+import { extractNextResponseData } from '../../compatibility';
+import { apiRequest, getCredentialApiMode } from '../../transport';
 import { types, utils } from '../../helpers';
 import * as icase from './commonDescription';
 
@@ -33,18 +34,25 @@ const displayOptions = {
 export const description = updateDisplayOptions(displayOptions, properties);
 
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
-	const query: IDataObject = { cid: this.getNodeParameter('case_id', i) as number };
+	const caseId = this.getNodeParameter('case_id', i) as number;
+	const query: IDataObject = { cid: caseId };
 	let response;
+	const apiMode = await getCredentialApiMode.call(this);
 
-	response = await apiRequest.call(this, 'GET', `case/summary/fetch`, {}, query);
+	response =
+		apiMode === 'next'
+			? await apiRequest.call(this, 'GET', `api/v2/cases/${caseId}`, {}, {})
+			: await apiRequest.call(this, 'GET', `case/summary/fetch`, {}, query);
 
 	const options = this.getNodeParameter('options', i, {});
 	const isRaw = (options.isRaw as boolean) || false;
 	
 	// field remover
-	if (Object.prototype.hasOwnProperty.call(options, 'fields'))
-		response.data = utils.fieldsRemover((response.data as IDataObject[]), options);
-	if (!isRaw) response = response.data;
+	if (Object.prototype.hasOwnProperty.call(options, 'fields')) {
+		const responseData = apiMode === 'next' ? extractNextResponseData(response) : (response.data as IDataObject);
+		response.data = utils.fieldsRemover(responseData, options);
+	}
+	if (!isRaw) response = apiMode === 'next' ? extractNextResponseData(response) : response.data;
 
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(response as IDataObject[]),

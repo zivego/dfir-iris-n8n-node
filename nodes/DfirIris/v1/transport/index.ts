@@ -10,6 +10,7 @@ import type {
 } from 'n8n-workflow';
 import { NodeApiError } from 'n8n-workflow';
 
+import { resolveApiMode, type ApiMode } from '../compatibility';
 import { enableDebug, IrisLog } from '../helpers/utils';
 
 type DfirIrisRequestBody =
@@ -88,6 +89,7 @@ function getConnectionSettings(credentials: IDataObject) {
 		: Boolean(credentials.allowUnauthorizedCerts);
 
 	return {
+		apiMode: resolveApiMode(credentials.apiMode),
 		baseUrl,
 		skipSslCertificateValidation,
 	};
@@ -175,6 +177,13 @@ export async function apiRequest(
 	} catch (error) {
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}
+}
+
+export async function getCredentialApiMode(
+	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions | IWebhookFunctions,
+): Promise<ApiMode> {
+	const credentials = await this.getCredentials('dfirIrisApi');
+	return resolveApiMode(credentials?.apiMode);
 }
 
 export async function apiRequestAll(
@@ -266,4 +275,89 @@ export async function apiRequestAll(
 
 	responseData.data[propKey] = returnData;
 	return responseData;
+}
+
+export async function apiRequestAllNext(
+	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions | IWebhookFunctions,
+	method: IHttpRequestMethods,
+	endpoint: string,
+	body: IDataObject = {},
+	query: IDataObject = {},
+	maxItems: number = 0,
+	startPage: number = 1,
+): Promise<IDataObject> {
+	const credentials = await this.getCredentials('dfirIrisApi');
+
+	enableDebug(credentials?.enableDebug as boolean);
+
+	const { baseUrl, skipSslCertificateValidation } = getConnectionSettings(credentials);
+	const headers = { 'content-type': 'application/json; charset=utf-8' };
+	const irisLogger = new IrisLog(this.logger);
+	const returnData: IDataObject[] = [];
+	const perPage = maxItems > 0 && maxItems < 100 ? maxItems : 100;
+	let currentPage = startPage;
+	let lastPage = startPage;
+	let total = 0;
+
+	do {
+		const options: IHttpRequestOptions = {
+			headers,
+			method,
+			url: `${baseUrl}/${normalizeEndpoint(endpoint)}`,
+			body,
+			qs: {
+				...query,
+				page: currentPage,
+				per_page: perPage,
+			},
+			json: true,
+			skipSslCertificateValidation,
+			ignoreHttpStatusErrors: true,
+		};
+
+		Object.assign(options as unknown as IDataObject, {
+			rejectUnauthorized: !skipSslCertificateValidation,
+		});
+
+		let responseData;
+		try {
+			responseData = await this.helpers.httpRequestWithAuthentication.call(
+				this,
+				'dfirIrisApi',
+				options,
+			);
+		} catch (error) {
+			throw new NodeApiError(this.getNode(), error as JsonObject);
+		}
+
+		irisLogger.info('next responseData', { responseData });
+
+		const payload =
+			responseData &&
+			typeof responseData === 'object' &&
+			'data' in (responseData as IDataObject) &&
+			(responseData as IDataObject).data &&
+			typeof (responseData as IDataObject).data === 'object'
+				? ((responseData as IDataObject).data as IDataObject)
+				: {};
+		const items = Array.isArray(payload.data) ? (payload.data as IDataObject[]) : [];
+
+		returnData.push(...items);
+		total = Number(payload.total || returnData.length);
+		lastPage = Number(payload.last_page || currentPage);
+		currentPage += 1;
+
+		if (maxItems > 0 && returnData.length >= maxItems) {
+			break;
+		}
+	} while (currentPage <= lastPage);
+
+	return {
+		data: {
+			current_page: startPage,
+			data: maxItems > 0 ? returnData.slice(0, maxItems) : returnData,
+			last_page: lastPage,
+			total,
+		},
+	};
 }

@@ -8,7 +8,8 @@ import type {
 import { updateDisplayOptions } from 'n8n-workflow';
 
 import { endpoint } from './Case.resource';
-import { apiRequestAll } from '../../transport';
+import { normalizeNextPaginatedItems } from '../../compatibility';
+import { apiRequestAll, apiRequestAllNext, getCredentialApiMode } from '../../transport';
 import { types, utils } from '../../helpers';
 import * as icase from './commonDescription';
 
@@ -134,6 +135,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	let response;
 	const body: IDataObject = {};
 	const irisLogger = new utils.IrisLog(this.logger);
+	const apiMode = await getCredentialApiMode.call(this);
 
 	body.sort_dir = this.getNodeParameter('sort_dir', i) as string;
 	body.order_by = this.getNodeParameter('sort_by', i) as string;
@@ -145,27 +147,43 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 
 	Object.assign(query, body);
 
-	response = await apiRequestAll.call(
-		this,
-		'GET',
-		`${endpoint}/filter`,
-		{},
-		body,
-		returnAll ? 0 : (this.getNodeParameter('limit', i) as number),
-		this.getNodeParameter('options.startPage', i, 1) as number,
-		'cases',
-	);
+	response =
+		apiMode === 'next'
+			? await apiRequestAllNext.call(
+					this,
+					'GET',
+					'api/v2/cases',
+					{},
+					body,
+					returnAll ? 0 : (this.getNodeParameter('limit', i) as number),
+					this.getNodeParameter('options.startPage', i, 1) as number,
+				)
+			: await apiRequestAll.call(
+					this,
+					'GET',
+					`${endpoint}/filter`,
+					{},
+					body,
+					returnAll ? 0 : (this.getNodeParameter('limit', i) as number),
+					this.getNodeParameter('options.startPage', i, 1) as number,
+					'cases',
+				);
 
 	const options = this.getNodeParameter('options', i, {});
 	const isRaw = (options.isRaw as boolean) || false;
 	
 	// field remover
-	if (Object.prototype.hasOwnProperty.call(options, 'fields') && response.data && typeof response.data === 'object' && 'cases' in response.data) {
+	if (Object.prototype.hasOwnProperty.call(options, 'fields') && response.data && typeof response.data === 'object') {
 		const data = response.data as IDataObject;
-		data.cases = utils.fieldsRemover((data.cases as IDataObject[]), options);
+		if (apiMode === 'next') {
+			data.data = utils.fieldsRemover(normalizeNextPaginatedItems(response.data), options);
+		} else if ('cases' in data) {
+			data.cases = utils.fieldsRemover((data.cases as IDataObject[]), options);
+		}
 	}
-	if (!isRaw)
-		response = (response.data as IDataObject).cases;
+	if (!isRaw) {
+		response = apiMode === 'next' ? normalizeNextPaginatedItems(response.data) : (response.data as IDataObject).cases;
+	}
 
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(response as IDataObject[]),

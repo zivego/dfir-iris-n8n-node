@@ -8,7 +8,8 @@ import type {
 import { updateDisplayOptions } from 'n8n-workflow';
 
 import { endpoint } from './Asset.resource';
-import { apiRequest } from '../../transport';
+import { buildNextCaseScopedEndpoint } from '../../compatibility';
+import { apiRequest, getCredentialApiMode } from '../../transport';
 import { types } from '../../helpers';
 import * as local from './commonDescription';
 
@@ -34,16 +35,23 @@ const displayOptions = {
 export const description = updateDisplayOptions(displayOptions, properties);
 
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
-	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
+	const cid = this.getNodeParameter('cid', i, 0) as number;
+	const query: IDataObject = { cid };
 	let response;
+	const apiMode = await getCredentialApiMode.call(this);
+	const assetId = this.getNodeParameter(local.assetId.name, i) as number;
 
-	response = await apiRequest.call(
-		this,
-		'POST',
-		(`${endpoint}/delete/` + this.getNodeParameter(local.assetId.name, i)) as string,
-		{},
-		query,
-	);
+	response =
+		apiMode === 'next'
+			? await apiRequest.call(
+					this,
+					'DELETE',
+					buildNextCaseScopedEndpoint(cid, 'assets', assetId),
+					{},
+					{},
+					{ json: false, returnFullResponse: true },
+				)
+			: await apiRequest.call(this, 'POST', `${endpoint}/delete/${assetId}`, {}, query);
 
 	const options = this.getNodeParameter('options', i, {});
 	const isRaw = (options.isRaw as boolean) || false;

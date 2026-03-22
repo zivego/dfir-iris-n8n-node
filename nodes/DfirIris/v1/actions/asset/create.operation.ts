@@ -8,7 +8,8 @@ import type {
 import { NodeApiError, updateDisplayOptions } from 'n8n-workflow';
 
 import { endpoint } from './Asset.resource';
-import { apiRequest } from '../../transport';
+import { buildNextCaseScopedEndpoint, extractNextResponseData } from '../../compatibility';
+import { apiRequest, getCredentialApiMode } from '../../transport';
 import { types, utils } from '../../helpers';
 import * as local from './commonDescription';
 
@@ -65,9 +66,11 @@ const displayOptions = {
 export const description = updateDisplayOptions(displayOptions, properties);
 
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
-	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
+	const cid = this.getNodeParameter('cid', i, 0) as number;
+	const query: IDataObject = { cid };
 	let response;
 	const body: IDataObject = {};
+	const apiMode = await getCredentialApiMode.call(this);
 
 	body.asset_type_id = this.getNodeParameter(local.assetType.name, i) as number;
 	body.asset_name = this.getNodeParameter(local.assetName.name, i) as string;
@@ -85,12 +88,22 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 		}
 	}
 
-	response = await apiRequest.call(this, 'POST', `${endpoint}/add`, body, query);
+	response =
+		apiMode === 'next'
+			? await apiRequest.call(this, 'POST', buildNextCaseScopedEndpoint(cid, 'assets'), body)
+			: await apiRequest.call(this, 'POST', `${endpoint}/add`, body, query);
 
 	// field remover
-	if (Object.prototype.hasOwnProperty.call(options, 'fields'))
-		response.data = utils.fieldsRemover((response.data as IDataObject[]), options);
-	if (!isRaw) response = response.data;
+	if (Object.prototype.hasOwnProperty.call(options, 'fields')) {
+		const responseData = apiMode === 'next' ? extractNextResponseData(response) : (response.data as IDataObject);
+		const filtered = utils.fieldsRemover(responseData, options);
+		if (apiMode === 'next') {
+			response.data = filtered;
+		} else {
+			response.data = filtered;
+		}
+	}
+	if (!isRaw) response = apiMode === 'next' ? extractNextResponseData(response) : response.data;
 
 	const executionData = this.helpers.constructExecutionMetaData(
 		this.helpers.returnJsonArray(response as IDataObject[]),

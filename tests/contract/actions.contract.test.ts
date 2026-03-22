@@ -211,4 +211,45 @@ describe('typed action contracts', () => {
 			expect.objectContaining({ path: 'case/assets/filter' }),
 		]);
 	});
+
+	it('routes asset/getAll through api v2 in next mode', async () => {
+		const assetResource = resourceModules['../../nodes/DfirIris/v1/actions/asset/Asset.resource.ts'];
+		const getAll = assetResource.getAll as OperationExport;
+		const { calls, context } = createMockExecuteContext(
+			buildParametersFromDescription(getAll.description),
+			{
+				credentials: { apiMode: 'next' },
+			},
+		);
+
+		await getAll.execute.call(context as never, 0);
+
+		expect(calls.map(summarizeRequest)).toEqual([
+			expect.objectContaining({
+				method: 'GET',
+				path: 'api/v2/cases/1/assets',
+			}),
+		]);
+	});
+
+	it('routes case/filterCases through api v2 in next mode', async () => {
+		const caseResource = resourceModules['../../nodes/DfirIris/v1/actions/case/Case.resource.ts'];
+		const filterCases = caseResource.filterCases as OperationExport;
+		const { calls, context } = createMockExecuteContext(
+			buildParametersFromDescription(filterCases.description),
+			{
+				credentials: { apiMode: 'next' },
+			},
+		);
+
+		await filterCases.execute.call(context as never, 0);
+
+		expect(calls[0]).toBeDefined();
+		expect(summarizeRequest(calls[0])).toEqual(
+			expect.objectContaining({
+				method: 'GET',
+				path: 'api/v2/cases',
+			}),
+		);
+	});
 });
