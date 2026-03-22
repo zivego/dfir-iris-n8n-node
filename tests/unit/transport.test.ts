@@ -170,4 +170,42 @@ describe('transport layer', () => {
 			{ id: 21 },
 		]);
 	});
+
+	it('paginates apiRequestAllNext responses when the next api returns root-level pagination', async () => {
+		const { calls, context } = createMockExecuteContext(
+			{},
+			{
+				responseFactory: async (request) => {
+					const page = Number(((request.options.qs || {}) as Record<string, number>).page || 1);
+
+					return {
+						current_page: page,
+						data: [
+							{ id: page * 10 + 1 },
+							{ id: page * 10 + 2 },
+						],
+						last_page: 2,
+						total: 4,
+					};
+				},
+			},
+		);
+
+		const response = await apiRequestAllNext.call(
+			context as never,
+			'GET',
+			'api/v2/cases',
+			{},
+			{},
+			3,
+			1,
+		);
+
+		expect(calls).toHaveLength(2);
+		expect((response.data as Record<string, unknown[]>).data).toEqual([
+			{ id: 11 },
+			{ id: 12 },
+			{ id: 21 },
+		]);
+	});
 });

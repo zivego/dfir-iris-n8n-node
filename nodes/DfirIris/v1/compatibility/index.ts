@@ -189,6 +189,10 @@ export function extractNextResponseData(response: unknown): IDataObject {
 		return (response as IDataObject).data as IDataObject;
 	}
 
+	if (response && typeof response === 'object' && !Array.isArray(response)) {
+		return response as IDataObject;
+	}
+
 	return {};
 }
 

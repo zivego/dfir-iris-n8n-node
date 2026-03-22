@@ -22,6 +22,15 @@ type OperationExport = {
 	execute: (this: unknown, itemIndex: number) => Promise<unknown>;
 };
 
+type LiveCredentials = {
+	accessToken: string;
+	allowUnauthorizedCerts: boolean;
+	apiMode?: 'stable' | 'next';
+	enableDebug: boolean;
+	host: string;
+	isHttp: boolean;
+};
+
 export class CookieJar {
 	private readonly cookies = new Map<string, string>();
 
@@ -236,15 +245,33 @@ export class N8nRestClient {
 
 export function createLiveExecuteContext(
 	parameters: IDataObject,
-	options: { inputItems?: INodeExecutionData[] } = {},
+	options: {
+		credentials?: Partial<LiveCredentials>;
+		inputItems?: INodeExecutionData[];
+	} = {},
 ) {
-	const irisToken = getRequiredEnv('DFIR_IRIS_TOKEN');
+	const defaultToken = process.env.DFIR_IRIS_TOKEN || process.env.DFIR_IRIS_NEXT_TOKEN;
+	const defaultHost = process.env.DFIR_IRIS_HOST || process.env.DFIR_IRIS_NEXT_HOST;
+	const defaultCredentials: LiveCredentials = {
+		accessToken: defaultToken || getRequiredEnv('DFIR_IRIS_TOKEN'),
+		allowUnauthorizedCerts: true,
+		apiMode: process.env.DFIR_IRIS_API_MODE === 'next' ? 'next' : 'stable',
+		enableDebug: false,
+		host: defaultHost || getRequiredEnv('DFIR_IRIS_HOST'),
+		isHttp:
+			process.env.DFIR_IRIS_IS_HTTP === '1' ||
+			(process.env.DFIR_IRIS_IS_HTTP === undefined && process.env.DFIR_IRIS_NEXT_IS_HTTP === '1'),
+	};
+	const credentials = {
+		...defaultCredentials,
+		...options.credentials,
+	};
 	const { calls, context } = createMockExecuteContext(parameters, {
 		inputItems: options.inputItems,
 		responseFactory: async (request) => {
 			const requestOptions = request.options;
 			const headers = new Headers((requestOptions.headers as Record<string, string>) || {});
-			headers.set('Authorization', `Bearer ${irisToken}`);
+			headers.set('Authorization', `Bearer ${credentials.accessToken}`);
 
 			let body = requestOptions.body as BodyInit | null | undefined;
 			if (
@@ -264,14 +291,35 @@ export function createLiveExecuteContext(
 				headers.delete('content-type');
 			}
 
-			const response = await fetch(
-				appendQueryString(requestOptions.url as string, requestOptions.qs),
-				{
-				body,
-				headers,
-				method: requestOptions.method as string,
-				},
-			);
+			const restoreTlsSetting = process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+			const shouldSkipTlsValidation =
+				requestOptions.rejectUnauthorized === false &&
+				typeof requestOptions.url === 'string' &&
+				requestOptions.url.startsWith('https://');
+
+			if (shouldSkipTlsValidation) {
+				process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+			}
+
+			let response: Response;
+			try {
+				response = await fetch(
+					appendQueryString(requestOptions.url as string, requestOptions.qs),
+					{
+						body,
+						headers,
+						method: requestOptions.method as string,
+					},
+				);
+			} finally {
+				if (shouldSkipTlsValidation) {
+					if (restoreTlsSetting === undefined) {
+						delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+					} else {
+						process.env.NODE_TLS_REJECT_UNAUTHORIZED = restoreTlsSetting;
+					}
+				}
+			}
 
 			if (requestOptions.returnFullResponse) {
 				return {
@@ -282,25 +330,24 @@ export function createLiveExecuteContext(
 			}
 
 			const contentType = response.headers.get('content-type') || '';
-			const payload = contentType.includes('application/json')
-				? await response.json()
-				: ({ data: await response.text() } as IDataObject);
+			const payload = (() => {
+				if (contentType.includes('application/json')) {
+					return response.text().then((text) => (text ? parseJsonResponse(text) : {}));
+				}
+
+				return response.text().then((text) => ({ data: text } as IDataObject));
+			})();
+			const resolvedPayload = await payload;
 
 			if (!response.ok) {
-				throw payload;
+				throw resolvedPayload;
 			}
 
-			return payload;
+			return resolvedPayload;
 		},
 	});
 
-	context.getCredentials = async () => ({
-		accessToken: irisToken,
-		allowUnauthorizedCerts: true,
-		enableDebug: false,
-		host: getRequiredEnv('DFIR_IRIS_HOST'),
-		isHttp: process.env.DFIR_IRIS_IS_HTTP === '1',
-	});
+	context.getCredentials = async () => credentials;
 
 	return { calls, context };
 }

@@ -95,6 +95,7 @@ Supported IRIS Versions:
 
 - `Stable / Legacy` mode targets API [v2.0.4](https://docs.dfir-iris.org/latest/_static/iris_api_reference_v2.0.4.html) for IRIS `2.4.x`
 - `Next / Dev` mode targets API [v2.1.x](https://docs.dfir-iris.org/latest/_static/iris_api_reference_v2.1.0.html) when the connected runtime exposes those routes
+- The merge-ready dual-mode branch has live `Next / Dev` acceptance pinned to `dfir-iris/iris-web@e6e6d797ee29be261b699b8c64c425e89959c1dd` built from `develop`
 
 Coverage model:
 
@@ -133,7 +134,7 @@ Next/dev typed coverage in this branch:
 - `Task`
 - `API Request`
 
-All other resources remain `stable-only` until the corresponding next/dev runtime routes are confirmed.
+All other resources remain `stable-only` until the corresponding next/dev runtime routes are confirmed on a live runtime.
 
 ## License
 

@@ -42,6 +42,7 @@
     "test:coverage": "vitest run tests/unit tests/contract tests/integration --coverage",
     "test:e2e": "vitest run tests/e2e",
     "test:e2e:live": "vitest run tests/e2e/live-lab.test.ts",
+    "test:e2e:live:next": "vitest run tests/e2e/live-lab-next.test.ts",
     "test:e2e:regression": "vitest run tests/e2e/n8n-regression.test.ts",
     "test:integration": "vitest run tests/contract tests/integration",
     "test:unit": "vitest run tests/unit"

@@ -19,3 +19,6 @@ lab/manual-stack.env
 lab/manual-stack.certs
 lab/manual-stack.n8n
 lab/manual-stack.n8n-*
+lab/manual-stack.next.env
+lab/manual-stack.next.n8n
+lab/manual-stack.next.n8n-*

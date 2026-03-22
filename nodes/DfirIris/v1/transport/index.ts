@@ -82,6 +82,29 @@ function normalizeEndpoint(endpoint: string): string {
 	return endpoint.replace(/^\/+/, '');
 }
 
+function extractNextPaginatedPayload(responseData: unknown): IDataObject {
+	if (!responseData || typeof responseData !== 'object' || Array.isArray(responseData)) {
+		return {};
+	}
+
+	const rootPayload = responseData as IDataObject;
+
+	if (Array.isArray(rootPayload.data)) {
+		return rootPayload;
+	}
+
+	if (
+		'data' in rootPayload &&
+		rootPayload.data &&
+		typeof rootPayload.data === 'object' &&
+		!Array.isArray(rootPayload.data)
+	) {
+		return rootPayload.data as IDataObject;
+	}
+
+	return {};
+}
+
 function getConnectionSettings(credentials: IDataObject) {
 	const baseUrl = `${credentials.isHttp ? 'http' : 'https'}://${credentials.host as string}`;
 	const skipSslCertificateValidation = credentials.isHttp
@@ -295,6 +318,7 @@ export async function apiRequestAllNext(
 	const irisLogger = new IrisLog(this.logger);
 	const returnData: IDataObject[] = [];
 	const perPage = maxItems > 0 && maxItems < 100 ? maxItems : 100;
+	const isGetLikeRequest = method === 'GET' || method === 'HEAD';
 	let currentPage = startPage;
 	let lastPage = startPage;
 	let total = 0;
@@ -304,8 +328,9 @@ export async function apiRequestAllNext(
 			headers,
 			method,
 			url: `${baseUrl}/${normalizeEndpoint(endpoint)}`,
-			body,
+			body: isGetLikeRequest ? undefined : body,
 			qs: {
+				...(isGetLikeRequest ? body : {}),
 				...query,
 				page: currentPage,
 				per_page: perPage,
@@ -331,15 +356,7 @@ export async function apiRequestAllNext(
 		}
 
 		irisLogger.info('next responseData', { responseData });
-
-		const payload =
-			responseData &&
-			typeof responseData === 'object' &&
-			'data' in (responseData as IDataObject) &&
-			(responseData as IDataObject).data &&
-			typeof (responseData as IDataObject).data === 'object'
-				? ((responseData as IDataObject).data as IDataObject)
-				: {};
+		const payload = extractNextPaginatedPayload(responseData);
 		const items = Array.isArray(payload.data) ? (payload.data as IDataObject[]) : [];
 
 		returnData.push(...items);

@@ -73,11 +73,16 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	let response;
 	const body: IDataObject = {};
 	const apiMode = await getCredentialApiMode.call(this);
+	const caseCustomer = this.getNodeParameter('case_customer', i) as number;
 
 	body.case_soc_id = this.getNodeParameter('case_soc_id', i) as string;
-	body.case_customer = this.getNodeParameter('case_customer', i) as number;
-	body.case_name = this.getNodeParameter('case_name', i) as number;
-	body.case_description = this.getNodeParameter('case_description', i) as number;
+	body.case_name = this.getNodeParameter('case_name', i) as string;
+	body.case_description = this.getNodeParameter('case_description', i) as string;
+	if (apiMode === 'next') {
+		body.case_customer_id = caseCustomer;
+	} else {
+		body.case_customer = caseCustomer;
+	}
 
 	utils.addAdditionalFields.call(this, body, i);
 
