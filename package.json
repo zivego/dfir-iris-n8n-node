@@ -11,8 +11,8 @@
     "zivego"
   ],
   "author": {
-    "name": "barn4k",
-    "email": "gravedigger161@gmail.com"
+    "name": "zivego",
+    "email": "266826730+zivego@users.noreply.github.com"
   },
   "repository": {
     "type": "git",
@@ -25,15 +25,12 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node scripts/check-credential-password-fields.mjs && n8n-node build",
+    "build": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\" && n8n-node build",
     "build:watch": "tsc --watch",
-    "check:credentials-schema": "node scripts/check-credential-password-fields.mjs",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
     "dev": "n8n-node dev",
-    "lint": "n8n-node lint",
-    "lint:fix": "n8n-node lint --fix",
     "pack:tarball": "pnpm run build && pnpm pack --pack-destination artifacts",
-    "release": "n8n-node release",
-    "prepublishOnly": "pnpm run build && n8n-node prerelease"
+    "prepublishOnly": "pnpm run build"
   },
   "files": [
     "dist"
@@ -51,9 +48,7 @@
   "devDependencies": {
     "@n8n/node-cli": "0.18.0",
     "@types/node": "^20.19.30",
-    "eslint": "9.32.0",
-    "prettier": "3.6.2",
-    "release-it": "^19.0.4",
+    "n8n-workflow": "2.4.3",
     "typescript": "5.9.2"
   },
   "peerDependencies": {
