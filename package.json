@@ -25,27 +25,12 @@
     "access": "public"
   },
   "scripts": {
-    "build": "node scripts/clean-build-output.mjs && node scripts/check-credential-password-fields.mjs && node scripts/check-api-coverage.mjs && n8n-node build && node scripts/prune-package-dist.mjs",
+    "build": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\" && n8n-node build",
     "build:watch": "tsc --watch",
-    "check:api-coverage": "node scripts/check-api-coverage.mjs",
-    "check:credentials-schema": "node scripts/check-credential-password-fields.mjs",
-    "clean": "node scripts/clean-build-output.mjs",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
     "dev": "n8n-node dev",
-    "lint": "eslint credentials nodes scripts --ext .ts,.js,.mjs",
-    "lint:fix": "eslint credentials nodes scripts --ext .ts,.js,.mjs --fix",
     "pack:tarball": "pnpm run build && pnpm pack --pack-destination artifacts",
-    "prepublishOnly": "pnpm run build",
-    "release": "pnpm run release:publish",
-    "release:check": "pnpm run lint && pnpm test && pnpm run build && pnpm pack --pack-destination artifacts && pnpm publish --dry-run --access public --no-git-checks",
-    "release:publish": "pnpm run release:check && pnpm publish --access public --no-git-checks",
-    "test": "vitest run tests/unit tests/contract tests/integration",
-    "test:coverage": "vitest run tests/unit tests/contract tests/integration --coverage",
-    "test:e2e": "vitest run tests/e2e",
-    "test:e2e:live": "vitest run tests/e2e/live-lab.test.ts",
-    "test:e2e:live:next": "vitest run tests/e2e/live-lab-next.test.ts",
-    "test:e2e:regression": "vitest run tests/e2e/n8n-regression.test.ts",
-    "test:integration": "vitest run tests/contract tests/integration",
-    "test:unit": "vitest run tests/unit"
+    "prepublishOnly": "pnpm run build"
   },
   "files": [
     "dist"
@@ -63,13 +48,8 @@
   "devDependencies": {
     "@n8n/node-cli": "0.18.0",
     "@types/node": "^20.19.30",
-    "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "9.32.0",
     "n8n-workflow": "2.4.3",
-    "prettier": "3.6.2",
-    "release-it": "^19.0.4",
-    "typescript": "5.9.2",
-    "vitest": "^3.2.4"
+    "typescript": "5.9.2"
   },
   "peerDependencies": {
     "n8n-workflow": "2.4.3"

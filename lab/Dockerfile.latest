@@ -1,7 +1,0 @@
-FROM n8nio/n8n:2.12.3
-
-COPY --chown=node:node --chmod=755 lab/entrypoint-install-package.sh /entrypoint-install-package.sh
-
-USER root
-
-ENTRYPOINT ["/entrypoint-install-package.sh"]
