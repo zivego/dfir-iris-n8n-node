@@ -1,9 +1,9 @@
 {
   "name": "@zivego/n8n-nodes-dfir-iris",
   "version": "3.0.0",
-  "description": "n8n node for DFIR IRIS IRP",
+  "description": "DFIR IRIS node integration for n8n with stable and next API support",
   "license": "MIT",
-  "homepage": "https://github.com/zivego/iris-n8n-fork",
+  "homepage": "https://github.com/zivego/dfir-iris-n8n-node",
   "keywords": [
     "n8n-community-node-package",
     "dfir-iris",
@@ -16,21 +16,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zivego/iris-n8n-fork.git"
+    "url": "https://github.com/zivego/dfir-iris-n8n-node.git"
   },
   "bugs": {
-    "url": "https://github.com/zivego/iris-n8n-fork/issues"
+    "url": "https://github.com/zivego/dfir-iris-n8n-node/issues"
   },
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\" && n8n-node build",
+    "clean": "node -e \"const fs=require('fs'); const path=require('path'); const rm=function(target){ if(!fs.existsSync(target)) return; const stat=fs.lstatSync(target); if(stat.isDirectory()){ fs.readdirSync(target).forEach(function(name){ rm(path.join(target,name)); }); fs.rmdirSync(target); } else { fs.unlinkSync(target); } }; rm('dist');\"",
+    "prune:dist": "node -e \"const fs=require('fs'); const path=require('path'); const walk=function(dir){ if(!fs.existsSync(dir)) return; fs.readdirSync(dir).forEach(function(name){ const full=path.join(dir,name); const stat=fs.lstatSync(full); if(stat.isDirectory()) return walk(full); if(/\\\\.map$|\\\\.d\\\\.ts$|tsconfig\\\\.tsbuildinfo$/.test(full)) fs.unlinkSync(full); }); }; walk('dist');\"",
+    "build": "npm run clean && n8n-node build && npm run prune:dist",
     "build:watch": "tsc --watch",
-    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
     "dev": "n8n-node dev",
-    "pack:tarball": "pnpm run build && pnpm pack --pack-destination artifacts",
-    "prepublishOnly": "pnpm run build"
+    "pack:tarball": "npm run build && npm pack --pack-destination artifacts",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"

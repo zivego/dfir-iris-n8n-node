@@ -1,21 +1,34 @@
 # @zivego/n8n-nodes-dfir-iris
 
-Community node for [n8n](https://n8n.io/) that integrates with DFIR IRIS.
+DFIR IRIS node integration for [n8n](https://n8n.io/).
 
-This fork keeps the same runtime identifiers as upstream:
+Repository: `zivego/dfir-iris-n8n-node`
+
+This package keeps the same runtime identifiers as upstream:
 
 - node type: `dfirIris`
 - credential type: `dfirIrisApi`
 
-That means existing workflows can keep working after you replace the original package with this fork.
+That means existing workflows can keep working after you replace the original package with this one.
 
 ## Install
-
-On a self-hosted `n8n` instance:
 
 ```sh
 cd ~/.n8n/nodes
 npm install @zivego/n8n-nodes-dfir-iris@3.0.0
+```
+
+Restart `n8n` after installation.
+
+## Install Before npm Publish
+
+If you want to test a local build before publishing:
+
+```sh
+pnpm install
+pnpm run pack:tarball
+cd ~/.n8n/nodes
+npm install /path/to/zivego-n8n-nodes-dfir-iris-3.0.0.tgz
 ```
 
 Restart `n8n` after installation.
@@ -40,12 +53,19 @@ cd ~/.n8n/nodes
 npm update @zivego/n8n-nodes-dfir-iris
 ```
 
-## Build locally
+Or install a specific version:
+
+```sh
+cd ~/.n8n/nodes
+npm install @zivego/n8n-nodes-dfir-iris@3.0.1
+```
+
+## Publish
 
 ```sh
 pnpm install
 pnpm run build
-pnpm run pack:tarball
+npm publish --access public
 ```
 
 ## License
