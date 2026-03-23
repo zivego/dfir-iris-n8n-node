@@ -64,6 +64,15 @@ function getFileNameFromContentDisposition(value: string | undefined): string | 
 	return fileNameMatch?.[1];
 }
 
+function normalizeOptionalFileName(value: unknown): string | undefined {
+	if (typeof value !== 'string') {
+		return undefined;
+	}
+
+	const trimmedValue = value.trim();
+	return trimmedValue.length > 0 ? trimmedValue : undefined;
+}
+
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	const body: IDataObject = {};
@@ -87,13 +96,17 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	);
 
 	const binaryName = (this.getNodeParameter('binaryName', i, '') as string).trim();
-	const headers = response.headers as IDataObject
+	const headers = response.headers as IDataObject;
 	const mimeType = headers?.['content-type'] ?? undefined;
 	const contentDisposition = (headers['content-disposition'] ?? undefined) as string | undefined;
 	const fallbackFileName = `iris-file-${this.getNodeParameter('file_id', i) as string}`;
+	const customFileName = normalizeOptionalFileName((body as IDataObject).fileName);
+	const responseFileName = normalizeOptionalFileName(
+		(response.contentDisposition as IDataObject | undefined)?.filename,
+	);
 	const fileName =
-		(body as IDataObject).fileName ??
-		((response.contentDisposition as IDataObject | undefined)?.filename as string | undefined) ??
+		customFileName ??
+		responseFileName ??
 		getFileNameFromContentDisposition(contentDisposition) ??
 		fallbackFileName;
 

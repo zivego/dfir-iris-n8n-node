@@ -6,7 +6,7 @@ import { DfirIrisV1 } from './v1/DfirIrisV1.node';
 export class DfirIris extends VersionedNodeType {
 	constructor() {
 		const baseDescription: INodeTypeBaseDescription = {
-			displayName: 'DFIR IRIS',
+			displayName: 'DFIR IRIS (Zivego)',
 			name: 'zivegoDfirIris',
 			icon: { light: "file:iris.svg", dark: "file:iris.svg"} as const,
 			group: ['input'],

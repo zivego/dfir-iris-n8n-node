@@ -21,14 +21,14 @@ import { buildResourceProperty } from '../compatibility';
 import { cidDescription } from '../helpers/types';
 
 export const versionDescription: INodeTypeDescription = {
-	displayName: 'DFIR IRIS',
+	displayName: 'DFIR IRIS (Zivego)',
 	name: 'zivegoDfirIris',
 	group: ['input'],
 	version: [1, 2],
 	subtitle: '={{ $parameter["resource"] + ": " + $parameter["operation"] }}',
 	description: 'works with DFIR IRIS IRP',
 	defaults: {
-		name: 'DFIR IRIS',
+		name: 'DFIR IRIS (Zivego)',
 	},
 	inputs: [NodeConnectionTypes.Main],
 	outputs: [NodeConnectionTypes.Main],

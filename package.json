@@ -1,6 +1,6 @@
 {
   "name": "@zivego/n8n-nodes-dfir-iris",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "DFIR IRIS node integration for n8n with stable and next API support",
   "license": "MIT",
   "homepage": "https://github.com/zivego/dfir-iris-n8n-node",
@@ -25,14 +25,19 @@
     "access": "public"
   },
   "scripts": {
-    "clean": "node -e \"const fs=require('fs'); const path=require('path'); const rm=function(target){ if(!fs.existsSync(target)) return; const stat=fs.lstatSync(target); if(stat.isDirectory()){ fs.readdirSync(target).forEach(function(name){ rm(path.join(target,name)); }); fs.rmdirSync(target); } else { fs.unlinkSync(target); } }; rm('dist');\"",
-    "prune:dist": "node -e \"const fs=require('fs'); const path=require('path'); const walk=function(dir){ if(!fs.existsSync(dir)) return; fs.readdirSync(dir).forEach(function(name){ const full=path.join(dir,name); const stat=fs.lstatSync(full); if(stat.isDirectory()) return walk(full); if(/\\\\.map$|\\\\.d\\\\.ts$|tsconfig\\\\.tsbuildinfo$/.test(full)) fs.unlinkSync(full); }); }; walk('dist');\"",
+    "clean": "node scripts/clean-dist.mjs",
+    "prune:dist": "node scripts/prune-dist.mjs",
     "build": "npm run clean && n8n-node build && npm run prune:dist",
     "build:watch": "tsc --watch",
     "dev": "n8n-node dev",
+    "build:container": "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$PWD:/workspace\" -w /workspace node:20-bookworm bash -lc \"npm install && npm run build\"",
     "pack:tarball": "npm run build && npm pack --pack-destination artifacts",
-    "prepack": "npm run build",
-    "prepublishOnly": "npm run build"
+    "pack:container": "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$PWD:/workspace\" -w /workspace node:20-bookworm bash -lc \"npm install && npm run pack:tarball\"",
+    "validate:types": "node scripts/validate-types.mjs",
+    "validate:package": "node scripts/validate-package.mjs",
+    "release:check": "npm run build && npm run validate:types && npm run validate:package",
+    "prepack": "npm run build && npm run validate:types",
+    "prepublishOnly": "npm run release:check"
   },
   "files": [
     "dist"
