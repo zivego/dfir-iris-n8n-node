@@ -50,6 +50,20 @@ const displayOptions = {
 
 export const description = updateDisplayOptions(displayOptions, properties);
 
+function getFileNameFromContentDisposition(value: string | undefined): string | undefined {
+	if (!value) {
+		return undefined;
+	}
+
+	const utf8Match = value.match(/filename\*=UTF-8''([^;]+)/i);
+	if (utf8Match?.[1]) {
+		return decodeURIComponent(utf8Match[1].replace(/^"(.*)"$/, '$1'));
+	}
+
+	const fileNameMatch = value.match(/filename="?([^"]+)"?/i);
+	return fileNameMatch?.[1];
+}
+
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	const body: IDataObject = {};
@@ -75,14 +89,13 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const binaryName = (this.getNodeParameter('binaryName', i, '') as string).trim();
 	const headers = response.headers as IDataObject
 	const mimeType = headers?.['content-type'] ?? undefined;
-	const contentDisposition = (headers['content-disposition'] ?? undefined) as string
+	const contentDisposition = (headers['content-disposition'] ?? undefined) as string | undefined;
+	const fallbackFileName = `iris-file-${this.getNodeParameter('file_id', i) as string}`;
 	const fileName =
 		(body as IDataObject).fileName ??
-		(response.contentDisposition as IDataObject)?.filename ??
-		contentDisposition
-			.split('; ')
-			.filter((d: string) => d.indexOf('filename') >= 0)[0]
-			.replace('filename=', '');
+		((response.contentDisposition as IDataObject | undefined)?.filename as string | undefined) ??
+		getFileNameFromContentDisposition(contentDisposition) ??
+		fallbackFileName;
 
 	let item = this.getInputData()[i];
 	const newItem: INodeExecutionData = {

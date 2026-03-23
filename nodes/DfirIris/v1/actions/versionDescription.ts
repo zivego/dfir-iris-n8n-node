@@ -22,7 +22,7 @@ import { cidDescription } from '../helpers/types';
 
 export const versionDescription: INodeTypeDescription = {
 	displayName: 'DFIR IRIS',
-	name: 'dfirIris',
+	name: 'zivegoDfirIris',
 	group: ['input'],
 	version: [1, 2],
 	subtitle: '={{ $parameter["resource"] + ": " + $parameter["operation"] }}',
@@ -34,7 +34,7 @@ export const versionDescription: INodeTypeDescription = {
 	outputs: [NodeConnectionTypes.Main],
 	credentials: [
 		{
-			name: 'dfirIrisApi',
+			name: 'zivegoDfirIrisApi',
 			required: true,
 		},
 	],

@@ -168,6 +168,13 @@ function buildRequestOptions(
 	return options;
 }
 
+function getUnexpectedPaginationError(message: string): JsonObject {
+	return {
+		message,
+		description: 'The DFIR IRIS API returned an unexpected pagination payload.',
+	};
+}
+
 export async function apiRequest(
 	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions | IWebhookFunctions,
 	method: IHttpRequestMethods,
@@ -177,7 +184,7 @@ export async function apiRequest(
 	option: IDataObject = {},
 	isFormData: boolean = false,
 ): Promise<IDataObject> {
-	const credentials = await this.getCredentials('dfirIrisApi');
+	const credentials = await this.getCredentials('zivegoDfirIrisApi');
 
 	enableDebug(credentials?.enableDebug as boolean);
 	const irisLogger = new IrisLog(this.logger);
@@ -196,7 +203,7 @@ export async function apiRequest(
 
 	try {
 		irisLogger.info('options', { options });
-		return await this.helpers.httpRequestWithAuthentication.call(this, 'dfirIrisApi', options);
+		return await this.helpers.httpRequestWithAuthentication.call(this, 'zivegoDfirIrisApi', options);
 	} catch (error) {
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}
@@ -205,7 +212,7 @@ export async function apiRequest(
 export async function getCredentialApiMode(
 	this: IHookFunctions | IExecuteFunctions | ILoadOptionsFunctions | IWebhookFunctions,
 ): Promise<ApiMode> {
-	const credentials = await this.getCredentials('dfirIrisApi');
+	const credentials = await this.getCredentials('zivegoDfirIrisApi');
 	return resolveApiMode(credentials?.apiMode);
 }
 
@@ -219,7 +226,7 @@ export async function apiRequestAll(
 	start_page: number = 1,
 	propKey: string,
 ): Promise<IDataObject> {
-	const credentials = await this.getCredentials('dfirIrisApi');
+	const credentials = await this.getCredentials('zivegoDfirIrisApi');
 
 	enableDebug(credentials?.enableDebug as boolean);
 
@@ -234,10 +241,6 @@ export async function apiRequestAll(
 	query.page = start_page;
 	query.per_page = max_items > 0 && max_items < 100 ? max_items : 100;
 
-	if (start_page > 1) {
-		query.page = Math.floor((start_page * max_items) / query.per_page);
-	}
-
 	const options: IHttpRequestOptions = {
 		headers: headers,
 		method,
@@ -246,7 +249,7 @@ export async function apiRequestAll(
 		qs: query,
 		json: true,
 		skipSslCertificateValidation,
-		ignoreHttpStatusErrors: true,
+		ignoreHttpStatusErrors: false,
 	};
 
 	Object.assign(options as unknown as IDataObject, {
@@ -258,11 +261,24 @@ export async function apiRequestAll(
 		try {
 			responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
-				'dfirIrisApi',
+				'zivegoDfirIrisApi',
 				options,
 			);
 		} catch (error) {
 			throw new NodeApiError(this.getNode(), error as JsonObject);
+		}
+
+		if (
+			!responseData ||
+			typeof responseData !== 'object' ||
+			!responseData.data ||
+			typeof responseData.data !== 'object' ||
+			!Array.isArray(responseData.data[propKey])
+		) {
+			throw new NodeApiError(
+				this.getNode(),
+				getUnexpectedPaginationError(`Missing paginated array payload at data.${propKey}.`),
+			);
 		}
 
 		// for troubleshooting
@@ -309,7 +325,7 @@ export async function apiRequestAllNext(
 	maxItems: number = 0,
 	startPage: number = 1,
 ): Promise<IDataObject> {
-	const credentials = await this.getCredentials('dfirIrisApi');
+	const credentials = await this.getCredentials('zivegoDfirIrisApi');
 
 	enableDebug(credentials?.enableDebug as boolean);
 
@@ -337,7 +353,7 @@ export async function apiRequestAllNext(
 			},
 			json: true,
 			skipSslCertificateValidation,
-			ignoreHttpStatusErrors: true,
+			ignoreHttpStatusErrors: false,
 		};
 
 		Object.assign(options as unknown as IDataObject, {
@@ -348,7 +364,7 @@ export async function apiRequestAllNext(
 		try {
 			responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
-				'dfirIrisApi',
+				'zivegoDfirIrisApi',
 				options,
 			);
 		} catch (error) {
@@ -357,7 +373,13 @@ export async function apiRequestAllNext(
 
 		irisLogger.info('next responseData', { responseData });
 		const payload = extractNextPaginatedPayload(responseData);
-		const items = Array.isArray(payload.data) ? (payload.data as IDataObject[]) : [];
+		if (!Array.isArray(payload.data)) {
+			throw new NodeApiError(
+				this.getNode(),
+				getUnexpectedPaginationError('Missing paginated array payload at data.'),
+			);
+		}
+		const items = payload.data as IDataObject[];
 
 		returnData.push(...items);
 		total = Number(payload.total || returnData.length);

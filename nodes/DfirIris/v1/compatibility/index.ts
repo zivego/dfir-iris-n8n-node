@@ -35,7 +35,7 @@ export function resolveApiMode(value: unknown): ApiMode {
 
 export async function getApiMode(
 	this: CompatibilityContext,
-	credentialType: string = 'dfirIrisApi',
+	credentialType: string = 'zivegoDfirIrisApi',
 ): Promise<ApiMode> {
 	try {
 		const credentials = await this.getCredentials(credentialType);
