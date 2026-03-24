@@ -57,7 +57,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 			buildNextCaseScopedEndpoint(cid, 'assets'),
 			{},
 			{},
-			100,
+			0,
 			this.getNodeParameter('options.startPage', i, 1) as number,
 		);
 	} else {

@@ -1,6 +1,6 @@
 {
   "name": "@zivego/n8n-nodes-dfir-iris",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "DFIR IRIS node integration for n8n with stable and next API support",
   "license": "MIT",
   "homepage": "https://github.com/zivego/dfir-iris-n8n-node",
@@ -24,15 +24,19 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
+    "check:node": "node scripts/check-node-version.mjs",
     "clean": "node scripts/clean-dist.mjs",
     "prune:dist": "node scripts/prune-dist.mjs",
-    "build": "npm run clean && n8n-node build && npm run prune:dist",
+    "build": "npm run check:node && npm run clean && n8n-node build && npm run prune:dist",
     "build:watch": "tsc --watch",
-    "dev": "n8n-node dev",
-    "build:container": "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$PWD:/workspace\" -w /workspace node:20-bookworm bash -lc \"npm install && npm run build\"",
+    "dev": "npm run check:node && n8n-node dev",
+    "build:container": "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$PWD:/workspace\" -w /workspace node:20-bookworm bash -lc \"npx -y pnpm@10.22.0 install --frozen-lockfile && npx -y pnpm@10.22.0 run build\"",
     "pack:tarball": "npm run build && npm pack --pack-destination artifacts",
-    "pack:container": "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$PWD:/workspace\" -w /workspace node:20-bookworm bash -lc \"npm install && npm run pack:tarball\"",
+    "pack:container": "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$PWD:/workspace\" -w /workspace node:20-bookworm bash -lc \"npx -y pnpm@10.22.0 install --frozen-lockfile && npx -y pnpm@10.22.0 run pack:tarball\"",
     "validate:types": "node scripts/validate-types.mjs",
     "validate:package": "node scripts/validate-package.mjs",
     "release:check": "npm run build && npm run validate:types && npm run validate:package",

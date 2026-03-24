@@ -99,7 +99,7 @@ export async function getAssets(this: ILoadOptionsFunctions): Promise<INodePrope
 			buildNextCaseScopedEndpoint(cid, 'assets'),
 			{},
 			{},
-			100,
+			0,
 			1,
 		);
 	} else {
@@ -175,7 +175,7 @@ export async function getTasks(this: ILoadOptionsFunctions): Promise<INodeProper
 
 	const response =
 		apiMode === 'next'
-			? await apiRequestAllNext.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'tasks'), {}, {}, 100, 1)
+			? await apiRequestAllNext.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'tasks'), {}, {}, 0, 1)
 			: await apiRequest.call(this, 'GET', 'case/tasks/list', {}, query);
 	if (response === undefined) {
 		throw new NodeOperationError(this.getNode(), 'No data got returned');
@@ -254,7 +254,7 @@ export async function getIOCs(this: ILoadOptionsFunctions): Promise<INodePropert
 
 	const response =
 		apiMode === 'next'
-			? await apiRequestAllNext.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'iocs'), {}, {}, 100, 1)
+			? await apiRequestAllNext.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'iocs'), {}, {}, 0, 1)
 			: await apiRequest.call(this, 'GET', 'case/ioc/list', {}, query);
 	if (response === undefined) {
 		throw new NodeOperationError(this.getNode(), 'No data got returned');

@@ -12,13 +12,26 @@ This package uses its own runtime identifiers to avoid collisions with the built
 - credential label in the editor: `DFIR IRIS API (Zivego)`
 
 This is a breaking change. Existing workflows and credentials that point at upstream `dfirIris` / `dfirIrisApi` need to be recreated manually.
-If you already moved to `4.0.0`, `4.0.1` keeps the same runtime ids and updates only labels, packaging checks, and edge-case handling.
+If you already moved to `4.0.0`, `4.0.2` keeps the same runtime ids and updates only labels, packaging checks, pagination coverage, and edge-case handling.
+
+## Build Requirements
+
+Local build and release tasks require `Node.js 20+`.
+
+If your host uses an older runtime, use the container-safe commands instead:
+
+```sh
+npm run build:container
+npm run pack:container
+```
+
+These commands install `pnpm` ephemerally inside the container and do not require root access.
 
 ## Install
 
 ```sh
 cd ~/.n8n/nodes
-npm install @zivego/n8n-nodes-dfir-iris@4.0.1
+npm install @zivego/n8n-nodes-dfir-iris@4.0.2
 ```
 
 Restart `n8n` after installation.
@@ -33,7 +46,7 @@ If you want to test a local build before publishing:
 pnpm install
 pnpm run pack:tarball
 cd ~/.n8n/nodes
-npm install /path/to/zivego-n8n-nodes-dfir-iris-4.0.1.tgz
+npm install /path/to/zivego-n8n-nodes-dfir-iris-4.0.2.tgz
 ```
 
 Restart `n8n` after installation.
@@ -46,7 +59,7 @@ Do not keep the upstream package and this package installed at the same time.
 cd ~/.n8n/nodes
 npm uninstall n8n-nodes-dfir-iris
 rm -rf ~/.n8n/nodes/node_modules/n8n-nodes-dfir-iris
-npm install @zivego/n8n-nodes-dfir-iris@4.0.1
+npm install @zivego/n8n-nodes-dfir-iris@4.0.2
 ```
 
 Restart `n8n` after the replacement.
@@ -62,7 +75,7 @@ Or install a specific version:
 
 ```sh
 cd ~/.n8n/nodes
-npm install @zivego/n8n-nodes-dfir-iris@4.0.1
+npm install @zivego/n8n-nodes-dfir-iris@4.0.2
 ```
 
 ## Release Checks

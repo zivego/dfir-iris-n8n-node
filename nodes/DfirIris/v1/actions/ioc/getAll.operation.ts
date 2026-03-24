@@ -43,7 +43,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 
 	response =
 		apiMode === 'next'
-			? await apiRequestAllNext.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'iocs'), {}, {}, 100, 1)
+			? await apiRequestAllNext.call(this, 'GET', buildNextCaseScopedEndpoint(cid, 'iocs'), {}, {}, 0, 1)
 			: await apiRequest.call(this, 'GET', `${endpoint}/list`, {}, query);
 
 	const options = this.getNodeParameter('options', i, {});

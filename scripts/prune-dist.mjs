@@ -11,7 +11,16 @@ function walk(dir) {
 
 	for (const entry of readdirSync(dir)) {
 		const fullPath = path.join(dir, entry);
-		const stat = lstatSync(fullPath);
+		let stat;
+		try {
+			stat = lstatSync(fullPath);
+		} catch (error) {
+			if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+				continue;
+			}
+
+			throw error;
+		}
 
 		if (stat.isDirectory()) {
 			walk(fullPath);
@@ -19,7 +28,15 @@ function walk(dir) {
 		}
 
 		if (removablePattern.test(fullPath)) {
-			unlinkSync(fullPath);
+			try {
+				unlinkSync(fullPath);
+			} catch (error) {
+				if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+					continue;
+				}
+
+				throw error;
+			}
 		}
 	}
 }
