@@ -1,6 +1,6 @@
 {
   "name": "@zivego/n8n-nodes-dfir-iris",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "DFIR IRIS node integration for n8n with stable and next API support",
   "license": "MIT",
   "homepage": "https://github.com/zivego/dfir-iris-n8n-node",

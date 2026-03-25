@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 
 const result = spawnSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], {
 	encoding: 'utf8',
@@ -43,6 +44,15 @@ for (const file of files) {
 		if (pattern.test(file)) {
 			throw new Error(`Package contains forbidden file: ${file}`);
 		}
+	}
+}
+
+const distManifest = JSON.parse(readFileSync('dist/package.json', 'utf8'));
+const forbiddenManifestFields = ['scripts', 'devDependencies', 'dependencies', 'optionalDependencies', 'packageManager', 'pnpm'];
+
+for (const field of forbiddenManifestFields) {
+	if (field in distManifest) {
+		throw new Error(`dist/package.json should not contain ${field}`);
 	}
 }
 
