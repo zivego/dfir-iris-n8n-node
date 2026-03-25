@@ -55,19 +55,6 @@ Restart `n8n` after installation.
 
 With persistent `n8n` data, UI installation survives normal Docker restarts and image updates.
 
-## Local Tarball
-
-To test a local build before publishing:
-
-```sh
-pnpm install
-pnpm run pack:tarball
-cd ~/.n8n/nodes
-npm install /path/to/zivego-n8n-nodes-dfir-iris-4.0.2.tgz
-```
-
-Restart `n8n` after installation.
-
 ## Update
 
 ```sh
