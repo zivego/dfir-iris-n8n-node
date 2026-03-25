@@ -29,6 +29,30 @@ These commands install `pnpm` ephemerally inside the container and do not requir
 
 ## Install
 
+The recommended installation path is through the `n8n` UI.
+
+1. Open `Settings` -> `Community nodes`
+2. Click `Install`
+3. Enter the npm package name:
+
+```text
+@zivego/n8n-nodes-dfir-iris
+```
+
+4. Confirm the community-node warning
+5. Click `Install`
+
+After installation, look for these labels in the editor:
+
+- node: `DFIR IRIS (Zivego)`
+- credentials: `DFIR IRIS API (Zivego)`
+
+If your `n8n` instance also ships the built-in DFIR IRIS integration, use the `(Zivego)` suffix to pick this package.
+
+## Install From CLI
+
+If you prefer shell-based installation:
+
 ```sh
 cd ~/.n8n/nodes
 npm install @zivego/n8n-nodes-dfir-iris@4.0.2
@@ -36,30 +60,11 @@ npm install @zivego/n8n-nodes-dfir-iris@4.0.2
 
 Restart `n8n` after installation.
 
-If your `n8n` instance also ships the built-in DFIR IRIS integration, look for the `(Zivego)` suffix in the node and credential picker.
+## Docker Note
 
-## Docker Installation
+If you run `n8n` in Docker with persistent `n8n` data, installing the package from the `n8n` UI is enough and survives normal container restarts and image updates.
 
-If you run `n8n` in Docker, do not rely on installing the package manually into a running container.
-That install is ephemeral and will be lost when the container is recreated or updated.
-
-For a stable setup, bake the node into your custom `n8n` image:
-
-```dockerfile
-FROM n8nio/n8n:2.12.3
-
-USER root
-RUN mkdir -p /home/node/.n8n/nodes \
-	&& chown -R node:node /home/node/.n8n
-
-USER node
-WORKDIR /home/node/.n8n/nodes
-RUN npm install @zivego/n8n-nodes-dfir-iris@4.0.2
-```
-
-Then build and use that image from `docker-compose.yml` or `docker compose up`.
-
-If you update the package version, rebuild the image and recreate the container.
+Use a custom `Dockerfile` only if you explicitly want the package baked into the image as part of your deployment process.
 
 ## Install Before npm Publish
 
@@ -100,8 +105,6 @@ Or install a specific version:
 cd ~/.n8n/nodes
 npm install @zivego/n8n-nodes-dfir-iris@4.0.2
 ```
-
-If you use Docker, update the version in your custom `Dockerfile`, rebuild the image, and recreate the container.
 
 ## Release Checks
 
