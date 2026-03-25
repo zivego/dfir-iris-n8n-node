@@ -34,7 +34,9 @@ Install from the `n8n` UI:
 ```text
 @zivego/n8n-nodes-dfir-iris
 ```
-
+<div align="center">
+  <img width="650" height="471" alt="555" src="https://github.com/user-attachments/assets/242035af-d494-4def-b66e-8a18be78473e" />
+</div>
 Then select:
 
 - node: `DFIR IRIS (Zivego)`
