@@ -29,29 +29,18 @@ These commands install `pnpm` ephemerally inside the container and do not requir
 
 ## Install
 
-The recommended installation path is through the `n8n` UI.
-
-1. Open `Settings` -> `Community nodes`
-2. Click `Install`
-3. Enter the npm package name:
+Install from the `n8n` UI:
 
 ```text
 @zivego/n8n-nodes-dfir-iris
 ```
 
-4. Confirm the community-node warning
-5. Click `Install`
-
-After installation, look for these labels in the editor:
+Then select:
 
 - node: `DFIR IRIS (Zivego)`
 - credentials: `DFIR IRIS API (Zivego)`
 
-If your `n8n` instance also ships the built-in DFIR IRIS integration, use the `(Zivego)` suffix to pick this package.
-
-## Install From CLI
-
-If you prefer shell-based installation:
+CLI alternative:
 
 ```sh
 cd ~/.n8n/nodes
@@ -62,13 +51,11 @@ Restart `n8n` after installation.
 
 ## Docker Note
 
-If you run `n8n` in Docker with persistent `n8n` data, installing the package from the `n8n` UI is enough and survives normal container restarts and image updates.
+With persistent `n8n` data, UI installation survives normal Docker restarts and image updates.
 
-Use a custom `Dockerfile` only if you explicitly want the package baked into the image as part of your deployment process.
+## Local Tarball
 
-## Install Before npm Publish
-
-If you want to test a local build before publishing:
+To test a local build before publishing:
 
 ```sh
 pnpm install
@@ -78,19 +65,6 @@ npm install /path/to/zivego-n8n-nodes-dfir-iris-4.0.2.tgz
 ```
 
 Restart `n8n` after installation.
-
-## Replace the upstream package
-
-Do not keep the upstream package and this package installed at the same time.
-
-```sh
-cd ~/.n8n/nodes
-npm uninstall n8n-nodes-dfir-iris
-rm -rf ~/.n8n/nodes/node_modules/n8n-nodes-dfir-iris
-npm install @zivego/n8n-nodes-dfir-iris@4.0.2
-```
-
-Restart `n8n` after the replacement.
 
 ## Update
 
@@ -106,21 +80,7 @@ cd ~/.n8n/nodes
 npm install @zivego/n8n-nodes-dfir-iris@4.0.2
 ```
 
-## Release Checks
-
-```sh
-pnpm install
-npm run release:check
-```
-
-If you previously built inside Docker and `dist` became root-owned, either fix ownership or use the container-safe path:
-
-```sh
-npm run build:container
-npm run pack:container
-```
-
-## Publish
+## Build And Publish
 
 ```sh
 pnpm install
