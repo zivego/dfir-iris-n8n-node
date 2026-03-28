@@ -10,7 +10,7 @@ import { getNextDocsUrl, getStableDocsUrl } from '../nodes/DfirIris/v1/compatibi
 export class DfirIrisApi implements ICredentialType {
 	name = 'zivegoDfirIrisApi';
 	displayName = 'DFIR IRIS API (Zivego)';
-	documentationUrl = 'https://docs.dfir-iris.org/latest/operations/api/';
+	documentationUrl = 'https://github.com/zivego/dfir-iris-n8n-node/blob/main/docs/setup.md';
 	icon = { light: "file:icons/iris.svg", dark: "file:icons/iris.svg"} as const;
 	properties: INodeProperties[] = [
 		{

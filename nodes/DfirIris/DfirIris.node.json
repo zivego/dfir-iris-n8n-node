@@ -6,12 +6,12 @@
 	"resources": {
 		"credentialDocumentation": [
 			{
-				"url": "https://docs.dfir-iris.org/latest/_static/iris_api_reference_v2.0.4.html"
+				"url": "https://github.com/zivego/dfir-iris-n8n-node/blob/main/docs/setup.md"
 			}
 		],
 		"primaryDocumentation": [
 			{
-				"url": "https://docs.dfir-iris.org/"
+				"url": "https://github.com/zivego/dfir-iris-n8n-node/blob/main/docs/index.md"
 			}
 		]
 	}

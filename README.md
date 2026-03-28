@@ -1,12 +1,12 @@
 # @zivego/n8n-nodes-dfir-iris
 
-DFIR IRIS node integration for [n8n](https://n8n.io/).
+DFIR IRIS node integration for [n8n](https://n8n.io/) with `Stable / Legacy` and `Next / Dev` API support.
 
 Repository: `zivego/dfir-iris-n8n-node`
 
 ## Install
 
-Install from the `n8n` UI.
+Install from the `n8n` UI at `Settings -> Community nodes -> Install`.
 
 For the latest version, enter:
 
@@ -26,6 +26,14 @@ After installation, select:
 
 - node: `DFIR IRIS (Zivego)`
 - credentials: `DFIR IRIS API (Zivego)`
+
+## Full Documentation
+
+- [Documentation index](https://github.com/zivego/dfir-iris-n8n-node/blob/main/docs/index.md)
+- [Setup and credentials](https://github.com/zivego/dfir-iris-n8n-node/blob/main/docs/setup.md)
+- [API modes and compatibility](https://github.com/zivego/dfir-iris-n8n-node/blob/main/docs/api-modes.md)
+- [Examples](https://github.com/zivego/dfir-iris-n8n-node/blob/main/docs/examples.md)
+- [Troubleshooting](https://github.com/zivego/dfir-iris-n8n-node/blob/main/docs/troubleshooting.md)
 
 ## License
 
