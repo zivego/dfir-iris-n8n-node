@@ -1,6 +1,6 @@
 {
   "name": "@zivego/n8n-nodes-dfir-iris",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "DFIR IRIS node integration for n8n with stable and next API support",
   "license": "MIT",
   "homepage": "https://github.com/zivego/dfir-iris-n8n-node",
@@ -31,6 +31,7 @@
     "check:node": "node scripts/check-node-version.mjs",
     "clean": "node scripts/clean-dist.mjs",
     "prune:dist": "node scripts/prune-dist.mjs",
+    "prepare:publish-manifest": "node scripts/prepare-publish-manifest.mjs",
     "build": "npm run check:node && npm run clean && n8n-node build && npm run prune:dist",
     "build:watch": "tsc --watch",
     "dev": "npm run check:node && n8n-node dev",
@@ -40,7 +41,8 @@
     "validate:types": "node scripts/validate-types.mjs",
     "validate:package": "node scripts/validate-package.mjs",
     "release:check": "npm run build && npm run validate:types && npm run validate:package",
-    "prepack": "npm run build && npm run validate:types",
+    "prepack": "npm run build && npm run validate:types && npm run prepare:publish-manifest",
+    "postpack": "node scripts/restore-publish-manifest.mjs",
     "prepublishOnly": "npm run release:check"
   },
   "files": [

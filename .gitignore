@@ -2,6 +2,7 @@ node_modules
 dist
 .pnpm-store
 artifacts
+.publish-tmp
 .env
 .DS_Store
 npm-debug.log*
