@@ -40,6 +40,10 @@ Incorrect:
 
 - `https://iris.example.com`
 - `iris.example.com/api`
+- `user:pass@iris.example.com`
+- `iris.example.com?debug=true`
+
+The node now rejects hosts that include schemes, paths, fragments, credentials, or control characters.
 
 ## SSL / Self-Signed Certificates
 
@@ -60,6 +64,26 @@ This is expected.
 
 See [API modes and compatibility](./api-modes.md).
 
+## API Request Rejects a Path or Header
+
+This is expected if the request tries to escape the configured IRIS host or override connection-level headers.
+
+Rejected path patterns include:
+
+- full URLs such as `https://example.com/api`
+- protocol-relative paths such as `//example.com/api`
+- paths containing query strings or fragments
+
+Rejected header overrides include:
+
+- `Authorization`
+- `Host`
+- `Content-Length`
+- `Transfer-Encoding`
+- `Connection`
+
+Use relative DFIR IRIS paths and let the node handle authentication and connection headers.
+
 ## Empty Results vs Real Errors
 
 This package is designed to avoid masking backend failures as empty paginated lists. If a `Get Many` or load-options call fails:
@@ -77,3 +101,14 @@ For `Datastore File -> Download`, filename resolution works in this order:
 3. safe generated fallback name
 
 If you receive binary output with a generic fallback filename, the backend probably did not send `content-disposition`.
+
+## Security Ownership
+
+Some risks cannot be fixed inside this package alone. In particular:
+
+- `n8n` role and credential-sharing policy
+- whether untrusted users can edit workflows
+- IRIS-side authorization and RBAC
+- downstream handling of large or malicious files
+
+Treat those as operator responsibilities, not as guarantees provided by the node itself.

@@ -55,6 +55,32 @@ Enable this only when you must connect to a self-signed or otherwise non-standar
 
 Enables extra logging from the node. Use it when troubleshooting requests, API mode mismatches, or backend errors.
 
+## Security Guidance
+
+### Treat workflow input as untrusted unless proven otherwise
+
+If upstream nodes receive data from webhooks, forms, tickets, chat systems, or other external sources, do not pass those values directly into destructive DFIR IRIS operations without validation.
+
+### Use least-privilege IRIS tokens
+
+Prefer dedicated tokens for automation instead of reusing highly privileged administrator tokens. Limit token scope and access to the smallest set of IRIS actions that your workflows actually need.
+
+### Restrict credential sharing
+
+Anyone who can edit a workflow that uses these credentials may be able to create, update, export, or delete IRIS data depending on token scope. Share credentials only with trusted `n8n` users and projects.
+
+### Enforce outbound egress policy where possible
+
+This node only talks to the IRIS host configured in the credential. In production, consider using outbound allowlists or network policy so `n8n` can reach only approved IRIS endpoints.
+
+### Prefer HTTPS and valid certificates
+
+Avoid `Use HTTP` unless the deployment is intentionally plain HTTP in a controlled network. Avoid `Ignore SSL Issues` unless you specifically need to trust a self-signed or otherwise non-standard certificate.
+
+### Protect execution data and logs
+
+IRIS responses can include incident metadata, evidence metadata, and other sensitive information. Align `n8n` execution retention, log shipping, and debugging practices with that sensitivity.
+
 ## Connection Test
 
 The credential test sends a request to:
@@ -108,3 +134,7 @@ If the token is invalid, paginated operations and load options should fail with 
 ### Wrong API mode
 
 If `Next / Dev` is selected against an instance that does not expose `api/v2`, next-compatible operations will fail. Switch the credential back to `Stable / Legacy` unless the backend is known to support the newer API surface.
+
+### API Request guardrails
+
+`API Request` accepts only relative DFIR IRIS paths. Full URLs, query strings embedded in the path, fragments, and connection-level header overrides are intentionally rejected.

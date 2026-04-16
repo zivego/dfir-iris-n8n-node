@@ -11,7 +11,10 @@ import type {
 import { NodeApiError } from 'n8n-workflow';
 
 import { resolveApiMode, type ApiMode } from '../compatibility';
-import { enableDebug, IrisLog } from '../helpers/utils';
+import { IrisLog } from '../helpers/utils';
+
+const CONTROL_CHAR_REGEX = /[\u0000-\u001F\u007F]/;
+const MAX_SAFE_PAGES = 1000;
 
 type DfirIrisRequestBody =
 	| IDataObject
@@ -78,8 +81,158 @@ function hasRequestBody(body: DfirIrisRequestBody, isFormData: boolean): boolean
 	return true;
 }
 
-function normalizeEndpoint(endpoint: string): string {
-	return endpoint.replace(/^\/+/, '');
+function getValidationError(message: string, description: string): JsonObject {
+	return {
+		message,
+		description,
+	};
+}
+
+export function sanitizeRelativeEndpoint(endpoint: unknown): string {
+	if (typeof endpoint !== 'string') {
+		throw getValidationError(
+			'Invalid API path',
+			'The request path must be a non-empty relative path string.',
+		);
+	}
+
+	const trimmedEndpoint = endpoint.trim();
+	if (!trimmedEndpoint) {
+		throw getValidationError(
+			'Invalid API path',
+			'The request path must be a non-empty relative path string.',
+		);
+	}
+
+	if (
+		trimmedEndpoint.startsWith('//') ||
+		/^[a-z][a-z\d+\-.]*:\/\//i.test(trimmedEndpoint) ||
+		trimmedEndpoint.includes('\\') ||
+		trimmedEndpoint.includes('?') ||
+		trimmedEndpoint.includes('#') ||
+		CONTROL_CHAR_REGEX.test(trimmedEndpoint)
+	) {
+		throw getValidationError(
+			'Invalid API path',
+			'Only relative DFIR IRIS paths are allowed. Do not enter full URLs, query strings, fragments, or control characters.',
+		);
+	}
+
+	const normalizedEndpoint = trimmedEndpoint.replace(/^\/+/, '');
+	if (!normalizedEndpoint) {
+		throw getValidationError(
+			'Invalid API path',
+			'The request path must not resolve to an empty value.',
+		);
+	}
+
+	return normalizedEndpoint;
+}
+
+function sanitizeHost(host: unknown): string {
+	if (typeof host !== 'string') {
+		throw getValidationError(
+			'Invalid Host',
+			'Host must be a hostname or IP address, optionally followed by a port.',
+		);
+	}
+
+	const trimmedHost = host.trim();
+	if (!trimmedHost) {
+		throw getValidationError(
+			'Invalid Host',
+			'Host must be a hostname or IP address, optionally followed by a port.',
+		);
+	}
+
+	if (
+		trimmedHost.includes('/') ||
+		trimmedHost.includes('?') ||
+		trimmedHost.includes('#') ||
+		trimmedHost.includes('@') ||
+		trimmedHost.includes('\\') ||
+		/^[a-z][a-z\d+\-.]*:\/\//i.test(trimmedHost) ||
+		/\s/.test(trimmedHost) ||
+		CONTROL_CHAR_REGEX.test(trimmedHost)
+	) {
+		throw getValidationError(
+			'Invalid Host',
+			'Host must contain only the hostname or IP address. Do not include a scheme, path, query string, credentials, or control characters.',
+		);
+	}
+
+	let parsedUrl: URL;
+	try {
+		parsedUrl = new URL(`https://${trimmedHost}`);
+	} catch {
+		throw getValidationError(
+			'Invalid Host',
+			'Host must be a valid hostname or IP address, optionally followed by a port.',
+		);
+	}
+
+	if (
+		parsedUrl.username ||
+		parsedUrl.password ||
+		parsedUrl.pathname !== '/' ||
+		parsedUrl.search ||
+		parsedUrl.hash ||
+		!parsedUrl.host
+	) {
+		throw getValidationError(
+			'Invalid Host',
+			'Host must contain only the hostname or IP address. Do not include a scheme, path, query string, or credentials.',
+		);
+	}
+
+	return parsedUrl.host;
+}
+
+function getDebugLogger(
+	logger: IHookFunctions['logger'] | IExecuteFunctions['logger'] | ILoadOptionsFunctions['logger'] | IWebhookFunctions['logger'],
+	credentials: IDataObject,
+): IrisLog {
+	return new IrisLog(logger, Boolean(credentials?.enableDebug));
+}
+
+function summarizeQueryKeys(query?: IDataObject): string[] {
+	if (!query || typeof query !== 'object') {
+		return [];
+	}
+
+	return Object.keys(query).sort();
+}
+
+function buildSafeRequestLogMeta(
+	method: IHttpRequestMethods,
+	endpoint: string,
+	query: IDataObject | undefined,
+	body: DfirIrisRequestBody,
+	isFormData: boolean,
+	options: IDataObject = {},
+) {
+	return {
+		method,
+		path: endpoint,
+		queryKeys: summarizeQueryKeys(query),
+		hasBody: hasRequestBody(body, isFormData),
+		sendBinary: isFormData,
+		returnFullResponse: Boolean(options.returnFullResponse),
+		json: options.json !== false,
+	};
+}
+
+function buildSafeErrorLogMeta(error: unknown): IDataObject {
+	if (!error || typeof error !== 'object') {
+		return {};
+	}
+
+	const errorObject = error as IDataObject;
+	return {
+		message: errorObject.message,
+		statusCode: errorObject.statusCode,
+		code: errorObject.code,
+	};
 }
 
 function extractNextPaginatedPayload(responseData: unknown): IDataObject {
@@ -106,7 +259,8 @@ function extractNextPaginatedPayload(responseData: unknown): IDataObject {
 }
 
 function getConnectionSettings(credentials: IDataObject) {
-	const baseUrl = `${credentials.isHttp ? 'http' : 'https'}://${credentials.host as string}`;
+	const normalizedHost = sanitizeHost(credentials.host);
+	const baseUrl = `${credentials.isHttp ? 'http' : 'https'}://${normalizedHost}`;
 	const skipSslCertificateValidation = credentials.isHttp
 		? true
 		: Boolean(credentials.allowUnauthorizedCerts);
@@ -128,9 +282,10 @@ function buildRequestOptions(
 	isFormData: boolean = false,
 	skipSslCertificateValidation: boolean,
 ): IHttpRequestOptions {
+	const normalizedEndpoint = sanitizeRelativeEndpoint(endpoint);
 	let options: IHttpRequestOptions = {
 		method,
-		url: `${baseUrl}/${normalizeEndpoint(endpoint)}`,
+		url: `${baseUrl}/${normalizedEndpoint}`,
 		qs: query,
 		body: body as never,
 		returnFullResponse: false,
@@ -185,15 +340,21 @@ export async function apiRequest(
 	isFormData: boolean = false,
 ): Promise<IDataObject> {
 	const credentials = await this.getCredentials('zivegoDfirIrisApi');
-
-	enableDebug(credentials?.enableDebug as boolean);
-	const irisLogger = new IrisLog(this.logger);
-	const { baseUrl, skipSslCertificateValidation } = getConnectionSettings(credentials);
+	const irisLogger = getDebugLogger(this.logger, credentials);
+	let normalizedEndpoint: string;
+	let baseUrl: string;
+	let skipSslCertificateValidation: boolean;
+	try {
+		normalizedEndpoint = sanitizeRelativeEndpoint(endpoint);
+		({ baseUrl, skipSslCertificateValidation } = getConnectionSettings(credentials));
+	} catch (error) {
+		throw new NodeApiError(this.getNode(), error as JsonObject);
+	}
 
 	const options = buildRequestOptions(
 		method,
 		baseUrl,
-		endpoint,
+		normalizedEndpoint,
 		body,
 		query || {},
 		option,
@@ -202,9 +363,13 @@ export async function apiRequest(
 	);
 
 	try {
-		irisLogger.info('options', { options });
+		irisLogger.info(
+			'dfir-iris request',
+			buildSafeRequestLogMeta(method, normalizedEndpoint, query || {}, body, isFormData, option),
+		);
 		return await this.helpers.httpRequestWithAuthentication.call(this, 'zivegoDfirIrisApi', options);
 	} catch (error) {
+		irisLogger.info('dfir-iris request failed', buildSafeErrorLogMeta(error));
 		throw new NodeApiError(this.getNode(), error as JsonObject);
 	}
 }
@@ -227,24 +392,30 @@ export async function apiRequestAll(
 	propKey: string,
 ): Promise<IDataObject> {
 	const credentials = await this.getCredentials('zivegoDfirIrisApi');
-
-	enableDebug(credentials?.enableDebug as boolean);
-
-	const { baseUrl, skipSslCertificateValidation } = getConnectionSettings(credentials);
+	const irisLogger = getDebugLogger(this.logger, credentials);
+	let normalizedEndpoint: string;
+	let baseUrl: string;
+	let skipSslCertificateValidation: boolean;
+	try {
+		normalizedEndpoint = sanitizeRelativeEndpoint(endpoint);
+		({ baseUrl, skipSslCertificateValidation } = getConnectionSettings(credentials));
+	} catch (error) {
+		throw new NodeApiError(this.getNode(), error as JsonObject);
+	}
 	const headers = { 'content-type': 'application/json; charset=utf-8' };
-	const irisLogger = new IrisLog(this.logger);
 
 	query = query || {};
 	let returnData: IDataObject[] = [];
 	let responseData;
 	let proceed = true;
+	let pageIterations = 0;
 	query.page = start_page;
 	query.per_page = max_items > 0 && max_items < 100 ? max_items : 100;
 
 	const options: IHttpRequestOptions = {
 		headers: headers,
 		method,
-		url: `${baseUrl}/${endpoint}`,
+		url: `${baseUrl}/${normalizedEndpoint}`,
 		body,
 		qs: query,
 		json: true,
@@ -256,8 +427,24 @@ export async function apiRequestAll(
 		rejectUnauthorized: !skipSslCertificateValidation,
 	});
 
-	irisLogger.info('req options: ', { options });
+	irisLogger.info('dfir-iris paginated request', {
+		method,
+		path: normalizedEndpoint,
+		startPage: start_page,
+		perPage: query.per_page,
+		hasBody: hasRequestBody(body, false),
+	});
 	do {
+		pageIterations += 1;
+		if (pageIterations > MAX_SAFE_PAGES) {
+			throw new NodeApiError(
+				this.getNode(),
+				getUnexpectedPaginationError(
+					`Pagination exceeded the safety ceiling of ${MAX_SAFE_PAGES} pages.`,
+				),
+			);
+		}
+
 		try {
 			responseData = await this.helpers.httpRequestWithAuthentication.call(
 				this,
@@ -265,6 +452,7 @@ export async function apiRequestAll(
 				options,
 			);
 		} catch (error) {
+			irisLogger.info('dfir-iris paginated request failed', buildSafeErrorLogMeta(error));
 			throw new NodeApiError(this.getNode(), error as JsonObject);
 		}
 
@@ -281,31 +469,46 @@ export async function apiRequestAll(
 			);
 		}
 
-		// for troubleshooting
-		irisLogger.info('responseData', {responseData});
-		// proceed = false
+		const currentPage = Number(responseData.data.current_page ?? options.qs?.page ?? start_page);
+		const nextPage =
+			responseData.data.next_page === 'null' || responseData.data.next_page === null
+				? null
+				: Number(responseData.data.next_page);
+		const lastPage = Number(responseData.data.last_page ?? currentPage);
+		const total = Number(responseData.data.total ?? returnData.length);
 
-		irisLogger.info('current_page: ', responseData.data.current_page);
-		irisLogger.info('next_page: ', responseData.data.next_page);
-		irisLogger.info('last_page: ', responseData.data.last_page);
-		irisLogger.info('total: ', responseData.data.total);
+		irisLogger.info('dfir-iris paginated response', {
+			path: normalizedEndpoint,
+			currentPage,
+			nextPage,
+			lastPage,
+			total,
+			itemCount: responseData.data[propKey].length,
+		});
 
 		returnData.push(...responseData.data[propKey]);
 
-		irisLogger.info(`max_items: ${max_items}`);
-		irisLogger.info(`returnData.length: ${returnData.length}`);
-
 		if (max_items > 0 && returnData.length >= max_items) {
 			proceed = false;
-		} else if (
-			!responseData.data.next_page ||
-			responseData.data.next_page === 'null' ||
-			responseData.data.next_page === null
-		) {
+		} else if (!nextPage) {
 			proceed = false;
 		} else {
+			if (!Number.isFinite(currentPage) || currentPage < 1) {
+				throw new NodeApiError(
+					this.getNode(),
+					getUnexpectedPaginationError('Current page is missing or invalid.'),
+				);
+			}
+
+			if (!Number.isFinite(nextPage) || nextPage <= currentPage || nextPage > lastPage + 1) {
+				throw new NodeApiError(
+					this.getNode(),
+					getUnexpectedPaginationError('Next page is missing, invalid, or not advancing.'),
+				);
+			}
+
 			if (options.qs && typeof options.qs === 'object') {
-				options.qs.page = responseData.data.next_page;
+				options.qs.page = nextPage;
 			}
 		}
 	} while (proceed);
@@ -326,24 +529,40 @@ export async function apiRequestAllNext(
 	startPage: number = 1,
 ): Promise<IDataObject> {
 	const credentials = await this.getCredentials('zivegoDfirIrisApi');
-
-	enableDebug(credentials?.enableDebug as boolean);
-
-	const { baseUrl, skipSslCertificateValidation } = getConnectionSettings(credentials);
+	const irisLogger = getDebugLogger(this.logger, credentials);
+	let normalizedEndpoint: string;
+	let baseUrl: string;
+	let skipSslCertificateValidation: boolean;
+	try {
+		normalizedEndpoint = sanitizeRelativeEndpoint(endpoint);
+		({ baseUrl, skipSslCertificateValidation } = getConnectionSettings(credentials));
+	} catch (error) {
+		throw new NodeApiError(this.getNode(), error as JsonObject);
+	}
 	const headers = { 'content-type': 'application/json; charset=utf-8' };
-	const irisLogger = new IrisLog(this.logger);
 	const returnData: IDataObject[] = [];
 	const perPage = maxItems > 0 && maxItems < 100 ? maxItems : 100;
 	const isGetLikeRequest = method === 'GET' || method === 'HEAD';
 	let currentPage = startPage;
 	let lastPage = startPage;
 	let total = 0;
+	let pageIterations = 0;
 
 	do {
+		pageIterations += 1;
+		if (pageIterations > MAX_SAFE_PAGES) {
+			throw new NodeApiError(
+				this.getNode(),
+				getUnexpectedPaginationError(
+					`Pagination exceeded the safety ceiling of ${MAX_SAFE_PAGES} pages.`,
+				),
+			);
+		}
+
 		const options: IHttpRequestOptions = {
 			headers,
 			method,
-			url: `${baseUrl}/${normalizeEndpoint(endpoint)}`,
+			url: `${baseUrl}/${normalizedEndpoint}`,
 			body: isGetLikeRequest ? undefined : body,
 			qs: {
 				...(isGetLikeRequest ? body : {}),
@@ -368,10 +587,10 @@ export async function apiRequestAllNext(
 				options,
 			);
 		} catch (error) {
+			irisLogger.info('dfir-iris next paginated request failed', buildSafeErrorLogMeta(error));
 			throw new NodeApiError(this.getNode(), error as JsonObject);
 		}
 
-		irisLogger.info('next responseData', { responseData });
 		const payload = extractNextPaginatedPayload(responseData);
 		if (!Array.isArray(payload.data)) {
 			throw new NodeApiError(
@@ -384,6 +603,22 @@ export async function apiRequestAllNext(
 		returnData.push(...items);
 		total = Number(payload.total || returnData.length);
 		lastPage = Number(payload.last_page || currentPage);
+
+		if (!Number.isFinite(lastPage) || lastPage < currentPage) {
+			throw new NodeApiError(
+				this.getNode(),
+				getUnexpectedPaginationError('Last page is missing or invalid.'),
+			);
+		}
+
+		irisLogger.info('dfir-iris next paginated response', {
+			path: normalizedEndpoint,
+			currentPage,
+			lastPage,
+			total,
+			itemCount: items.length,
+		});
+
 		currentPage += 1;
 
 		if (maxItems > 0 && returnData.length >= maxItems) {

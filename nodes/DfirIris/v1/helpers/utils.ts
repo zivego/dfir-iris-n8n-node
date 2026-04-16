@@ -10,9 +10,8 @@ import { NodeOperationError } from 'n8n-workflow';
 import type { IFolder, IFolderSub, INoteGroup } from './../helpers/types';
 
 // overwrite on global level
-const SHOW_LOGS_FORCED = false
-
-let SHOW_LOGS = false
+const SHOW_LOGS_FORCED = false;
+const INVALID_FILE_NAME_CHARS = /[\x00-\x1F\x7F<>:"|?*]+/g;
 
 export interface IrisLogger {
   info(message: string, meta?: Record<string, unknown>): void;
@@ -20,26 +19,41 @@ export interface IrisLogger {
 
 export class IrisLog implements IrisLogger {
   private readonly logger: Logger;
+  private readonly enabled: boolean;
 
-  constructor(logger: Logger) {
+  constructor(logger: Logger, enabled = false) {
     this.logger = logger;
+    this.enabled = SHOW_LOGS_FORCED || enabled;
   }
 
   info(message: string, meta?: Record<string, unknown>): void {
-	if (SHOW_LOGS){
+	if (this.enabled) {
 		if (meta && Object.keys(meta).length > 0) {
-		this.logger.info(message, meta);
+			this.logger.info(message, meta);
 		} else {
-		this.logger.info(message);
+			this.logger.info(message);
 		}
 	}
   }
 }
 
-export function enableDebug(state: boolean): void{
-	if (!SHOW_LOGS_FORCED){
-		SHOW_LOGS = state ? true : false
+export function sanitizeBinaryFileName(value: unknown, fallback: string): string {
+	const candidate = typeof value === 'string' ? value.trim() : '';
+	if (!candidate) {
+		return fallback;
 	}
+
+	const lastSegment = candidate.split(/[\\/]+/).filter(Boolean).at(-1) ?? '';
+	const sanitized = lastSegment
+		.replace(INVALID_FILE_NAME_CHARS, '_')
+		.replace(/[. ]+$/g, '')
+		.trim();
+
+	if (!sanitized || sanitized === '.' || sanitized === '..') {
+		return fallback;
+	}
+
+	return sanitized.slice(0, 255);
 }
 
 export function fieldsRemover(responseRoot: IDataObject | IDataObject[], options: IDataObject) {
@@ -186,7 +200,7 @@ export function getFolderNested(
 	prefix: string = '',
 ) {
 	const rootObj = Object.entries(root).filter(e => e[0].startsWith('d-')) as [string, IFolderSub][];
-	if (rootObj.length >= 0)
+	if (rootObj.length >= 0) {
 		rootObj.forEach(e => {
 			data.push({
 				name: `${prefix}${e[1].name}`,
@@ -194,6 +208,7 @@ export function getFolderNested(
 			});
 			return getFolderNested(data, e[1].children || {}, `${prefix}${e[1].name} - `);
 		});
+	}
 	return data;
 }
 

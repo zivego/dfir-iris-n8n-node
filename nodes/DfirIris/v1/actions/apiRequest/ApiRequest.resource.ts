@@ -10,8 +10,17 @@ import type {
 import { NodeOperationError, updateDisplayOptions } from 'n8n-workflow';
 
 import { buildOperationProperty } from '../../compatibility';
-import { apiRequest } from '../../transport';
-import { types } from '../../helpers';
+import { apiRequest, sanitizeRelativeEndpoint } from '../../transport';
+import { types, utils } from '../../helpers';
+
+const RESERVED_REQUEST_HEADERS = new Set([
+	'authorization',
+	'host',
+	'content-length',
+	'transfer-encoding',
+	'connection',
+]);
+const CONTROL_CHAR_REGEX = /[\u0000-\u001F\u007F]/;
 
 function parseJsonParameter(
 	value: unknown,
@@ -50,8 +59,16 @@ function parseJsonObjectParameter(
 	return parsed as IDataObject;
 }
 
-function normalizePath(path: string): string {
-	return path.replace(/^\/+/, '');
+function normalizePath(path: string, node: INode, itemIndex: number): string {
+	try {
+		return sanitizeRelativeEndpoint(path);
+	} catch (error) {
+		const details =
+			error && typeof error === 'object' && 'message' in error
+				? (error as IDataObject).message
+				: 'The request path must be a non-empty relative DFIR IRIS path.';
+		throw new NodeOperationError(node, details as string, { itemIndex });
+	}
 }
 
 function getResponseFileName(headers: IDataObject, path: string): string {
@@ -65,7 +82,34 @@ function getResponseFileName(headers: IDataObject, path: string): string {
 	}
 
 	const fallback = path.split('/').filter(Boolean).at(-1);
-	return fallback || 'dfir-iris-response.bin';
+	return utils.sanitizeBinaryFileName(fallback, 'dfir-iris-response.bin');
+}
+
+function validateRequestHeaders(headers: IDataObject, node: INode, itemIndex: number): IDataObject {
+	for (const [key, value] of Object.entries(headers)) {
+		const normalizedKey = key.trim().toLowerCase();
+		if (!normalizedKey || CONTROL_CHAR_REGEX.test(normalizedKey)) {
+			throw new NodeOperationError(node, 'Header names must be non-empty printable strings', {
+				itemIndex,
+			});
+		}
+
+		if (RESERVED_REQUEST_HEADERS.has(normalizedKey)) {
+			throw new NodeOperationError(
+				node,
+				`Header override not allowed: ${key}. Authorization and connection-level headers are controlled by the node.`,
+				{ itemIndex },
+			);
+		}
+
+		if (typeof value === 'string' && CONTROL_CHAR_REGEX.test(value)) {
+			throw new NodeOperationError(node, `Header value for ${key} contains control characters`, {
+				itemIndex,
+			});
+		}
+	}
+
+	return headers;
 }
 
 const properties: INodeProperties[] = [
@@ -265,12 +309,20 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 		| 'PATCH'
 		| 'POST'
 		| 'PUT';
-	const requestPath = normalizePath(this.getNodeParameter('requestPath', i) as string);
+	const requestPath = normalizePath(
+		this.getNodeParameter('requestPath', i) as string,
+		this.getNode(),
+		i,
+	);
 	const sendBinary = this.getNodeParameter('sendBinary', i, false) as boolean;
 	const downloadResponse = this.getNodeParameter('downloadResponse', i, false) as boolean;
-	const headers = parseJsonObjectParameter(
+	const headers = validateRequestHeaders(
+		parseJsonObjectParameter(
 		this.getNodeParameter('requestHeaders', i, '{}'),
 		'Headers',
+		this.getNode(),
+		i,
+		),
 		this.getNode(),
 		i,
 	);
@@ -371,7 +423,10 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 		const responseObject = response as unknown as IDataObject;
 		const headersObject = (responseObject.headers || {}) as IDataObject;
 		const mimeType = (headersObject['content-type'] as string) || 'application/octet-stream';
-		const fileName = getResponseFileName(headersObject, requestPath);
+		const fileName = utils.sanitizeBinaryFileName(
+			getResponseFileName(headersObject, requestPath),
+			'dfir-iris-response.bin',
+		);
 
 		let item = this.getInputData()[i];
 		const newItem: INodeExecutionData = {

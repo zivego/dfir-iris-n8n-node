@@ -104,11 +104,13 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const responseFileName = normalizeOptionalFileName(
 		(response.contentDisposition as IDataObject | undefined)?.filename,
 	);
-	const fileName =
+	const fileName = utils.sanitizeBinaryFileName(
 		customFileName ??
-		responseFileName ??
-		getFileNameFromContentDisposition(contentDisposition) ??
-		fallbackFileName;
+			responseFileName ??
+			getFileNameFromContentDisposition(contentDisposition) ??
+			fallbackFileName,
+		fallbackFileName,
+	);
 
 	let item = this.getInputData()[i];
 	const newItem: INodeExecutionData = {

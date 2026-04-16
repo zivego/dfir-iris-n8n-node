@@ -67,3 +67,4 @@ api/v2/cases/1/assets
 - Authorization comes from the credential automatically
 - Use `Download Response` for file-like responses
 - Use `Send Binary` for multipart uploads
+- Full URLs and connection-level header overrides are intentionally rejected
