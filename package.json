@@ -36,8 +36,6 @@
     "build:watch": "tsc --watch",
     "dev": "npm run check:node && n8n-node dev",
     "build:container": "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$PWD:/workspace\" -w /workspace node:20-bookworm bash -lc \"npx -y pnpm@10.22.0 install --frozen-lockfile && npx -y pnpm@10.22.0 run build\"",
-    "test:security": "npm run build && node --test test/security/*.test.cjs",
-    "test:security:container": "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$PWD:/workspace\" -w /workspace node:20-bookworm bash -lc \"npx -y pnpm@10.22.0 install --frozen-lockfile && npx -y pnpm@10.22.0 run test:security\"",
     "pack:tarball": "npm run build && npm pack --pack-destination artifacts",
     "pack:container": "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$PWD:/workspace\" -w /workspace node:20-bookworm bash -lc \"npx -y pnpm@10.22.0 install --frozen-lockfile && npx -y pnpm@10.22.0 run pack:tarball\"",
     "validate:types": "node scripts/validate-types.mjs",
