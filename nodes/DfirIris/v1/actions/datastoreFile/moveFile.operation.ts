@@ -49,8 +49,14 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	let response;
 	const body: IDataObject = {};
+	const folderId = utils.sanitizeSinglePathSegment(
+		this.getNodeParameter('folderId', i, 0),
+		this.getNode(),
+		i,
+		'Destination Folder ID',
+	);
 
-	body['destination-node'] = this.getNodeParameter('folderId', i, 0) as string;
+	body['destination-node'] = folderId;
 
 	response = await apiRequest.call(
 		this,

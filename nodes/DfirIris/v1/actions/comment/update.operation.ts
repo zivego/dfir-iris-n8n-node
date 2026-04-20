@@ -52,8 +52,18 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const body: IDataObject = {};
 
 	const obj_name = this.getNodeParameter('obj_name', i) as string;
-	const obj_id = this.getNodeParameter('obj_id', i) as string;
-	const comment_id = this.getNodeParameter('comment_id', i) as string;
+	const obj_id = utils.sanitizeSinglePathSegment(
+		this.getNodeParameter('obj_id', i),
+		this.getNode(),
+		i,
+		'Object ID',
+	);
+	const comment_id = utils.sanitizeSinglePathSegment(
+		this.getNodeParameter('comment_id', i),
+		this.getNode(),
+		i,
+		'Comment ID',
+	);
 	const uri_base = obj_name === 'alert' ? 'alerts' : `case/${obj_name}`
 
 	body.comment_text = this.getNodeParameter('comment_text', i) as string;
@@ -61,7 +71,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	response = await apiRequest.call(
 		this,
 		'POST',
-		`${uri_base}/${obj_id}/comments/${comment_id}/edit`,
+		`${uri_base}/${encodeURIComponent(obj_id)}/comments/${encodeURIComponent(comment_id)}/edit`,
 		body,
 		query,
 	);

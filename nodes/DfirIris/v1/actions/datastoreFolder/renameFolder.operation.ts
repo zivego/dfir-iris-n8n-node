@@ -9,6 +9,7 @@ import { updateDisplayOptions } from 'n8n-workflow';
 
 import { endpoint } from './DatastoreFolder.resource';
 import { apiRequest } from '../../transport';
+import { utils } from '../../helpers';
 
 const properties: INodeProperties[] = [
 	{
@@ -44,14 +45,20 @@ export const description = updateDisplayOptions(displayOptions, properties);
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	const body: IDataObject = {};
+	const folderId = utils.sanitizeSinglePathSegment(
+		this.getNodeParameter('folderId', i),
+		this.getNode(),
+		i,
+		'Folder ID',
+	);
 
-	body.parent_node = this.getNodeParameter('folderId', i) as string;
+	body.parent_node = folderId;
 	body.folder_name = this.getNodeParameter('folderName', i, 0) as string;
 
 	const response = await apiRequest.call(
 		this,
 		'POST',
-		`${endpoint}/folder/rename/` + (this.getNodeParameter('folderId', i) as string),
+		`${endpoint}/folder/rename/${encodeURIComponent(folderId)}`,
 		body,
 		query,
 	);

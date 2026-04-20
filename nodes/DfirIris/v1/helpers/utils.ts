@@ -12,6 +12,7 @@ import type { IFolder, IFolderSub, INoteGroup } from './../helpers/types';
 // overwrite on global level
 const SHOW_LOGS_FORCED = false;
 const INVALID_FILE_NAME_CHARS = /[\x00-\x1F\x7F<>:"|?*]+/g;
+const INVALID_PATH_SEGMENT_CHARS = /[\u0000-\u001F\u007F/?#\\]/;
 
 export interface IrisLogger {
   info(message: string, meta?: Record<string, unknown>): void;
@@ -54,6 +55,53 @@ export function sanitizeBinaryFileName(value: unknown, fallback: string): string
 	}
 
 	return sanitized.slice(0, 255);
+}
+
+export function sanitizeSinglePathSegmentValue(value: unknown, label: string): string {
+	const candidate = typeof value === 'string' ? value.trim() : '';
+	const errorMessage = `Invalid ${label}: must be a non-empty single path segment without paths, fragments, or traversal tokens`;
+
+	if (!candidate) {
+		throw new Error(errorMessage);
+	}
+
+	if (candidate === '.' || candidate === '..' || INVALID_PATH_SEGMENT_CHARS.test(candidate)) {
+		throw new Error(errorMessage);
+	}
+
+	try {
+		const decodedCandidate = decodeURIComponent(candidate);
+		if (
+			decodedCandidate === '.' ||
+			decodedCandidate === '..' ||
+			INVALID_PATH_SEGMENT_CHARS.test(decodedCandidate)
+		) {
+			throw new Error(errorMessage);
+		}
+	} catch (error) {
+		if (!(error instanceof URIError)) {
+			throw error;
+		}
+	}
+
+	return candidate;
+}
+
+export function sanitizeSinglePathSegment(
+	value: unknown,
+	node: INode,
+	itemIndex: number,
+	label: string,
+): string {
+	try {
+		return sanitizeSinglePathSegmentValue(value, label);
+	} catch (error) {
+		throw new NodeOperationError(
+			node,
+			error instanceof Error ? error.message : `Invalid ${label}`,
+			{ itemIndex },
+		);
+	}
 }
 
 export function fieldsRemover(responseRoot: IDataObject | IDataObject[], options: IDataObject) {

@@ -53,13 +53,18 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	body.comment_text = this.getNodeParameter('comment_text', i) as string;
 
 	const obj_name = this.getNodeParameter('obj_name', i) as string;
-	const obj_id = this.getNodeParameter('obj_id', i) as string;
+	const obj_id = utils.sanitizeSinglePathSegment(
+		this.getNodeParameter('obj_id', i),
+		this.getNode(),
+		i,
+		'Object ID',
+	);
 	const uri_base = obj_name === 'alert' ? 'alerts' : `case/${obj_name}`
 
 	response = await apiRequest.call(
 		this,
 		'POST',
-		`${uri_base}/${obj_id}/comments/add`,
+		`${uri_base}/${encodeURIComponent(obj_id)}/comments/add`,
 		body,
 		query,
 	);

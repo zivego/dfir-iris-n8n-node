@@ -47,11 +47,17 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	let response;
 	const body: IDataObject = {};
+	const folderId = utils.sanitizeSinglePathSegment(
+		this.getNodeParameter('folderId', i),
+		this.getNode(),
+		i,
+		'Folder ID',
+	);
 
 	response = await apiRequest.call(
 		this,
 		'POST',
-		`${endpoint}/folder/delete/` + (this.getNodeParameter('folderId', i) as string),
+		`${endpoint}/folder/delete/${encodeURIComponent(folderId)}`,
 		body,
 		query,
 	);

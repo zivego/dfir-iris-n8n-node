@@ -126,6 +126,13 @@ export function sanitizeRelativeEndpoint(endpoint: unknown): string {
 		);
 	}
 
+	if (normalizedEndpoint.split('/').some((segment) => segment === '.' || segment === '..')) {
+		throw getValidationError(
+			'Invalid API path',
+			'Only relative DFIR IRIS paths are allowed. Dot path segments are not permitted.',
+		);
+	}
+
 	return normalizedEndpoint;
 }
 

@@ -55,8 +55,14 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	let response;
 	const body: IDataObject = {};
+	const destFolderId = utils.sanitizeSinglePathSegment(
+		this.getNodeParameter('destFolderId', i, 0),
+		this.getNode(),
+		i,
+		'Destination Folder ID',
+	);
 
-	body.parent_node = this.getNodeParameter('destFolderId', i, 0) as string;
+	body.parent_node = destFolderId;
 	body.folder_name = this.getNodeParameter('folderName', i, 0) as string;
 
 	response = await apiRequest.call(this, 'POST', `${endpoint}/folder/add`, body, query);
