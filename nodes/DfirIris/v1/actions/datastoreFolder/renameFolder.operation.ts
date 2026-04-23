@@ -45,7 +45,7 @@ export const description = updateDisplayOptions(displayOptions, properties);
 export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData[]> {
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	const body: IDataObject = {};
-	const folderId = utils.sanitizeSinglePathSegment(
+	const folderId = utils.parseIntegerId(
 		this.getNodeParameter('folderId', i),
 		this.getNode(),
 		i,
@@ -58,7 +58,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const response = await apiRequest.call(
 		this,
 		'POST',
-		`${endpoint}/folder/rename/${encodeURIComponent(folderId)}`,
+		`${endpoint}/folder/rename/${folderId}`,
 		body,
 		query,
 	);

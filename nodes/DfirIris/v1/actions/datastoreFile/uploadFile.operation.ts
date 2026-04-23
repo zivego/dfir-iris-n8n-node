@@ -105,11 +105,11 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const binaryData = this.helpers.assertBinaryData(i, binaryProperty);
 	const binaryDataBuffer  = await this.helpers.getBinaryDataBuffer(i, binaryProperty);
 	utils.addAdditionalFields.call(this, body, i);
-	const folderId = utils.sanitizeSinglePathSegment(
+	const folderId = utils.parseIntegerId(
 		this.getNodeParameter('folderId', i, 0),
 		this.getNode(),
 		i,
-		'Folder ID',
+		'Destination Folder ID',
 	);
 
 	const fileName = binaryData.fileName as string;
@@ -152,7 +152,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	response = await apiRequest.call(
 		this,
 		'POST',
-		`${endpoint}/file/add/${encodeURIComponent(folderId)}`,
+		`${endpoint}/file/add/${folderId}`,
 		form,
 		query,
 		{},

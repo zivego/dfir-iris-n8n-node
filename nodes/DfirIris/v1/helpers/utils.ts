@@ -104,6 +104,28 @@ export function sanitizeSinglePathSegment(
 	}
 }
 
+export function parseIntegerId(
+	value: unknown,
+	node: INode,
+	itemIndex: number,
+	label: string,
+): string {
+	if (typeof value !== 'string' && typeof value !== 'number') {
+		throw new NodeOperationError(node, `${label} must be an integer value`, {
+			itemIndex,
+		});
+	}
+
+	const parsedValue = String(value).trim();
+	if (!/^\d+$/.test(parsedValue)) {
+		throw new NodeOperationError(node, `${label} must be an integer value`, {
+			itemIndex,
+		});
+	}
+
+	return parsedValue;
+}
+
 export function fieldsRemover(responseRoot: IDataObject | IDataObject[], options: IDataObject) {
 	const fields = parseCommaSeparatedStrings(options.fields);
 	const inverseFields = (options.inverseFields as boolean) || false;

@@ -70,13 +70,13 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	const query: IDataObject = { cid: this.getNodeParameter('cid', i, 0) as number };
 	let response;
 	const body: IDataObject = {};
-	const folderId = utils.sanitizeSinglePathSegment(
+	const folderId = utils.parseIntegerId(
 		this.getNodeParameter('folderId', i),
 		this.getNode(),
 		i,
 		'Folder ID',
 	);
-	const destFolderId = utils.sanitizeSinglePathSegment(
+	const destFolderId = utils.parseIntegerId(
 		this.getNodeParameter('destFolderId', i, 0),
 		this.getNode(),
 		i,
@@ -88,7 +88,7 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 	response = await apiRequest.call(
 		this,
 		'POST',
-		`${endpoint}/folder/move/${encodeURIComponent(folderId)}`,
+		`${endpoint}/folder/move/${folderId}`,
 		body,
 		query,
 	);
