@@ -82,6 +82,8 @@ const properties: INodeProperties[] = [
 		type: 'collection',
 		placeholder: 'Add Field',
 		default: {},
+		description:
+			'Extra filters sent to the IRIS backend. Note: on Stable / Legacy 2.4.x IRIS builds, the `case_id` and `cid` filters inside this collection are silently ignored and the endpoint returns every record — use the `Case IDs` field above (sends `case_ids`) for deterministic single-case retrieval.',
 		options: [
 			icase.caseIds,							// ok for 2.4.19
 			icase.caseCustomerF,				// ok for 2.4.19

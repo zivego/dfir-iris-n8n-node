@@ -102,6 +102,23 @@ For `Datastore File -> Download`, filename resolution works in this order:
 
 If you receive binary output with a generic fallback filename, the backend probably did not send `content-disposition`.
 
+## `filterCases` / `filterAlerts` Returns Every Record Even With `case_id` / `cid` In `additionalFields`
+
+This is a known IRIS-backend quirk — most Stable / Legacy 2.4.x IRIS builds silently ignore the `case_id` / `cid` fields inside `additionalFields` and return every record from the table. The node sends the fields correctly; the backend drops them.
+
+Symptoms:
+
+- `filterCases` with `additionalFields.case_id = 3` returns the full case list instead of just case 3
+- `filterAlerts` with `additionalFields.cid = 1` returns every alert
+- workflow looks correct in the node editor, behaviour is wrong at runtime
+
+Workarounds (in order of preference):
+
+1. Use the typed `Case IDs` / `Alert IDs` fields inside the same operation. They send `case_ids` / `alert_ids` (comma-separated), which the backend honours across versions.
+2. For per-case retrieval, use `API Request → Send` with `manage/cases/{id}` — returns exactly one record.
+3. For per-case alerts, use a two-hop pattern: `manage/cases/{id}` → read `data.alerts[]` → `alerts/filter?alert_ids=...`.
+4. If you have a Next / Dev IRIS backend, switch the credential's API Mode to `Next / Dev` — the typed filters behave better there.
+
 ## Security Ownership
 
 Some risks cannot be fixed inside this package alone. In particular:
