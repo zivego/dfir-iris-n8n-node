@@ -200,7 +200,8 @@ export const alertIds: INodeProperties = {
 	displayName: 'Alert IDs',
 	name: 'alert_ids',
 	type: 'string',
-	description: 'Comma-separated list of alert IDs',
+	description:
+		'Comma-separated list of alert IDs (e.g. "1,2,3"). This is the most reliable way to fetch specific alerts — `case_id` / `cid` filters inside `additionalFields` are not honoured by every IRIS backend (notably Stable / Legacy on the 2.4.x line), so they may silently return all records. To get alerts of a case, first fetch the case (its `data.alerts[]` field) and pass the IDs here, or use `API Request → Send` with `/alerts/filter?alert_ids=...`.',
 	placeholder: '1,2,3',
 	default: '',
 };
@@ -209,7 +210,8 @@ export const rAlertIds: INodeProperties = {
 	displayName: 'Alert IDs',
 	name: 'alert_ids',
 	type: 'string',
-	description: 'Comma-separated list of alert IDs',
+	description:
+		'Comma-separated list of alert IDs (e.g. "1,2,3"). Same caveat as `Alert IDs` — backends vary in whether `case_id` filters work; using explicit IDs is reliable across versions.',
 	placeholder: '1,2,3',
 	default: '',
 	required: true,

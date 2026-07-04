@@ -19,7 +19,8 @@ export const caseIds: INodeProperties = {
 	displayName: 'Case IDs',
 	name: 'case_ids',
 	type: 'string',
-	description: 'List of comma-separated case IDs',
+	description:
+		'List of comma-separated case IDs (e.g. "1,2,3"). This is the most reliable way to fetch specific cases — `case_id` / `cid` filters inside `additionalFields` are not honoured by every IRIS backend (notably Stable / Legacy on the 2.4.x line), so they may silently return all records.',
 	default: '',
 };
 

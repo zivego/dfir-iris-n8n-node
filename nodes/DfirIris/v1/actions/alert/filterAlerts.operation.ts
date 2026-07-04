@@ -77,6 +77,8 @@ const properties: INodeProperties[] = [
 		type: 'collection',
 		placeholder: 'Add Field',
 		default: {},
+		description:
+			'Extra filters sent to the IRIS backend. Note: on Stable / Legacy 2.4.x IRIS builds, the `case_id` and `cid` filters inside this collection are silently ignored and the endpoint returns every record — use the `Alert IDs` field above (sends `alert_ids`) for deterministic single-alert retrieval, or two-hop via `API Request → Send` (`/manage/cases/{id}` → `data.alerts[]` → `/alerts/filter?alert_ids=...`).',
 		options: [
 			local.alertAssets,
 			local.alertClassification,

@@ -147,7 +147,7 @@ const properties: INodeProperties[] = [
 		default: 'api/ping',
 		placeholder: 'case/export',
 		description:
-			'API path without the host. Stable examples: `case/export`, `manage/users/list`. Next examples: `api/v2/cases`, `api/v2/cases/1/assets`',
+			'API path without the host. Stable examples: `case/export`, `manage/users/list`, `manage/cases/1`. Next examples: `api/v2/cases`, `api/v2/cases/1/assets`. The path must be relative — full URLs, protocol-relative URLs, query strings, and fragments are rejected. Use this node to hit endpoints the typed operations do not cover, or as a workaround when `filterCases` / `filterAlerts` ignore server-side filters on your IRIS backend.',
 	},
 	{
 		displayName: 'Query',
